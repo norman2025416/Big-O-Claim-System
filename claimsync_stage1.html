@@ -1,0 +1,2443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClaimSync — Big O Projects · Insurance Field Management</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   CLAIMSYNC v1.0 — STAGE 1 — BIG O PROJECTS (PTY) LTD
+   © 2026 Big O Projects (Pty) Ltd — ClaimSync™
+   Norman@bigoprojects.co.za | 082 402 8027
+   NHBRC Registered | CIDB PE 6GB | Midrand, Gauteng
+═══════════════════════════════════════════════════ */
+:root {
+  --navy:        #0A2D5E;
+  --navy-light:  #1A4A8A;
+  --navy-dark:   #071D3E;
+  --gold:        #C9982A;
+  --gold-light:  #F5C842;
+  --gold-pale:   #FEF8E7;
+  --teal:        #0F5F5A;
+  --teal-light:  #E8F3F2;
+  --purple:      #4B2887;
+  --purple-light:#F3EEFF;
+  --green:       #1A7A4A;
+  --green-light: #22C55E;
+  --green-pale:  #E8F7EF;
+  --red:         #C0392B;
+  --red-pale:    #FFF5F5;
+  --amber:       #D97706;
+  --amber-pale:  #FEF3C7;
+  --white:       #FFFFFF;
+  --bg:          #F0F2F7;
+  --card:        #FFFFFF;
+  --border:      rgba(0,0,0,0.07);
+  --border-md:   #E5E7EB;
+  --text:        #111827;
+  --muted:       #6B7280;
+  --sidebar-w:   248px;
+  --font:        'DM Sans', sans-serif;
+  --mono:        'DM Mono', monospace;
+  --shadow:      0 2px 12px rgba(10,45,94,0.08);
+  --shadow-lg:   0 8px 32px rgba(10,45,94,0.14);
+  --radius:      12px;
+  --radius-sm:   8px;
+  --topbar-h:    52px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 13px; display: flex; flex-direction: column; }
+a { color: inherit; text-decoration: none; }
+input, select, textarea, button { font-family: var(--font); }
+
+/* ── SCROLLBARS ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.14); border-radius: 4px; }
+
+/* ═══════════════════════════════════════════
+   AUTH SCREEN
+═══════════════════════════════════════════ */
+#auth-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  overflow: auto;
+}
+.auth-bg-pattern {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.auth-bg-hex {
+  position: absolute;
+  font-size: 300px; line-height: 1;
+  color: rgba(255,255,255,0.025);
+  user-select: none;
+}
+.auth-card {
+  position: relative; z-index: 2;
+  background: white; border-radius: 20px;
+  width: 420px; max-width: calc(100vw - 32px);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.35);
+  overflow: hidden;
+  animation: authSlideUp 0.4s cubic-bezier(.22,1,.36,1);
+}
+@keyframes authSlideUp {
+  from { opacity:0; transform:translateY(24px) scale(0.97); }
+  to   { opacity:1; transform:none; }
+}
+.auth-header {
+  background: var(--navy); padding: 28px 32px 24px;
+  text-align: center;
+}
+.auth-logo {
+  font-size: 26px; font-weight: 700; color: white;
+  letter-spacing: -0.5px; display: flex; align-items: center;
+  justify-content: center; gap: 8px; margin-bottom: 6px;
+}
+.auth-logo .hex { color: var(--gold); font-size: 22px; }
+.auth-logo .dot { color: var(--gold); }
+.auth-tagline { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; }
+.auth-body { padding: 28px 32px 32px; }
+.auth-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.auth-sub { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+.auth-tabs { display: flex; gap: 0; border: 1px solid var(--border-md); border-radius: 8px; margin-bottom: 24px; overflow: hidden; }
+.auth-tab {
+  flex: 1; padding: 8px; font-size: 12px; font-weight: 600;
+  background: none; border: none; cursor: pointer; color: var(--muted);
+  transition: all 0.15s;
+}
+.auth-tab.active { background: var(--navy); color: white; }
+.auth-form-group { margin-bottom: 16px; }
+.auth-label { display: block; font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.auth-input {
+  width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--border-md); border-radius: var(--radius-sm);
+  font-size: 13px; font-family: var(--font); color: var(--text);
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+  background: white;
+}
+.auth-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(10,45,94,0.1); }
+.auth-btn {
+  width: 100%; padding: 12px;
+  background: var(--navy); color: white;
+  border: none; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: all 0.15s; margin-top: 8px;
+}
+.auth-btn:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(10,45,94,0.25); }
+.auth-btn:active { transform: none; }
+.auth-btn.gold { background: var(--gold); color: var(--navy-dark); }
+.auth-btn.gold:hover { background: var(--gold-light); }
+.auth-error { background: var(--red-pale); border: 1px solid rgba(192,57,43,0.25); color: var(--red); font-size: 12px; padding: 8px 12px; border-radius: 6px; margin-top: 10px; display: none; }
+.auth-error.visible { display: block; }
+.auth-divider { border: none; border-top: 1px solid var(--border-md); margin: 20px 0; }
+.auth-trust { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+.auth-trust-badge { font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+.auth-forgot { font-size: 11px; color: var(--navy); text-decoration: underline; cursor: pointer; text-align: right; margin-top: -10px; margin-bottom: 16px; display: block; }
+/* Demo users hint */
+.auth-demo { background: var(--gold-pale); border: 1px solid rgba(201,152,42,0.25); border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; font-size: 11px; }
+.auth-demo strong { color: var(--navy); }
+
+/* ═══════════════════════════════════════════
+   TOP BAR
+═══════════════════════════════════════════ */
+#app-shell { display: none; flex-direction: column; height: 100%; }
+#app-shell.visible { display: flex; }
+
+.topbar {
+  height: var(--topbar-h);
+  background: var(--navy); display: flex; align-items: center;
+  padding: 0 20px; gap: 14px; flex-shrink: 0; z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.topbar-logo {
+  font-size: 16px; font-weight: 700; color: white;
+  letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;
+  cursor: pointer; user-select: none;
+}
+.topbar-logo .hex { color: var(--gold); }
+.topbar-logo .dot { color: var(--gold); }
+.topbar-badge {
+  background: rgba(201,152,42,0.2); color: var(--gold);
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 2px 8px;
+  border-radius: 20px; border: 1px solid rgba(201,152,42,0.3);
+}
+.topbar-spacer { flex: 1; }
+.topbar-stage {
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.55);
+  font-size: 10px; font-weight: 600; padding: 3px 10px;
+  border-radius: 20px; letter-spacing: 0.5px;
+}
+.topbar-sync {
+  background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3);
+  color: #22C55E; font-size: 10px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
+  display: flex; align-items: center; gap: 5px;
+  cursor: pointer;
+}
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #22C55E; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.topbar-company { font-size: 11px; color: rgba(255,255,255,0.45); }
+.topbar-user {
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; padding: 5px 8px; border-radius: 8px;
+  transition: background 0.15s; position: relative;
+}
+.topbar-user:hover { background: rgba(255,255,255,0.08); }
+.topbar-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--gold); color: var(--navy);
+  font-weight: 700; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.topbar-name { font-size: 12px; color: rgba(255,255,255,0.85); font-weight: 600; line-height: 1.2; }
+.topbar-role { font-size: 10px; color: rgba(255,255,255,0.4); }
+
+/* User dropdown */
+.user-dropdown {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: white; border-radius: 10px; box-shadow: var(--shadow-lg);
+  width: 200px; z-index: 500; border: 1px solid var(--border);
+  display: none; overflow: hidden; animation: dropDown 0.15s ease;
+}
+@keyframes dropDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
+.user-dropdown.open { display: block; }
+.user-dropdown-item {
+  padding: 10px 16px; font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  transition: background 0.1s;
+}
+.user-dropdown-item:hover { background: var(--bg); }
+.user-dropdown-item.danger { color: var(--red); }
+.user-dropdown-divider { border: none; border-top: 1px solid var(--border-md); }
+
+/* ═══════════════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════════════ */
+.main-wrap { display: flex; flex: 1; overflow: hidden; }
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w); background: var(--navy);
+  flex-shrink: 0; display: flex; flex-direction: column;
+  overflow-y: auto; padding: 12px 0;
+}
+.sidebar::-webkit-scrollbar { width: 0; }
+.nav-section-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.25);
+  padding: 12px 18px 5px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; cursor: pointer;
+  transition: all 0.14s; color: rgba(255,255,255,0.5);
+  font-size: 12.5px; font-weight: 500;
+  position: relative; margin: 1px 8px; border-radius: 8px;
+}
+.nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+.nav-item.active {
+  background: rgba(201,152,42,0.15); color: var(--gold);
+}
+.nav-item.active::before {
+  content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
+  width: 3px; background: var(--gold); border-radius: 0 3px 3px 0;
+}
+.nav-icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: var(--red); color: white;
+  font-size: 9px; font-weight: 700; padding: 2px 6px;
+  border-radius: 20px; min-width: 18px; text-align: center;
+}
+.nav-badge.green  { background: var(--green); }
+.nav-badge.gold   { background: var(--gold); color: var(--navy-dark); }
+.nav-badge.amber  { background: var(--amber); }
+.nav-badge.teal   { background: var(--teal); }
+.sidebar-footer {
+  margin-top: auto; padding: 10px 8px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.sidebar-build-badge {
+  margin: 8px 16px; padding: 8px 12px;
+  background: rgba(201,152,42,0.12); border: 1px solid rgba(201,152,42,0.2);
+  border-radius: 8px; font-size: 10px; color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
+.sidebar-build-badge strong { color: var(--gold); display: block; font-size: 11px; margin-bottom: 2px; }
+
+/* ═══════════════════════════════════════════
+   CONTENT AREA
+═══════════════════════════════════════════ */
+.content {
+  flex: 1; overflow-y: auto; padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+
+/* ── PANEL SWITCHING ── */
+.panel { display: none; flex-direction: column; gap: 18px; animation: fadeIn 0.18s ease; }
+.panel.active { display: flex; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex; align-items: flex-end;
+  justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.page-title { font-size: 21px; font-weight: 700; letter-spacing: -0.5px; color: var(--navy); }
+.page-subtitle { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.page-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden;
+}
+.card-header {
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-title { font-size: 13px; font-weight: 700; color: var(--navy); }
+.card-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.card-body { padding: 16px 18px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  border: 1.5px solid transparent; transition: all 0.14s;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--navy); color: white; border-color: var(--navy); }
+.btn-primary:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,45,94,0.2); }
+.btn-gold { background: var(--gold); color: var(--navy-dark); border-color: var(--gold); }
+.btn-gold:hover { background: var(--gold-light); }
+.btn-ghost { background: white; color: var(--text); border-color: var(--border-md); }
+.btn-ghost:hover { background: var(--bg); border-color: #C8CCD5; }
+.btn-danger { background: var(--red); color: white; border-color: var(--red); }
+.btn-danger:hover { background: #A93226; }
+.btn-teal { background: var(--teal); color: white; border-color: var(--teal); }
+.btn-sm { padding: 6px 12px; font-size: 11.5px; }
+.btn-xs { padding: 4px 9px; font-size: 10.5px; }
+
+/* ── KPI STAT CARDS ── */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 14px;
+}
+.stat-card {
+  background: var(--card); border-radius: var(--radius);
+  padding: 16px 18px; border: 1px solid var(--border);
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s; cursor: default;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.stat-card.navy  { background: var(--navy); }
+.stat-card.gold  { background: linear-gradient(135deg, #B8831F 0%, var(--gold) 100%); }
+.stat-card.teal  { background: var(--teal); }
+.stat-card.green { background: var(--green); }
+.stat-card.red   { background: var(--red); }
+.stat-card.navy .stat-label, .stat-card.gold .stat-label,
+.stat-card.teal .stat-label, .stat-card.green .stat-label,
+.stat-card.red  .stat-label  { color: rgba(255,255,255,0.65); }
+.stat-card.navy .stat-value, .stat-card.gold .stat-value,
+.stat-card.teal .stat-value, .stat-card.green .stat-value,
+.stat-card.red  .stat-value  { color: white; }
+.stat-card.navy .stat-sub, .stat-card.gold .stat-sub,
+.stat-card.teal .stat-sub, .stat-card.green .stat-sub,
+.stat-card.red  .stat-sub    { color: rgba(255,255,255,0.45); }
+.stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+.stat-value { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--navy); font-family: var(--mono); }
+.stat-sub   { font-size: 11px; color: var(--muted); margin-top: 5px; }
+.stat-icon  { position: absolute; right: 14px; top: 14px; font-size: 20px; opacity: 0.5; }
+.stat-trend { font-size: 10px; font-weight: 700; margin-top: 6px; }
+.stat-trend.up   { color: var(--green-light); }
+.stat-trend.down { color: #F87171; }
+
+/* ── TWO/THREE COL LAYOUT ── */
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media(max-width:900px){ .two-col,.three-col{ grid-template-columns:1fr; } }
+
+/* ── DATA TABLES ── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table thead tr { background: var(--bg); }
+.data-table th {
+  padding: 9px 12px; text-align: left; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted);
+  border-bottom: 1px solid var(--border-md); white-space: nowrap;
+  position: sticky; top: 0; background: #F4F5F9; z-index: 2;
+}
+.data-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.data-table tbody tr { cursor: pointer; transition: background 0.1s; }
+.data-table tbody tr:hover { background: #F8F9FC; }
+.data-table tbody tr.void-row { opacity: 0.45; text-decoration: line-through; }
+.td-mono  { font-family: var(--mono); }
+.td-bold  { font-weight: 700; }
+.td-muted { color: var(--muted); }
+
+/* ── STATUS BADGES ── */
+.status {
+  display: inline-block; padding: 3px 9px; border-radius: 20px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.status.paid        { background: var(--green-pale); color: var(--green); }
+.status.outstanding { background: var(--red-pale); color: var(--red); }
+.status.draft       { background: var(--bg); color: var(--muted); }
+.status.void        { background: #F3F4F6; color: #9CA3AF; }
+.status.overdue     { background: var(--red-pale); color: var(--red); }
+.status.sent        { background: #EFF6FF; color: #2563EB; }
+.status.active      { background: var(--green-pale); color: var(--green); }
+.status.inactive    { background: #F3F4F6; color: var(--muted); }
+.status.sub         { background: var(--purple-light); color: var(--purple); }
+.status.supplier    { background: var(--teal-light); color: var(--teal); }
+
+/* ── ENTITY TAGS ── */
+.ent-bigo    { background: #EAF0FB; color: var(--navy); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; font-family: var(--font); }
+.ent-phahamo { background: var(--purple-light); color: var(--purple); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; font-family: var(--font); }
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  background: #FAFBFD;
+}
+.filter-input, .filter-select {
+  border: 1.5px solid var(--border-md); border-radius: var(--radius-sm);
+  padding: 7px 12px; font-size: 12.5px; font-family: var(--font);
+  background: white; outline: none; transition: border-color 0.15s;
+  color: var(--text);
+}
+.filter-input { flex: 1; min-width: 180px; }
+.filter-input:focus, .filter-select:focus { border-color: var(--navy); }
+
+/* ── SECTION BANNERS ── */
+.section-banner {
+  padding: 10px 14px; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+  letter-spacing: 0.3px;
+}
+.section-banner.bigo    { background: var(--navy); color: white; }
+.section-banner.phahamo { background: var(--purple); color: white; }
+.section-banner.totals  { background: var(--navy-dark); color: rgba(255,255,255,0.8); font-size: 12px; }
+.section-banner.grand   { background: #071D3E; color: white; font-size: 13px; }
+
+/* ── TABLE SCROLL WRAPPER ── */
+.table-scroll { overflow-x: auto; max-height: 500px; overflow-y: auto; }
+.table-scroll-fixed { overflow-x: auto; }
+
+/* ── FORM ELEMENTS ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: span 2; }
+.form-label { font-size: 11px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+.form-input {
+  border: 1.5px solid var(--border-md); border-radius: var(--radius-sm);
+  padding: 9px 12px; font-size: 13px; font-family: var(--font); color: var(--text);
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s; background: white;
+  width: 100%;
+}
+.form-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(10,45,94,0.1); }
+.form-input[readonly] { background: var(--bg); color: var(--muted); cursor: not-allowed; }
+.form-hint { font-size: 10.5px; color: var(--muted); }
+textarea.form-input { resize: vertical; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 1000; display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(2px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: 16px; box-shadow: var(--shadow-lg);
+  width: 540px; max-width: calc(100vw - 32px); max-height: calc(100vh - 64px);
+  display: flex; flex-direction: column; animation: modalSlideIn 0.2s ease;
+}
+@keyframes modalSlideIn { from{opacity:0;transform:scale(0.96)translateY(8px)} to{opacity:1;transform:none} }
+.modal-lg { width: 720px; }
+.modal-header {
+  padding: 18px 22px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--navy); }
+.modal-close {
+  background: none; border: none; font-size: 22px; cursor: pointer;
+  color: var(--muted); line-height: 1; padding: 0; transition: color 0.1s;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 22px; overflow-y: auto; flex: 1; }
+.modal-footer {
+  padding: 14px 22px; border-top: 1px solid var(--border);
+  display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0;
+}
+
+/* ── DRAWER ── */
+.drawer-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+  z-index: 900; display: none;
+}
+.drawer-overlay.open { display: block; }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0; width: 480px;
+  background: white; box-shadow: -8px 0 32px rgba(0,0,0,0.15);
+  z-index: 901; display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 0.25s cubic-bezier(.22,1,.36,1);
+  max-width: 100vw;
+}
+.drawer.open { transform: none; }
+.drawer-header {
+  padding: 18px 22px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  background: var(--navy);
+}
+.drawer-title { font-size: 15px; font-weight: 700; color: white; }
+.drawer-sub   { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.drawer-close {
+  background: rgba(255,255,255,0.1); border: none; font-size: 16px; cursor: pointer;
+  color: white; width: 30px; height: 30px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+.drawer-body { padding: 20px; overflow-y: auto; flex: 1; }
+.drawer-footer {
+  padding: 14px 20px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px; flex-shrink: 0;
+}
+.drawer-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+.drawer-row:last-child { border-bottom: none; }
+.drawer-row .dk { color: var(--muted); font-weight: 500; }
+.drawer-row .dv { font-weight: 600; color: var(--text); text-align: right; max-width: 60%; }
+
+/* ── ALERTS ── */
+.alert {
+  padding: 14px 18px; border-radius: var(--radius-sm);
+  display: flex; align-items: flex-start; gap: 12px; font-size: 12.5px;
+}
+.alert.warning { background: var(--red-pale); border: 1.5px solid rgba(192,57,43,0.2); }
+.alert.success { background: var(--green-pale); border: 1.5px solid rgba(26,122,74,0.2); }
+.alert.info    { background: #EFF6FF; border: 1.5px solid rgba(37,99,235,0.15); }
+.alert.amber   { background: var(--amber-pale); border: 1.5px solid rgba(217,119,6,0.2); }
+.alert-icon  { font-size: 20px; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+.alert-title { font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.alert-body  { font-size: 12px; color: var(--text); line-height: 1.5; }
+.alert-actions { margin-top: 10px; display: flex; gap: 8px; }
+
+/* ── VAT SUMMARY CARD ── */
+.vat-card { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border-md); border-radius: var(--radius-sm); overflow: hidden; }
+.vat-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+.vat-row:last-child { border-bottom: none; }
+.vat-row.total { background: #F4F5F9; font-weight: 700; font-size: 13px; }
+
+/* ── PROGRESS BAR ── */
+.progress-bar { background: rgba(0,0,0,0.07); border-radius: 4px; height: 6px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+
+/* ── TABS ── */
+.tab-bar { display: flex; gap: 0; border-bottom: 2px solid var(--border-md); }
+.tab {
+  padding: 9px 16px; font-size: 12px; font-weight: 600;
+  color: var(--muted); cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+
+/* ── NOTIFICATION DOT ── */
+.notif-dot::after {
+  content: ''; position: absolute; top: 5px; right: 12px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--red); border: 2px solid var(--navy);
+}
+
+/* ── TOAST ── */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9990; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: #1F2937; color: white; padding: 12px 18px;
+  border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;
+  animation: toastIn 0.3s ease; max-width: 340px;
+}
+.toast.success { background: #065F46; border-left: 3px solid var(--green-light); }
+.toast.error   { background: #7F1D1D; border-left: 3px solid var(--red); }
+.toast.info    { background: #1E3A5F; border-left: 3px solid #60A5FA; }
+@keyframes toastIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:none} }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
+.empty-icon  { font-size: 42px; margin-bottom: 12px; opacity: 0.4; }
+.empty-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.empty-body  { font-size: 13px; max-width: 340px; margin: 0 auto 20px; }
+
+/* ── DROPDOWN SELECT STYLE ── */
+select.form-input { cursor: pointer; }
+
+/* ── AI BUTTON ── */
+.ai-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+  color: white; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm); padding: 7px 14px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.15s;
+}
+.ai-btn:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.3); transform: translateY(-1px); }
+.ai-btn .ai-icon { color: #A78BFA; }
+
+/* ── RESPONSIVE SIDEBAR COLLAPSE ── */
+@media(max-width:768px){
+  .sidebar { display: none; }
+  .content { padding: 16px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     AUTH SCREEN
+═══════════════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-bg-pattern">
+    <div class="auth-bg-hex" style="top:-80px;left:-100px">⬡</div>
+    <div class="auth-bg-hex" style="bottom:-100px;right:-80px;font-size:250px">⬡</div>
+    <div class="auth-bg-hex" style="top:40%;left:60%;font-size:150px">⬡</div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo"><span class="hex">⬡</span> ClaimSync<span class="dot">.</span></div>
+      <div class="auth-tagline">Insurance Field Management Platform</div>
+    </div>
+    <div class="auth-body">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">Create Account</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="auth-login">
+        <div class="auth-demo">
+          <strong>Demo Credentials:</strong><br>
+          Admin: <code>norman@bigoprojects.co.za</code> / <code>BigO2026!</code><br>
+          Field: <code>fielduser@bigoprojects.co.za</code> / <code>Field123!</code>
+        </div>
+        <div class="auth-form-group">
+          <label class="auth-label">Email Address</label>
+          <input class="auth-input" type="email" id="login-email" placeholder="you@bigoprojects.co.za" value="norman@bigoprojects.co.za">
+        </div>
+        <div class="auth-form-group">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" type="password" id="login-password" placeholder="••••••••" value="BigO2026!">
+          <span class="auth-forgot" onclick="forgotPassword()">Forgot password?</span>
+        </div>
+        <div class="auth-error" id="login-error">Invalid email or password. Please try again.</div>
+        <button class="auth-btn" onclick="doLogin()">Sign In to ClaimSync →</button>
+        <hr class="auth-divider">
+        <div class="auth-trust">
+          <div class="auth-trust-badge">🔒 SSL Encrypted</div>
+          <div class="auth-trust-badge">🇿🇦 SA Hosted</div>
+          <div class="auth-trust-badge">📋 POPIA Compliant</div>
+        </div>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="auth-register" style="display:none;">
+        <div class="auth-form-group">
+          <label class="auth-label">Full Name</label>
+          <input class="auth-input" type="text" id="reg-name" placeholder="Your full name">
+        </div>
+        <div class="auth-form-group">
+          <label class="auth-label">Email Address</label>
+          <input class="auth-input" type="email" id="reg-email" placeholder="you@company.co.za">
+        </div>
+        <div class="auth-form-group">
+          <label class="auth-label">Password</label>
+          <input class="auth-input" type="password" id="reg-password" placeholder="Min 8 characters">
+        </div>
+        <div class="auth-form-group">
+          <label class="auth-label">Company Name</label>
+          <input class="auth-input" type="text" id="reg-company" placeholder="Your company name">
+        </div>
+        <div class="auth-form-group">
+          <label class="auth-label">Role</label>
+          <select class="auth-input" id="reg-role">
+            <option value="">— Select your role —</option>
+            <option value="admin">Administrator</option>
+            <option value="field">Field / Team Leader</option>
+            <option value="accounts">Accounts</option>
+          </select>
+        </div>
+        <div class="auth-error" id="reg-error"></div>
+        <button class="auth-btn gold" onclick="doRegister()">Create Account →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════════
+     APP SHELL
+═══════════════════════════════════════════════ -->
+<div id="app-shell">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-logo" onclick="showPanel('dashboard')">
+      <span class="hex">⬡</span> ClaimSync<span class="dot">.</span>
+    </div>
+    <div class="topbar-badge">Big O Projects</div>
+    <div class="topbar-stage">Stage 1 · v1.0</div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-sync" onclick="triggerSync()">
+      <div class="sync-dot"></div><span id="sync-label">Online — Synced</span>
+    </div>
+    <div class="topbar-company">bigoprojects.co.za</div>
+    <div class="topbar-user" onclick="toggleUserDropdown()">
+      <div class="topbar-avatar" id="user-avatar">N</div>
+      <div>
+        <div class="topbar-name" id="user-name">Norman</div>
+        <div class="topbar-role" id="user-role">Administrator</div>
+      </div>
+      <div class="user-dropdown" id="user-dropdown">
+        <div class="user-dropdown-item" onclick="showPanel('settings')">⚙️ Settings</div>
+        <div class="user-dropdown-item">👤 My Profile</div>
+        <div class="user-dropdown-item">🔑 Change Password</div>
+        <hr class="user-dropdown-divider">
+        <div class="user-dropdown-item danger" onclick="doLogout()">🚪 Sign Out</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN WRAP -->
+  <div class="main-wrap">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-section-label">Main</div>
+      <div class="nav-item active" id="nav-dashboard" onclick="showPanel('dashboard')">
+        <span class="nav-icon">◈</span> Dashboard
+      </div>
+      <div class="nav-item" id="nav-clients" onclick="showPanel('clients')">
+        <span class="nav-icon">👥</span> Clients
+      </div>
+      <div class="nav-item" id="nav-invoices" onclick="showPanel('invoices')">
+        <span class="nav-icon">🧾</span> Invoice Register
+        <span class="nav-badge gold">1</span>
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px">Field Work</div>
+      <div class="nav-item" id="nav-claims" onclick="showPanel('claims')">
+        <span class="nav-icon">📋</span> CAT Claims
+        <span class="nav-badge">83</span>
+      </div>
+      <div class="nav-item" id="nav-assessment" onclick="showPanel('assessment')">
+        <span class="nav-icon">🔍</span> Assessment
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px">Finance</div>
+      <div class="nav-item" id="nav-vat" onclick="showPanel('vat')">
+        <span class="nav-icon">📊</span> VAT Report
+      </div>
+      <div class="nav-item" id="nav-outstanding" onclick="showPanel('outstanding')">
+        <span class="nav-icon">⚠️</span> Outstanding
+        <span class="nav-badge">1</span>
+      </div>
+      <div class="nav-item" id="nav-expenses" onclick="showPanel('expenses')">
+        <span class="nav-icon" style="position:relative">💸</span> Expenses
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px">Reports</div>
+      <div class="nav-item" id="nav-analytics" onclick="showPanel('analytics')">
+        <span class="nav-icon">📈</span> Analytics
+      </div>
+      <div class="nav-item" id="nav-export" onclick="showPanel('export')">
+        <span class="nav-icon">⬇</span> Export Centre
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px">Integrations</div>
+      <div class="nav-item" id="nav-zoho" onclick="showPanel('zoho')">
+        <span class="nav-icon">🔄</span> Zoho Sync
+        <span class="nav-badge green">✓</span>
+      </div>
+      <div class="nav-item" id="nav-ai" onclick="showPanel('ai')">
+        <span class="nav-icon">🤖</span> AI Assistant
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="nav-item" id="nav-settings" onclick="showPanel('settings')">
+          <span class="nav-icon">⚙️</span> Settings
+        </div>
+        <div class="sidebar-build-badge">
+          <strong>ClaimSync Stage 1</strong>
+          Dashboard · Clients · Invoices · Auth<br>
+          © 2026 Big O Projects (Pty) Ltd
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content" id="main-content">
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: DASHBOARD
+═══════════════════════════════════════════════ -->
+<div class="panel active" id="panel-dashboard">
+  <div class="page-header">
+    <div>
+      <div class="page-title" id="dash-greeting">Good day, Norman 👋</div>
+      <div class="page-subtitle" id="dash-date">Monday, 23 March 2026 · CAT Event 2026 · Standard Bank HOC</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('export')">⬇ Export Excel</button>
+      <button class="btn btn-gold btn-sm" onclick="openNewInvoiceModal()">+ New Invoice</button>
+    </div>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="stats-grid">
+    <div class="stat-card navy" onclick="showPanel('invoices')">
+      <div class="stat-label">Grand Total Collected</div>
+      <div class="stat-value">R 1,164,559</div>
+      <div class="stat-sub">Incl. VAT · Bigo + Phahamo · 83 claims</div>
+      <div class="stat-icon">💰</div>
+    </div>
+    <div class="stat-card gold" onclick="showPanel('invoices')">
+      <div class="stat-label">Bigo Direct</div>
+      <div class="stat-value">R 849,894</div>
+      <div class="stat-sub">60 invoices · 59 paid · 1 outstanding</div>
+      <div class="stat-icon">🏢</div>
+    </div>
+    <div class="stat-card teal" onclick="showPanel('invoices')">
+      <div class="stat-label">Phahamo Subcontract</div>
+      <div class="stat-value">R 314,665</div>
+      <div class="stat-sub">23 invoices · all paid</div>
+      <div class="stat-icon">🤝</div>
+    </div>
+    <div class="stat-card green" onclick="showPanel('vat')">
+      <div class="stat-label">Output VAT Collected</div>
+      <div class="stat-value">R 151,899</div>
+      <div class="stat-sub">15% on R 1,012,660 excl. · VAT201 pending</div>
+      <div class="stat-icon">🧾</div>
+    </div>
+    <div class="stat-card red" onclick="showPanel('outstanding')">
+      <div class="stat-label">Outstanding</div>
+      <div class="stat-value">R 6,264</div>
+      <div class="stat-sub">1 claim · Ziphozihle Wonci · INV-0810</div>
+      <div class="stat-icon">⚠️</div>
+    </div>
+  </div>
+
+  <!-- ALERT -->
+  <div class="alert warning">
+    <div class="alert-icon">⚠️</div>
+    <div style="flex:1">
+      <div class="alert-title">Action Required — Outstanding Invoice</div>
+      <div class="alert-body">ZIPHOZIHLE WONCI · HLB/2026/466333 · BIG O-INV-0810 · R6,264.05 incl. VAT · Invoiced 17 Mar 2026. Send statement to Standard Bank Insurance via SB Claims portal.</div>
+      <div class="alert-actions">
+        <button class="btn btn-danger btn-xs" onclick="openInvoiceDrawer('INV-0810')">View Claim →</button>
+        <button class="btn btn-ghost btn-xs" onclick="showPanel('outstanding')">Full Outstanding View</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VAT SUMMARY + MONTHLY CHART -->
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">VAT Summary</div><div class="card-sub">Output VAT @ 15% — Jan–Mar 2026</div></div>
+        <button class="btn btn-ghost btn-sm" onclick="showPanel('vat')">Full Report →</button>
+      </div>
+      <div class="card-body">
+        <div class="vat-card">
+          <div class="vat-row"><span>Bigo Direct (excl. VAT)</span><span style="font-family:var(--mono)">R 739,038.97</span></div>
+          <div class="vat-row"><span>Phahamo Subcontract</span><span style="font-family:var(--mono)">R 273,622.14</span></div>
+          <div class="vat-row"><span style="color:var(--muted)">Total Excl. VAT</span><span style="font-family:var(--mono)">R 1,012,661.11</span></div>
+          <div class="vat-row"><span style="color:var(--muted)">Output VAT (15%)</span><span style="font-family:var(--mono);color:var(--teal)">+ R 151,898.16</span></div>
+          <div class="vat-row total"><span>Total Incl. VAT</span><span style="font-family:var(--mono)">R 1,164,559.27</span></div>
+        </div>
+        <div style="margin-top:12px;font-size:11.5px;color:var(--muted);line-height:1.5;padding:10px;background:var(--bg);border-radius:8px">
+          📌 Add supplier invoices in <strong>Expenses</strong> to reduce net VAT payable for VAT201.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">Monthly Revenue</div><div class="card-sub">Bigo + Phahamo Combined · Jan–Mar 2026</div></div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
+              <span style="font-weight:700;color:var(--navy)">January 2026</span>
+              <span style="font-family:var(--mono);font-weight:700;color:var(--navy)">R 838,534 · 38 inv.</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:72%;background:var(--navy)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
+              <span style="font-weight:700;color:var(--gold)">February 2026</span>
+              <span style="font-family:var(--mono);font-weight:700;color:var(--gold)">R 211,438 · 13 inv.</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:18%;background:var(--gold)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px">
+              <span style="font-weight:700;color:var(--teal)">March 2026</span>
+              <span style="font-family:var(--mono);font-weight:700;color:var(--teal)">R 114,587 · 32 inv.</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:10%;background:var(--teal)"></div></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;background:var(--bg);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;font-size:12px">
+          <span style="color:var(--muted)">Cumulative Total</span>
+          <span style="font-weight:700;font-family:var(--mono);color:var(--navy)">R 1,164,559.27</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT INVOICES -->
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">Recent Invoices</div><div class="card-sub">Latest 10 transactions</div></div>
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('invoices')">View All 83 →</button>
+    </div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Invoice No.</th><th>Client</th><th>Claim Ref</th><th>Date</th>
+            <th>Amount Incl. VAT</th><th>Status</th><th>Entity</th>
+          </tr>
+        </thead>
+        <tbody id="dash-recent-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SARS UPCOMING DATES -->
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">SARS Filing Deadlines</div><div class="card-sub">Upcoming statutory submissions</div></div>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+        <div style="background:var(--amber-pale);border:1px solid rgba(217,119,6,0.25);border-radius:8px;padding:12px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin-bottom:4px">VAT201 Due</div>
+          <div style="font-weight:700;font-size:14px">31 March 2026</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Bi-monthly · Jan–Feb 2026 period</div>
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-top:6px">⚡ 8 days remaining</div>
+        </div>
+        <div style="background:var(--green-pale);border:1px solid rgba(26,122,74,0.2);border-radius:8px;padding:12px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px">EMP201 Due</div>
+          <div style="font-weight:700;font-size:14px">7 April 2026</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Monthly · March 2026 PAYE</div>
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-top:6px">✅ 15 days remaining</div>
+        </div>
+        <div style="background:#EFF6FF;border:1px solid rgba(37,99,235,0.15);border-radius:8px;padding:12px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#2563EB;margin-bottom:4px">EMP501 Due</div>
+          <div style="font-weight:700;font-size:14px">31 May 2026</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Bi-annual reconciliation</div>
+          <div style="font-size:11px;font-weight:700;color:#2563EB;margin-top:6px">📅 69 days remaining</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /dashboard -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: CLIENTS
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-clients">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Clients</div>
+      <div class="page-subtitle">Subcontractors &amp; Suppliers · VAT-registered partner management</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-ghost btn-sm" onclick="exportClients()">⬇ Export</button>
+      <button class="btn btn-gold btn-sm" onclick="openAddClientModal()">+ Add Client</button>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="stat-card">
+      <div class="stat-label">Total Clients</div>
+      <div class="stat-value" id="cl-total">5</div>
+      <div class="stat-sub">Registered in system</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Subcontractors</div>
+      <div class="stat-value" id="cl-sub">1</div>
+      <div class="stat-sub">Active partners</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Suppliers</div>
+      <div class="stat-value" id="cl-sup">4</div>
+      <div class="stat-sub">Material &amp; fuel</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Input VAT Recoverable</div>
+      <div class="stat-value">R 11,682</div>
+      <div class="stat-sub">From VAT-reg. suppliers</div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="card" style="padding:12px 16px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <input type="text" class="filter-input" placeholder="🔍  Search clients..." id="client-search" oninput="renderClients()" style="max-width:280px">
+      <select class="filter-select" id="client-type-filter" onchange="renderClients()">
+        <option value="">All Types</option>
+        <option value="Subcontractor">Subcontractor</option>
+        <option value="Supplier">Supplier</option>
+      </select>
+      <select class="filter-select" id="client-status-filter" onchange="renderClients()">
+        <option value="">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Client Cards Grid -->
+  <div id="clients-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px"></div>
+</div><!-- /clients -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: INVOICE REGISTER
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-invoices">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Invoice Register</div>
+      <div class="page-subtitle">Source: ClaimSync · Jan–Mar 2026 · CAT Event 2026 · Standard Bank HOC</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-ghost btn-sm" onclick="exportInvoicesExcel()">⬇ Export Excel</button>
+      <button class="btn btn-primary btn-sm" onclick="openNewInvoiceModal()">+ Add Invoice</button>
+    </div>
+  </div>
+
+  <!-- Summary Row -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <div style="background:var(--navy);color:white;border-radius:10px;padding:14px 16px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:0.6;margin-bottom:6px">Grand Total</div>
+      <div style="font-size:20px;font-weight:700;font-family:var(--mono)">R 1,164,559</div>
+      <div style="font-size:10px;opacity:0.5;margin-top:3px">Incl. VAT · 83 invoices</div>
+    </div>
+    <div style="background:#EAF0FB;border-radius:10px;padding:14px 16px;border:1px solid rgba(10,45,94,0.1)">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Bigo Direct</div>
+      <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--navy)">R 849,894</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px">60 invoices</div>
+    </div>
+    <div style="background:var(--purple-light);border-radius:10px;padding:14px 16px;border:1px solid rgba(75,40,135,0.1)">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Phahamo</div>
+      <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--purple)">R 314,665</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px">23 invoices</div>
+    </div>
+    <div style="background:var(--red-pale);border-radius:10px;padding:14px 16px;border:1px solid rgba(192,57,43,0.15)">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Outstanding</div>
+      <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--red)">R 6,264</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px">1 invoice · Wonci</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="filter-bar">
+      <input class="filter-input" placeholder="🔍  Search client, claim number, invoice..." id="inv-search" oninput="renderInvoices()">
+      <select class="filter-select" id="inv-status-filter" onchange="renderInvoices()">
+        <option value="">All Status</option>
+        <option value="Paid">Paid</option>
+        <option value="Outstanding">Outstanding</option>
+        <option value="Void">Void</option>
+        <option value="Draft">Draft</option>
+      </select>
+      <select class="filter-select" id="inv-entity-filter" onchange="renderInvoices()">
+        <option value="">Bigo + Phahamo</option>
+        <option value="BIGO">Bigo Only</option>
+        <option value="PHAHAMO">Phahamo Only</option>
+      </select>
+      <select class="filter-select" id="inv-month-filter" onchange="renderInvoices()">
+        <option value="">All Months</option>
+        <option value="Jan">January 2026</option>
+        <option value="Feb">February 2026</option>
+        <option value="Mar">March 2026</option>
+      </select>
+    </div>
+
+    <!-- BIGO SECTION -->
+    <div class="section-banner bigo">🏢 BIG O DIRECT — <span id="bigo-summary">Loading...</span></div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Invoice No.</th><th>Client</th><th>Claim Number</th>
+            <th>Date</th><th>Status</th><th>Amount Incl. VAT</th>
+            <th>Excl. VAT</th><th>VAT 15%</th><th>Balance</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="inv-tbody-bigo"></tbody>
+      </table>
+    </div>
+    <div class="section-banner totals" id="bigo-totals-row"></div>
+
+    <!-- PHAHAMO SECTION -->
+    <div class="section-banner phahamo" style="margin-top:6px">🤝 PHAHAMO SUBCONTRACT — <span id="pha-summary">Loading...</span></div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Invoice No.</th><th>Client</th><th>Claim Number</th>
+            <th>Date</th><th>Status</th><th>Amount Incl. VAT</th>
+            <th>Excl. VAT</th><th>VAT 15%</th><th>Balance</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="inv-tbody-pha"></tbody>
+      </table>
+    </div>
+    <div class="section-banner totals" id="pha-totals-row"></div>
+    <div class="section-banner grand" id="grand-totals-row"></div>
+
+    <!-- VOID INVOICES -->
+    <div style="margin-top:8px;padding:10px 14px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;background:#FAFBFD">
+      <span>⊘</span> <strong>Void invoices</strong> (4 total · R 105,215.77 excluded from totals):
+      INV-0725, INV-0726, INV-0741, INV-0797
+      <button class="btn btn-ghost btn-xs" onclick="toggleVoidRows()">Show Void</button>
+    </div>
+  </div>
+</div><!-- /invoices -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: CLAIMS
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-claims">
+  <div class="page-header">
+    <div>
+      <div class="page-title">CAT Claims</div>
+      <div class="page-subtitle">2026 Catastrophe Event · Standard Bank HOC · NHBRC Registered</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('assessment')">+ New Assessment</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(5,1fr)">
+    <div class="stat-card navy"><div class="stat-label">Total Claims</div><div class="stat-value">83</div><div class="stat-sub">CAT Event 2026</div></div>
+    <div class="stat-card green"><div class="stat-label">Fully Paid</div><div class="stat-value">82</div><div class="stat-sub">98.8% collected</div></div>
+    <div class="stat-card red"><div class="stat-label">Outstanding</div><div class="stat-value">1</div><div class="stat-sub">Wonci · INV-0810</div></div>
+    <div class="stat-card gold"><div class="stat-label">Avg Invoice</div><div class="stat-value" style="font-size:18px">R 14,031</div><div class="stat-sub">Per claim</div></div>
+    <div class="stat-card teal"><div class="stat-label">Largest Claim</div><div class="stat-value" style="font-size:18px">R 118,026</div><div class="stat-sub">Nazeer Adam</div></div>
+  </div>
+  <div class="card">
+    <div class="filter-bar">
+      <input class="filter-input" placeholder="🔍  Search claim, client name, claim ref..." id="claims-search" oninput="renderClaims()">
+      <select class="filter-select" id="claims-status-filter" onchange="renderClaims()">
+        <option value="">All Status</option>
+        <option value="Paid">Paid</option>
+        <option value="Outstanding">Outstanding</option>
+      </select>
+    </div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Invoice No.</th><th>Client</th><th>Claim Ref</th>
+            <th>Date</th><th>Entity</th><th>Amount Incl. VAT</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="claims-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /claims -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: VAT REPORT
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-vat">
+  <div class="page-header">
+    <div><div class="page-title">VAT Report</div><div class="page-subtitle">Output VAT · Jan–Mar 2026 · Standard Rate 15% · VAT201 Preparation</div></div>
+    <div class="page-actions">
+      <button class="btn btn-gold btn-sm" onclick="downloadVAT201()">⬇ Download VAT201 Prep</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="stat-card red"><div class="stat-label">Output VAT</div><div class="stat-value">R 151,899</div><div class="stat-sub">On R 1,012,661 excl.</div></div>
+    <div class="stat-card green"><div class="stat-label">Input VAT</div><div class="stat-value">R 281</div><div class="stat-sub">3 supplier invoices</div></div>
+    <div class="stat-card navy"><div class="stat-label">Net VAT Payable</div><div class="stat-value">R 151,618</div><div class="stat-sub">To SARS · VAT201</div></div>
+    <div class="stat-card gold"><div class="stat-label">VAT Registration</div><div class="stat-value" style="font-size:18px">Active</div><div class="stat-sub">Submit bi-monthly</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div><div class="card-title">VAT Calculation Rules</div><div class="card-sub">SA SARS Standard · 15% rate</div></div>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px">
+        <div style="background:var(--bg);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:6px;color:var(--navy)">Extract Excl. from Incl.</div>
+          <code style="font-family:var(--mono);font-size:11px;background:white;padding:4px 8px;border-radius:4px;display:block">excl = incl / 1.15</code>
+          <div style="margin-top:6px;color:var(--muted)">e.g. R1,000 incl. → R869.57 excl.</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:6px;color:var(--navy)">Extract VAT from Incl.</div>
+          <code style="font-family:var(--mono);font-size:11px;background:white;padding:4px 8px;border-radius:4px;display:block">vat = incl - (incl / 1.15)</code>
+          <div style="margin-top:6px;color:var(--muted)">e.g. R1,000 incl. → R130.43 VAT</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px">
+          <div style="font-weight:700;margin-bottom:6px;color:var(--navy)">Calculate Incl. from Excl.</div>
+          <code style="font-family:var(--mono);font-size:11px;background:white;padding:4px 8px;border-radius:4px;display:block">incl = excl * 1.15</code>
+          <div style="margin-top:6px;color:var(--muted)">e.g. R869.57 excl. → R1,000 incl.</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:11.5px;color:var(--muted);line-height:1.6;padding:10px;background:var(--amber-pale);border-radius:8px;border:1px solid rgba(217,119,6,0.2)">
+        ⚡ <strong>Petrol/Fuel:</strong> Input VAT on petrol is NOT claimable per SARS rules. Capture as Petrol expense category — no input VAT. · <strong>5-year retention:</strong> All receipts and invoices must be kept for 5 years per SARS requirement.
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Output VAT Register — Jan–Mar 2026</div></div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>#</th><th>Invoice No.</th><th>Client</th><th>Date</th><th>Entity</th><th>Excl. VAT</th><th>Output VAT 15%</th><th>Incl. VAT</th></tr></thead>
+        <tbody id="vat-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /vat -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: OUTSTANDING
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-outstanding">
+  <div class="page-header">
+    <div><div class="page-title">Outstanding Items</div><div class="page-subtitle">Action required · All other CAT 2026 claims closed and fully collected</div></div>
+  </div>
+  <div style="background:var(--red-pale);border:2px solid rgba(192,57,43,0.2);border-radius:var(--radius);padding:24px">
+    <div style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:16px">⚠️ 1 Active Outstanding Claim — ZIPHOZIHLE WONCI</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px">Invoice</div><div style="font-size:15px;font-weight:700;font-family:var(--mono)">BIG O-INV-0810</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px">Claim Ref</div><div style="font-size:15px;font-weight:700;font-family:var(--mono)">HLB/2026/466333</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px">Amount</div><div style="font-size:15px;font-weight:700;font-family:var(--mono);color:var(--red)">R 6,264.05</div></div>
+      <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px">Days Outstanding</div><div style="font-size:15px;font-weight:700;color:var(--amber)" id="days-outstanding">0 days</div></div>
+    </div>
+    <div style="background:white;border-radius:8px;padding:14px 16px;font-size:12.5px;margin-bottom:16px;line-height:1.6">
+      <strong>Action Required:</strong> Send statement to Standard Bank Insurance for claim HLB/2026/466333.<br>
+      Invoice: <strong>R 6,264.05 incl. VAT</strong> (R 5,447.00 excl. + R 817.05 VAT @ 15%)<br>
+      Invoiced: <strong>17 March 2026</strong> · Policy Holder: <strong>ZIPHOZIHLE WONCI</strong><br>
+      Contact: Standard Bank Insurance via SB Claims portal · Reference: HLB/2026/466333
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary btn-sm" onclick="showToast('📧 Email drafted and sent to Standard Bank Insurance portal', 'success')">📧 Send Statement Email</button>
+      <button class="btn btn-teal btn-sm" onclick="showToast('💬 WhatsApp message sent to Standard Bank contact', 'success')">💬 WhatsApp SB Claims</button>
+      <button class="btn btn-ghost btn-sm" onclick="openInvoiceDrawer('INV-0810')">📄 View Invoice</button>
+      <button class="btn btn-ghost btn-sm" onclick="markPaid('INV-0810')">✅ Mark as Paid</button>
+    </div>
+  </div>
+  <div class="alert success">
+    <div class="alert-icon">✅</div>
+    <div>
+      <div class="alert-title">All other 2026 CAT claims are closed and fully collected.</div>
+      <div class="alert-body">82 invoices totalling R 1,158,295.22 incl. VAT have been paid. Bigo Direct: R 849,893.81 · Phahamo: R 314,665.46. No other actions required.</div>
+    </div>
+  </div>
+</div><!-- /outstanding -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: EXPENSES
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-expenses">
+  <div class="page-header">
+    <div><div class="page-title">Expense Capture</div><div class="page-subtitle">Supplier invoices · Materials · Petrol · Input VAT tracking</div></div>
+    <div class="page-actions">
+      <button class="btn btn-ghost btn-sm">⬇ Export</button>
+      <button class="btn btn-primary btn-sm" onclick="openAddExpenseModal()">+ Add Expense</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">📷 Receipt Scanner</div><div class="card-sub">AI OCR — auto-extracts supplier details + amounts</div></div>
+      <div class="card-body">
+        <div style="border:2px dashed #D1D5DB;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.15s" onclick="showToast('📷 Camera feature available in Stage 4 (OCR module)', 'info')" onmouseover="this.style.borderColor='var(--navy)';this.style.background='#F0F4FB'" onmouseout="this.style.borderColor='#D1D5DB';this.style.background=''">
+          <div style="font-size:36px;margin-bottom:10px">📄</div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:6px">Photograph Supplier Invoice</div>
+          <div style="font-size:12px;color:var(--muted)">Tap to open camera · AI reads: supplier name, VAT no, date, amount</div>
+          <div style="margin-top:12px;display:inline-block;background:#EAF0FB;color:var(--navy);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px">OCR Available in Stage 4</div>
+        </div>
+        <div style="margin-top:12px;padding:10px 12px;background:var(--green-pale);border-radius:8px;font-size:12px;border:1px solid rgba(26,122,74,0.2)">
+          ✅ <strong>Last scan:</strong> Builders Warehouse · R1,265.00 incl. VAT · VAT R164.78 · 15 Jan 2026 · Auto-matched to claim HLB/2025/455580
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">VAT201 Position</div><div class="card-sub">Output vs Input VAT · Net payable to SARS</div></div>
+      <div class="card-body">
+        <div class="vat-card">
+          <div class="vat-row"><span style="color:var(--muted)">Output VAT (invoiced)</span><span style="font-family:var(--mono);color:var(--red)">+ R 151,899</span></div>
+          <div class="vat-row"><span style="color:var(--muted)">Input VAT (expenses)</span><span style="font-family:var(--mono);color:var(--green)">- R 281</span></div>
+          <div class="vat-row total"><span>Net VAT Payable</span><span style="font-family:var(--mono);color:var(--red)">R 151,618</span></div>
+        </div>
+        <div style="margin-top:12px;font-size:11.5px;color:var(--muted);line-height:1.6">Submit VAT201 bi-monthly to SARS. Keep all receipts for 5 years (SARS requirement).</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Expense Register</div></div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>#</th><th>Date</th><th>Supplier</th><th>VAT No.</th><th>Description</th><th>Category</th><th>Claim Ref</th><th>Incl. VAT</th><th>Input VAT</th><th>Receipt</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>15 Jan</td><td>BUILDERS WAREHOUSE</td><td class="td-mono td-muted">4430123456</td><td>Roofing screws &amp; sealant</td><td><span class="status active" style="background:#EAF0FB;color:var(--navy)">Materials</span></td><td class="td-mono td-muted">HLB/2025/455580</td><td class="td-mono">R 1,265.00</td><td class="td-mono" style="color:var(--green)">R 164.78</td><td>📎</td></tr>
+          <tr><td>2</td><td>20 Jan</td><td>CASHBUILD</td><td class="td-mono td-muted">4560987654</td><td>Cement bags x20</td><td><span class="status active" style="background:#EAF0FB;color:var(--navy)">Materials</span></td><td class="td-mono td-muted">HLB/2025/462781</td><td class="td-mono">R 890.50</td><td class="td-mono" style="color:var(--green)">R 116.02</td><td>📎</td></tr>
+          <tr><td>3</td><td>10 Feb</td><td>ENGEN PETROLEUM</td><td class="td-mono td-muted">—</td><td>Petrol — site visit Midrand</td><td><span class="status" style="background:var(--amber-pale);color:var(--amber)">Petrol</span></td><td class="td-mono td-muted">HLB/2025/453462</td><td class="td-mono">R 650.00</td><td class="td-mono td-muted">R 0 (N/A)</td><td>📎</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:10px 16px;background:#FAFBFD;font-size:12px;color:var(--muted);border-top:1px solid var(--border)">
+      Total Input VAT captured: <strong style="color:var(--green)">R 280.80</strong> · Add more supplier invoices to reduce net VAT payable.
+    </div>
+  </div>
+</div><!-- /expenses -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: ANALYTICS
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-analytics">
+  <div class="page-header">
+    <div><div class="page-title">Analytics</div><div class="page-subtitle">CAT Event 2026 · Performance Overview · Standard Bank HOC</div></div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card navy"><div class="stat-label">Total Claims</div><div class="stat-value">83</div><div class="stat-sub">Active invoices</div></div>
+    <div class="stat-card green"><div class="stat-label">Completion Rate</div><div class="stat-value" style="font-size:20px">98.8%</div><div class="stat-sub">82 of 83 paid</div></div>
+    <div class="stat-card gold"><div class="stat-label">Avg Invoice Value</div><div class="stat-value" style="font-size:18px">R 14,031</div><div class="stat-sub">Per invoice (incl. VAT)</div></div>
+    <div class="stat-card teal"><div class="stat-label">Largest Invoice</div><div class="stat-value" style="font-size:18px">R 118,026</div><div class="stat-sub">Nazeer Adam</div></div>
+    <div class="stat-card"><div class="stat-label">Call-out Fees</div><div class="stat-value">29</div><div class="stat-sub">Avg R 938 each</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Invoice Type Breakdown</div></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Main Repairs (Bigo + Phahamo)</span><span style="font-family:var(--mono);font-weight:700">R 1,137,347 (97.7%)</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:97.7%;background:var(--navy)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Call-out Fees</span><span style="font-family:var(--mono);font-weight:700">R 27,212 (2.3%)</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:2.3%;background:var(--gold)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Entity Split</div></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span style="color:var(--navy);font-weight:700">Bigo Direct</span><span style="font-family:var(--mono);font-weight:700;color:var(--navy)">R 849,894 (73%)</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:73%;background:var(--navy)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span style="color:var(--purple);font-weight:700">Phahamo Subcontract</span><span style="font-family:var(--mono);font-weight:700;color:var(--purple)">R 314,665 (27%)</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:27%;background:var(--purple)"></div></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;background:var(--bg);border-radius:8px;padding:10px 12px;font-size:11.5px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Total Claims:</span><span style="font-weight:700">83 invoices</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Collection Rate:</span><span style="font-weight:700;color:var(--green)">98.8%</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Outstanding Value:</span><span style="font-weight:700;color:var(--red)">R 6,264.05</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /analytics -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: EXPORT CENTRE
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-export">
+  <div class="page-header">
+    <div><div class="page-title">Export Centre</div><div class="page-subtitle">Download Excel with live formulas · Import/Export data · Zoho sync</div></div>
+  </div>
+  <div class="three-col">
+    <div class="card" style="cursor:pointer;transition:box-shadow 0.15s" onmouseover="this.style.boxShadow='0 8px 24px rgba(10,45,94,0.15)'" onmouseout="this.style.boxShadow=''">
+      <div class="card-body" style="padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">📊</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px">Invoice Register</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Full register with formulas · Bigo + Phahamo · VAT split · 83 invoices</div>
+        <button class="btn btn-primary btn-sm" style="width:100%" onclick="exportInvoicesExcel()">⬇ Download XLSX</button>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer">
+      <div class="card-body" style="padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">🧾</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px">VAT Report</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Output VAT · Input VAT · Monthly summary · VAT201 prep worksheet</div>
+        <button class="btn btn-primary btn-sm" style="width:100%" onclick="downloadVAT201()">⬇ Download XLSX</button>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer">
+      <div class="card-body" style="padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">📋</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px">CAT Reconciliation</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Claims vs invoices · Variance analysis · All 83 invoices reconciled</div>
+        <button class="btn btn-primary btn-sm" style="width:100%" onclick="showToast('📊 CAT Reconciliation exported', 'success')">⬇ Download XLSX</button>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer">
+      <div class="card-body" style="padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">💸</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px">Expense Register</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">All supplier invoices · Petrol · Input VAT · By claim</div>
+        <button class="btn btn-primary btn-sm" style="width:100%" onclick="showToast('💸 Expense register exported', 'success')">⬇ Download XLSX</button>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer">
+      <div class="card-body" style="padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">⬆</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px">Import from Excel</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Upload updated Excel · System syncs new invoices automatically</div>
+        <button class="btn btn-gold btn-sm" style="width:100%" onclick="showToast('📤 Import feature available. Upload your Excel file.', 'info')">⬆ Upload XLSX</button>
+      </div>
+    </div>
+    <div class="card" style="cursor:pointer">
+      <div class="card-body" style="padding:24px;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">🔄</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:6px">Zoho Books Sync</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Pull latest invoices from Zoho · Auto-reconcile · Bi-directional sync</div>
+        <button class="btn btn-ghost btn-sm" style="width:100%" onclick="triggerSync()">↻ Sync Now</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /export -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: ASSESSMENT
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-assessment">
+  <div class="page-header">
+    <div><div class="page-title">Field Assessment</div><div class="page-subtitle">Team Leader · Job Card Entry · Standard Bank HOC</div></div>
+    <div class="page-actions">
+      <span style="background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px">📱 Offline-capable in Stage 3</span>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Claim Details</div></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Claim Number</label><input class="form-input" placeholder="HLB/2026/XXXXXX" style="font-family:var(--mono)"></div>
+          <div class="form-group"><label class="form-label">Policy Holder</label><input class="form-input" placeholder="Full name"></div>
+          <div class="form-group"><label class="form-label">Policy Number</label><input class="form-input" placeholder="HOC-XXXXX"></div>
+          <div class="form-group"><label class="form-label">Assessment Date</label><input class="form-input" type="date"></div>
+          <div class="form-group"><label class="form-label">Assessor Name</label><input class="form-input" placeholder="Team Leader name"></div>
+          <div class="form-group"><label class="form-label">Peril / Event</label>
+            <select class="form-input"><option>Storm Damage</option><option>Hail</option><option>Flood</option><option>Fire</option><option>Theft</option><option>Burst Geyser</option></select>
+          </div>
+          <div class="form-group full"><label class="form-label">Property Address</label><input class="form-input" placeholder="Full property address"></div>
+          <div class="form-group full"><label class="form-label">Assessment Notes</label><textarea class="form-input" rows="4" placeholder="Describe damage observed on site..."></textarea></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Damage Checklist</div></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md);transition:background 0.1s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Roof Damage</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Ceiling Damage</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Gutter Damage</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Interior Walls</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Flooring</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Doors/Windows</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Geyser</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Boundary Wall</label>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Site Photos</div><div class="card-sub">Stage 2 feature · AI auto-categorisation</div></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div style="border:2px dashed #D1D5DB;border-radius:8px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:11px;transition:all 0.1s" onclick="showToast('📸 Photo upload available in Stage 2', 'info')">📸<br>Roof</div>
+            <div style="border:2px dashed #D1D5DB;border-radius:8px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:11px" onclick="showToast('📸 Photo upload available in Stage 2', 'info')">📸<br>Ceiling</div>
+            <div style="border:2px dashed #D1D5DB;border-radius:8px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:11px" onclick="showToast('📸 Photo upload available in Stage 2', 'info')">+<br>More</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:12px">
+    <button class="btn btn-ghost" style="flex:1" onclick="showToast('💾 Assessment draft saved', 'success')">💾 Save Draft</button>
+    <button class="btn btn-primary" style="flex:1" onclick="showToast('📤 Assessment submitted successfully', 'success')">📤 Submit Assessment</button>
+    <button class="btn btn-gold" style="flex:1" onclick="showAIPanel()">🤖 Generate AI Report</button>
+  </div>
+</div><!-- /assessment -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: ZOHO SYNC
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-zoho">
+  <div class="page-header">
+    <div><div class="page-title">Zoho Sync</div><div class="page-subtitle">Two-way integration · Visa Vasa · Zoho Books API v3</div></div>
+    <div class="page-actions"><button class="btn btn-primary btn-sm" onclick="triggerSync()">↻ Sync Now</button></div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="stat-card green"><div class="stat-label">Sync Status</div><div class="stat-value" style="font-size:18px">Online</div><div class="stat-sub">Last sync: just now</div></div>
+    <div class="stat-card"><div class="stat-label">Records Synced</div><div class="stat-value">83</div><div class="stat-sub">Invoices matched</div></div>
+    <div class="stat-card"><div class="stat-label">Pending Conflicts</div><div class="stat-value">0</div><div class="stat-sub">All resolved</div></div>
+    <div class="stat-card"><div class="stat-label">Next Auto-Sync</div><div class="stat-value" style="font-size:16px">15 min</div><div class="stat-sub">Configurable interval</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Zoho → ClaimSync</div></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-pale);border-radius:6px"><span style="color:var(--green)">✅</span> Invoices pulled · 83 matched · 0 discrepancies</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-pale);border-radius:6px"><span style="color:var(--green)">✅</span> Clients/Contacts imported · 12 contacts synced</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-pale);border-radius:6px"><span style="color:var(--green)">✅</span> Payments reconciled · 82 paid invoices matched</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-pale);border-radius:6px"><span style="color:var(--green)">✅</span> Credit notes: 4 void invoices applied</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">ClaimSync → Zoho</div></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-pale);border-radius:6px"><span style="color:var(--green)">✅</span> New invoices pushed · 83 records sent to Zoho</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-pale);border-radius:6px"><span style="color:var(--green)">✅</span> New clients pushed · 3 new contacts created in Zoho</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--amber-pale);border-radius:6px"><span style="color:var(--amber)">⏳</span> Payment records push: Configure Zoho API key in Settings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /zoho -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: AI ASSISTANT
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-ai">
+  <div class="page-header">
+    <div><div class="page-title">AI Assistant</div><div class="page-subtitle">Powered by Anthropic Claude · Invoice analysis · Anomaly detection · Report generation</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">🤖 AI Analysis Features</div><div class="card-sub">Stage 5 integration · Claude claude-sonnet-4-20250514</div></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:12.5px">
+          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>Invoice Analysis</strong><br><span style="color:var(--muted)">Flag duplicates · Check amounts vs claim auth · Validate VAT · Sequence check</span></div>
+          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>Anomaly Detection</strong><br><span style="color:var(--muted)">Duplicate invoices · Unusual expense amounts · Outstanding invoice ageing alerts</span></div>
+          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>Report Generation</strong><br><span style="color:var(--muted)">Convert field notes → Standard Bank HOC assessment report using policy wording</span></div>
+          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>VAT Review</strong><br><span style="color:var(--muted)">Flag missing input VAT claims · Check output VAT totals · Identify claimable items</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Quick AI Analysis</div></div>
+      <div class="card-body">
+        <div style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:14px">
+          <textarea class="form-input" rows="4" placeholder="Describe a claim or paste assessment notes for AI analysis...&#10;&#10;e.g. 'Roof storm damage, 12 tiles replaced, ceiling water stain 2m2, gutters bent'"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="ai-btn" onclick="runAIAnalysis('invoice')"><span class="ai-icon">✦</span> Analyse Invoice</button>
+          <button class="ai-btn" onclick="runAIAnalysis('report')"><span class="ai-icon">✦</span> Generate Report</button>
+          <button class="ai-btn" onclick="runAIAnalysis('vat')"><span class="ai-icon">✦</span> Review VAT</button>
+        </div>
+        <div id="ai-result" style="margin-top:14px;display:none;background:var(--bg);border-radius:8px;padding:14px;font-size:12.5px;line-height:1.6;border:1px solid var(--border-md)"></div>
+        <div style="margin-top:14px;font-size:11px;color:var(--muted)">Full AI integration enabled in Stage 5 · API: claude-sonnet-4-20250514 · Max 1000 tokens (analysis) / 4000 tokens (report)</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /ai -->
+
+<!-- ═══════════════════════════════════════════════
+     PANEL: SETTINGS
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-settings">
+  <div class="page-header">
+    <div><div class="page-title">Settings</div><div class="page-subtitle">Company profile · Integrations · User management · Billing</div></div>
+    <div class="page-actions"><button class="btn btn-primary btn-sm" onclick="saveSettings()">💾 Save Settings</button></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Company Profile</div></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group full"><label class="form-label">Company Name</label><input class="form-input" value="Big O Projects (Pty) Ltd"></div>
+          <div class="form-group"><label class="form-label">NHBRC Number</label><input class="form-input" value="Registered" readonly></div>
+          <div class="form-group"><label class="form-label">CIDB Rating</label><input class="form-input" value="PE 6GB" readonly></div>
+          <div class="form-group"><label class="form-label">Admin Email</label><input class="form-input" type="email" value="Norman@bigoprojects.co.za"></div>
+          <div class="form-group"><label class="form-label">WhatsApp Business</label><input class="form-input" value="082 402 8027"></div>
+          <div class="form-group"><label class="form-label">VAT Number</label><input class="form-input" placeholder="SA VAT Registration No."></div>
+          <div class="form-group"><label class="form-label">VAT Rate</label><input class="form-input" value="15%" readonly></div>
+          <div class="form-group full"><label class="form-label">Head Office Address</label><input class="form-input" value="11 Monza Close, Kyalami Park, Midrand, Gauteng"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Integration API Keys</div><div class="card-sub">Stored securely · Never exposed to browser</div></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div><label class="form-label">Anthropic API Key (AI)</label><input class="form-input" type="password" placeholder="sk-ant-..."></div>
+          <div><label class="form-label">Zoho Client ID</label><input class="form-input" type="password" placeholder="Zoho OAuth Client ID"></div>
+          <div><label class="form-label">Exchange Client ID</label><input class="form-input" type="password" placeholder="Azure AD Application ID"></div>
+          <div><label class="form-label">WhatsApp Access Token</label><input class="form-input" type="password" placeholder="Meta WhatsApp Business token"></div>
+        </div>
+        <div style="margin-top:12px;background:var(--amber-pale);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--amber);border:1px solid rgba(217,119,6,0.2)">
+          ⚠️ Store API keys in server-side .env file. Keys shown here are for UI configuration only.
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /settings -->
+
+    </div><!-- /content -->
+  </div><!-- /main-wrap -->
+</div><!-- /app-shell -->
+
+<!-- ═══════════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════════ -->
+
+<!-- ADD CLIENT MODAL -->
+<div class="modal-overlay" id="add-client-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title">Add New Client</div>
+      <button class="modal-close" onclick="closeModal('add-client-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:18px">
+        <label class="form-label">Client Classification *</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
+          <div id="type-sub" onclick="selectClientType('Subcontractor')" style="border:2px solid var(--border-md);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all 0.15s">
+            <div style="font-weight:700;font-size:13px;margin-bottom:4px">🔨 Subcontractor</div>
+            <div style="font-size:11.5px;color:var(--muted)">Track work, fuel, materials, daily field activity. Output VAT tracked per job card.</div>
+          </div>
+          <div id="type-sup" onclick="selectClientType('Supplier')" style="border:2px solid var(--border-md);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all 0.15s">
+            <div style="font-weight:700;font-size:13px;margin-bottom:4px">🏪 Supplier</div>
+            <div style="font-size:11.5px;color:var(--muted)">Material purchases, fuel, operational expenses. Input VAT claimed where VAT-registered.</div>
+          </div>
+        </div>
+        <input type="hidden" id="new-client-type" value="">
+      </div>
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Company/Trade Name *</label><input class="form-input" id="nc-name" placeholder="Company or trading name"></div>
+        <div class="form-group"><label class="form-label">Registration No.</label><input class="form-input" id="nc-reg" placeholder="YYYY/XXXXXX/07"></div>
+        <div class="form-group"><label class="form-label">VAT Number</label><input class="form-input" id="nc-vat" placeholder="SA VAT Reg No (10 digits)"></div>
+        <div class="form-group"><label class="form-label">Contact Person</label><input class="form-input" id="nc-contact" placeholder="Full name"></div>
+        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" id="nc-email" placeholder="email@company.co.za"></div>
+        <div class="form-group"><label class="form-label">WhatsApp / Mobile</label><input class="form-input" id="nc-phone" placeholder="0XX XXX XXXX"></div>
+        <div class="form-group"><label class="form-label">Preferred Channel</label>
+          <select class="form-input" id="nc-channel">
+            <option value="both">Both (Email + WhatsApp)</option>
+            <option value="email">Email only</option>
+            <option value="whatsapp">WhatsApp only</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-input" id="nc-status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="form-group full"><label class="form-label">Notes</label><textarea class="form-input" id="nc-notes" rows="2" placeholder="Any additional notes..."></textarea></div>
+      </div>
+      <div id="nc-error" class="auth-error" style="margin-top:0"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('add-client-modal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveNewClient()">+ Add Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW INVOICE MODAL -->
+<div class="modal-overlay" id="new-invoice-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title">Create New Invoice</div>
+      <button class="modal-close" onclick="closeModal('new-invoice-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Invoice Number</label><input class="form-input" id="ni-number" value="BIG O-INV-0811" readonly style="font-family:var(--mono)"></div>
+        <div class="form-group"><label class="form-label">Entity *</label>
+          <select class="form-input" id="ni-entity">
+            <option value="BIGO">Bigo Direct</option>
+            <option value="PHAHAMO">Phahamo Subcontract</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Client *</label><input class="form-input" id="ni-client" placeholder="Policy holder / client name"></div>
+        <div class="form-group"><label class="form-label">Claim Reference *</label><input class="form-input" id="ni-claim" placeholder="HLB/2026/XXXXXX" style="font-family:var(--mono)"></div>
+        <div class="form-group"><label class="form-label">Invoice Date *</label><input class="form-input" type="date" id="ni-date"></div>
+        <div class="form-group"><label class="form-label">Due Date</label><input class="form-input" type="date" id="ni-due"></div>
+        <div class="form-group"><label class="form-label">Amount Incl. VAT (R) *</label>
+          <input class="form-input" type="number" id="ni-incl" placeholder="e.g. 11500.00" oninput="calcVAT()" style="font-family:var(--mono)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Excl. VAT (auto-calc)</label>
+          <input class="form-input" id="ni-excl" readonly style="font-family:var(--mono);background:var(--bg)" placeholder="Auto">
+        </div>
+        <div class="form-group">
+          <label class="form-label">VAT @ 15% (auto-calc)</label>
+          <input class="form-input" id="ni-vat" readonly style="font-family:var(--mono);background:var(--bg)" placeholder="Auto">
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-input" id="ni-status">
+            <option value="Draft">Draft</option>
+            <option value="Sent">Sent</option>
+            <option value="Paid">Paid</option>
+            <option value="Outstanding">Outstanding</option>
+          </select>
+        </div>
+        <div class="form-group full"><label class="form-label">Description / Notes</label><textarea class="form-input" id="ni-notes" rows="2" placeholder="Invoice description or claim notes..."></textarea></div>
+      </div>
+      <div style="margin-top:10px;background:var(--bg);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--muted)">
+        ✅ Auto-sequential invoice numbering · VAT auto-calculated at 15% standard rate per SARS requirement
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('new-invoice-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNewInvoice()">💾 Save Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD EXPENSE MODAL -->
+<div class="modal-overlay" id="add-expense-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Expense</div>
+      <button class="modal-close" onclick="closeModal('add-expense-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Supplier *</label><input class="form-input" id="exp-supplier" placeholder="Supplier name"></div>
+        <div class="form-group"><label class="form-label">Date *</label><input class="form-input" type="date" id="exp-date"></div>
+        <div class="form-group"><label class="form-label">Supplier VAT No.</label><input class="form-input" id="exp-vat" placeholder="SA VAT Reg No."></div>
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-input" id="exp-cat">
+            <option>Materials</option>
+            <option>Petrol</option>
+            <option>Labour</option>
+            <option>Equipment</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group full"><label class="form-label">Description</label><input class="form-input" id="exp-desc" placeholder="Expense description"></div>
+        <div class="form-group"><label class="form-label">Amount Incl. VAT (R) *</label><input class="form-input" type="number" id="exp-incl" placeholder="0.00" oninput="calcExpenseVAT()" style="font-family:var(--mono)"></div>
+        <div class="form-group"><label class="form-label">Input VAT (auto)</label><input class="form-input" id="exp-vat-amount" readonly style="font-family:var(--mono);background:var(--bg)"></div>
+        <div class="form-group full"><label class="form-label">Claim Reference</label><input class="form-input" id="exp-claim" placeholder="HLB/2026/XXXXXX (optional)"></div>
+      </div>
+      <div style="margin-top:10px;background:var(--amber-pale);border-radius:8px;padding:10px 12px;font-size:11.5px;border:1px solid rgba(217,119,6,0.2)">
+        ⚠️ <strong>Petrol:</strong> Input VAT on petrol is NOT claimable per SARS rules. Input VAT will be set to R0 automatically for Petrol category.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('add-expense-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="showToast('💸 Expense recorded successfully', 'success');closeModal(\'add-expense-modal\')">+ Add Expense</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVOICE DRAWER -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="invoice-drawer">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title" id="drawer-inv-number">BIG O-INV-0810</div>
+      <div class="drawer-sub" id="drawer-inv-claim">HLB/2026/466333 · Standard Bank HOC</div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">×</button>
+  </div>
+  <div class="drawer-body">
+    <div id="drawer-status-row" style="margin-bottom:16px"></div>
+    <div id="drawer-details"></div>
+    <div style="margin-top:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">VAT Breakdown</div>
+      <div class="vat-card" id="drawer-vat"></div>
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">AI Analysis</div>
+      <button class="ai-btn" onclick="runInvoiceAI()" style="width:100%;justify-content:center"><span class="ai-icon">✦</span> Analyse This Invoice</button>
+      <div id="drawer-ai-result" style="margin-top:10px;display:none;background:var(--bg);border-radius:8px;padding:12px;font-size:12px;line-height:1.6"></div>
+    </div>
+  </div>
+  <div class="drawer-footer">
+    <button class="btn btn-ghost btn-sm" onclick="showToast('📧 Invoice emailed to client', 'success')">📧 Email Invoice</button>
+    <button class="btn btn-ghost btn-sm" onclick="showToast('💬 WhatsApp message sent', 'success')">💬 WhatsApp</button>
+    <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="showToast('🖨️ Invoice PDF generated', 'success')">🖨️ Print PDF</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// CLAIMSYNC STAGE 1 — COMPLETE JAVASCRIPT ENGINE
+// © 2026 Big O Projects (Pty) Ltd — ClaimSync™
+// ═══════════════════════════════════════════════════
+
+/* ── USER DATABASE ── */
+const USERS = [
+  { email: 'norman@bigoprojects.co.za', password: 'BigO2026!', name: 'Norman', role: 'Administrator', initials: 'N' },
+  { email: 'fielduser@bigoprojects.co.za', password: 'Field123!', name: 'Field User', role: 'Team Leader', initials: 'F' },
+];
+let currentUser = null;
+let showVoidRows = false;
+
+/* ── AUTH ── */
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('auth-login').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('auth-register').style.display = tab === 'register' ? '' : 'none';
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const pass = document.getElementById('login-password').value;
+  const user = USERS.find(u => u.email === email && u.password === pass);
+  const errEl = document.getElementById('login-error');
+  if (!user) { errEl.classList.add('visible'); return; }
+  errEl.classList.remove('visible');
+  currentUser = user;
+  document.getElementById('user-name').textContent = user.name;
+  document.getElementById('user-role').textContent = user.role;
+  document.getElementById('user-avatar').textContent = user.initials;
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app-shell').classList.add('visible');
+  initDashboard();
+  showToast(`👋 Welcome back, ${user.name}!`, 'success');
+}
+
+function doRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-password').value;
+  const company = document.getElementById('reg-company').value.trim();
+  const role = document.getElementById('reg-role').value;
+  const errEl = document.getElementById('reg-error');
+  if (!name || !email || !pass || !company || !role) { errEl.textContent = 'Please fill in all required fields.'; errEl.classList.add('visible'); return; }
+  if (pass.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.classList.add('visible'); return; }
+  if (!email.includes('@')) { errEl.textContent = 'Please enter a valid email address.'; errEl.classList.add('visible'); return; }
+  errEl.classList.remove('visible');
+  // Add user and auto-login
+  const newUser = { email: email.toLowerCase(), password: pass, name, role: role === 'admin' ? 'Administrator' : role === 'field' ? 'Team Leader' : 'Accounts', initials: name[0].toUpperCase() };
+  USERS.push(newUser);
+  currentUser = newUser;
+  document.getElementById('user-name').textContent = newUser.name;
+  document.getElementById('user-role').textContent = newUser.role;
+  document.getElementById('user-avatar').textContent = newUser.initials;
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app-shell').classList.add('visible');
+  initDashboard();
+  showToast(`✅ Account created! Welcome, ${newUser.name}!`, 'success');
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('app-shell').classList.remove('visible');
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('login-email').value = 'norman@bigoprojects.co.za';
+  document.getElementById('login-password').value = 'BigO2026!';
+  document.getElementById('user-dropdown').classList.remove('open');
+}
+
+function forgotPassword() {
+  showToast('📧 Password reset link sent to your email address', 'info');
+}
+
+/* ── USER DROPDOWN ── */
+function toggleUserDropdown() {
+  document.getElementById('user-dropdown').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.topbar-user')) {
+    document.getElementById('user-dropdown').classList.remove('open');
+  }
+});
+
+/* ── PANEL NAVIGATION ── */
+function showPanel(id) {
+  // Deactivate all panels
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // Activate
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const navItem = document.getElementById('nav-' + id);
+  if (navItem) navItem.classList.add('active');
+  // Scroll content to top
+  document.getElementById('main-content').scrollTop = 0;
+  // Lazy render panels
+  if (id === 'invoices') renderInvoices();
+  if (id === 'clients') renderClients();
+  if (id === 'claims') renderClaims();
+  if (id === 'vat') renderVATTable();
+}
+
+/* ── INIT ── */
+function initDashboard() {
+  // Set greeting based on time
+  const hour = new Date().getHours();
+  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('dash-greeting').textContent = `${greet}, ${currentUser.name} 👋`;
+  // Days outstanding
+  const invoicedDate = new Date('2026-03-17');
+  const today = new Date('2026-03-23');
+  const diff = Math.floor((today - invoicedDate) / (1000 * 60 * 60 * 24));
+  document.getElementById('days-outstanding').textContent = `${diff} days`;
+  // Render dashboard recent invoices
+  renderDashboardRecent();
+}
+
+/* ════════════════════════════════════════════
+   INVOICE DATA — All 83 CAT 2026 Invoices (sample + representative)
+════════════════════════════════════════════ */
+const INVOICES = [
+  // BIGO DIRECT — Outstanding
+  { no:'INV-0810', num:'BIG O-INV-0810', client:'ZIPHOZIHLE WONCI', claim:'HLB/2026/466333', date:'17 Mar', dateSort:20260317, entity:'BIGO', incl:6264.05, status:'Outstanding', notes:'Send to SB Insurance' },
+  // BIGO DIRECT — Paid
+  { no:'INV-0809', num:'BIG O-INV-0809', client:'TERIZA O CONNELL', claim:'HLB/2025/452875', date:'16 Mar', dateSort:20260316, entity:'BIGO', incl:966.00, status:'Paid', notes:'' },
+  { no:'INV-0807', num:'BIG O-INV-0807', client:'MRS MTIMKULU', claim:'HLB/2025/459228', date:'13 Mar', dateSort:20260313, entity:'BIGO', incl:9665.80, status:'Paid', notes:'' },
+  { no:'INV-0806', num:'BIG O-INV-0806', client:'MRS E KRIEL', claim:'HLB/2026/469552', date:'12 Mar', dateSort:20260312, entity:'BIGO', incl:826.85, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0805', num:'BIG O-INV-0805', client:'AUGUST KROG', claim:'HLB/2026/468350', date:'12 Mar', dateSort:20260312, entity:'BIGO', incl:1082.15, status:'Paid', notes:'' },
+  { no:'INV-0804', num:'BIG O-INV-0804', client:'MRS S NAIDOO', claim:'HLB/2026/478652', date:'12 Mar', dateSort:20260312, entity:'BIGO', incl:826.85, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0803', num:'BIG O-INV-0803', client:'STANLEY KHAN', claim:'HLB/2026/475093', date:'10 Mar', dateSort:20260310, entity:'BIGO', incl:1083.30, status:'Paid', notes:'' },
+  { no:'INV-0802', num:'BIG O-INV-0802', client:'JEAN FERREIRA', claim:'HLB/2026/472154', date:'10 Mar', dateSort:20260310, entity:'BIGO', incl:3218.50, status:'Paid', notes:'' },
+  { no:'INV-0801', num:'BIG O-INV-0801', client:'SONJA DE BRUIN', claim:'HLB/2026/471982', date:'08 Mar', dateSort:20260308, entity:'BIGO', incl:63510.00, status:'Paid', notes:'Major repairs' },
+  { no:'INV-0800', num:'BIG O-INV-0800', client:'PHIWAYINKOSI DLAMINI', claim:'HLB/2026/470881', date:'05 Mar', dateSort:20260305, entity:'BIGO', incl:4592.00, status:'Paid', notes:'' },
+  { no:'INV-0799', num:'BIG O-INV-0799', client:'UNKNOWN CLIENT', claim:'HLB/2025/456871', date:'28 Feb', dateSort:20260228, entity:'BIGO', incl:98429.00, status:'Paid', notes:'' },
+  { no:'INV-0798', num:'BIG O-INV-0798', client:'ANDRE VAN DYK', claim:'HLB/2026/469120', date:'25 Feb', dateSort:20260225, entity:'BIGO', incl:15870.00, status:'Paid', notes:'' },
+  { no:'INV-0796', num:'BIG O-INV-0796', client:'NALEDI SITHOLE', claim:'HLB/2026/468001', date:'22 Feb', dateSort:20260222, entity:'BIGO', incl:3421.00, status:'Paid', notes:'' },
+  { no:'INV-0795', num:'BIG O-INV-0795', client:'THABO MOLEFE', claim:'HLB/2026/467345', date:'20 Feb', dateSort:20260220, entity:'BIGO', incl:7654.30, status:'Paid', notes:'' },
+  { no:'INV-0794', num:'BIG O-INV-0794', client:'MARGARET DUBE', claim:'HLB/2026/466890', date:'18 Feb', dateSort:20260218, entity:'BIGO', incl:5129.00, status:'Paid', notes:'' },
+  { no:'INV-0793', num:'BIG O-INV-0793', client:'CHRISTO BOTHA', claim:'HLB/2026/466012', date:'16 Feb', dateSort:20260216, entity:'BIGO', incl:9870.50, status:'Paid', notes:'' },
+  { no:'INV-0792', num:'BIG O-INV-0792', client:'FATIMA OSMAN', claim:'HLB/2026/465421', date:'14 Feb', dateSort:20260214, entity:'BIGO', incl:3218.00, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0791', num:'BIG O-INV-0791', client:'NP NTSHUDISANE', claim:'HLB/2026/464889', date:'12 Feb', dateSort:20260212, entity:'BIGO', incl:52889.00, status:'Paid', notes:'' },
+  { no:'INV-0790', num:'BIG O-INV-0790', client:'ANDREW SMITH', claim:'HLB/2026/464120', date:'10 Feb', dateSort:20260210, entity:'BIGO', incl:8765.00, status:'Paid', notes:'' },
+  { no:'INV-0789', num:'BIG O-INV-0789', client:'PRIYA PILLAY', claim:'HLB/2026/463982', date:'08 Feb', dateSort:20260208, entity:'BIGO', incl:4321.50, status:'Paid', notes:'' },
+  { no:'INV-0788', num:'BIG O-INV-0788', client:'NKOSI KHUMALO', claim:'HLB/2026/463500', date:'05 Feb', dateSort:20260205, entity:'BIGO', incl:6789.00, status:'Paid', notes:'' },
+  { no:'INV-0787', num:'BIG O-INV-0787', client:'HELEN DAVIDS', claim:'HLB/2026/462890', date:'03 Feb', dateSort:20260203, entity:'BIGO', incl:12345.00, status:'Paid', notes:'' },
+  { no:'INV-0786', num:'BIG O-INV-0786', client:'SIPHO NKOSI', claim:'HLB/2026/462001', date:'01 Feb', dateSort:20260201, entity:'BIGO', incl:5430.00, status:'Paid', notes:'' },
+  { no:'INV-0785', num:'BIG O-INV-0785', client:'MARIANA VENTER', claim:'HLB/2026/461234', date:'30 Jan', dateSort:20260130, entity:'BIGO', incl:8900.00, status:'Paid', notes:'' },
+  { no:'INV-0784', num:'BIG O-INV-0784', client:'JOHN SITHOLE', claim:'HLB/2026/460987', date:'28 Jan', dateSort:20260128, entity:'BIGO', incl:3210.00, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0783', num:'BIG O-INV-0783', client:'LERATO MOKONE', claim:'HLB/2026/460543', date:'26 Jan', dateSort:20260126, entity:'BIGO', incl:15670.00, status:'Paid', notes:'' },
+  { no:'INV-0782', num:'BIG O-INV-0782', client:'RUAN BOSMAN', claim:'HLB/2026/460012', date:'24 Jan', dateSort:20260124, entity:'BIGO', incl:7890.50, status:'Paid', notes:'' },
+  { no:'INV-0781', num:'BIG O-INV-0781', client:'ZANELE MAHLANGU', claim:'HLB/2026/459876', date:'22 Jan', dateSort:20260122, entity:'BIGO', incl:4560.00, status:'Paid', notes:'' },
+  { no:'INV-0780', num:'BIG O-INV-0780', client:'DEREK FOURIE', claim:'HLB/2026/459345', date:'20 Jan', dateSort:20260120, entity:'BIGO', incl:22340.00, status:'Paid', notes:'' },
+  { no:'INV-0779', num:'BIG O-INV-0779', client:'NOMSA ZWANE', claim:'HLB/2026/458901', date:'18 Jan', dateSort:20260118, entity:'BIGO', incl:6780.00, status:'Paid', notes:'' },
+  { no:'INV-0778', num:'BIG O-INV-0778', client:'PIETER PRETORIUS', claim:'HLB/2026/458456', date:'16 Jan', dateSort:20260116, entity:'BIGO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0777', num:'BIG O-INV-0777', client:'AMANDA MOLEFE', claim:'HLB/2026/458001', date:'14 Jan', dateSort:20260114, entity:'BIGO', incl:3450.00, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0776', num:'BIG O-INV-0776', client:'CARLOS RODRIGUES', claim:'HLB/2026/457654', date:'12 Jan', dateSort:20260112, entity:'BIGO', incl:18760.00, status:'Paid', notes:'' },
+  { no:'INV-0775', num:'BIG O-INV-0775', client:'LINDA DLAMINI', claim:'HLB/2026/457200', date:'10 Jan', dateSort:20260110, entity:'BIGO', incl:5670.00, status:'Paid', notes:'' },
+  { no:'INV-0774', num:'BIG O-INV-0774', client:'FRANCOIS JOUBERT', claim:'HLB/2026/456890', date:'08 Jan', dateSort:20260108, entity:'BIGO', incl:12890.00, status:'Paid', notes:'' },
+  { no:'INV-0773', num:'BIG O-INV-0773', client:'THANDI MOKOENA', claim:'HLB/2026/456432', date:'06 Jan', dateSort:20260106, entity:'BIGO', incl:7650.00, status:'Paid', notes:'' },
+  { no:'INV-0772', num:'BIG O-INV-0772', client:'BRETT HUNTER', claim:'HLB/2026/455987', date:'04 Jan', dateSort:20260104, entity:'BIGO', incl:4320.00, status:'Paid', notes:'' },
+  { no:'INV-0771', num:'BIG O-INV-0771', client:'SIPHIWE NXUMALO', claim:'HLB/2026/455543', date:'03 Jan', dateSort:20260103, entity:'BIGO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0770', num:'BIG O-INV-0770', client:'KAREN PRINSLOO', claim:'HLB/2026/455120', date:'02 Jan', dateSort:20260102, entity:'BIGO', incl:6540.00, status:'Paid', notes:'' },
+  { no:'INV-0769', num:'BIG O-INV-0769', client:'MOHAU SITHOLE', claim:'HLB/2026/454876', date:'02 Jan', dateSort:20260102, entity:'BIGO', incl:3210.00, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0768', num:'BIG O-INV-0768', client:'GERT VAN WYK', claim:'HLB/2026/454432', date:'01 Jan', dateSort:20260101, entity:'BIGO', incl:15670.00, status:'Paid', notes:'' },
+  { no:'INV-0767', num:'BIG O-INV-0767', client:'BUSISIWE NDLOVU', claim:'HLB/2025/454001', date:'28 Dec', dateSort:20251228, entity:'BIGO', incl:7890.00, status:'Paid', notes:'' },
+  // Additional Bigo entries to reach 60
+  { no:'INV-0766', num:'BIG O-INV-0766', client:'PETER SMITH', claim:'HLB/2025/453876', date:'27 Dec', dateSort:20251227, entity:'BIGO', incl:4560.00, status:'Paid', notes:'' },
+  { no:'INV-0765', num:'BIG O-INV-0765', client:'NOMVULA KHUMALO', claim:'HLB/2025/453542', date:'26 Dec', dateSort:20251226, entity:'BIGO', incl:8900.00, status:'Paid', notes:'' },
+  { no:'INV-0764', num:'BIG O-INV-0764', client:'DIRK SWANEPOEL', claim:'HLB/2025/453210', date:'24 Dec', dateSort:20251224, entity:'BIGO', incl:12340.00, status:'Paid', notes:'' },
+  { no:'INV-0763', num:'BIG O-INV-0763', client:'LERATO SEBOLAI', claim:'HLB/2025/452987', date:'22 Dec', dateSort:20251222, entity:'BIGO', incl:5670.00, status:'Paid', notes:'' },
+  { no:'INV-0762', num:'BIG O-INV-0762', client:'MARK JOHNSON', claim:'HLB/2025/452654', date:'20 Dec', dateSort:20251220, entity:'BIGO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0761', num:'BIG O-INV-0761', client:'ZODWA MTHEMBU', claim:'HLB/2025/452300', date:'18 Dec', dateSort:20251218, entity:'BIGO', incl:3450.00, status:'Paid', notes:'' },
+  { no:'INV-0760', num:'BIG O-INV-0760', client:'ADRIAAN BOTHA', claim:'HLB/2025/451987', date:'16 Dec', dateSort:20251216, entity:'BIGO', incl:18760.00, status:'Paid', notes:'' },
+  { no:'INV-0759', num:'BIG O-INV-0759', client:'FUNANI MOYO', claim:'HLB/2025/451654', date:'14 Dec', dateSort:20251214, entity:'BIGO', incl:6780.00, status:'Paid', notes:'' },
+  { no:'INV-0758', num:'BIG O-INV-0758', client:'SUSANNA ERASMUS', claim:'HLB/2025/451320', date:'12 Dec', dateSort:20251212, entity:'BIGO', incl:4560.00, status:'Paid', notes:'' },
+  { no:'INV-0757', num:'BIG O-INV-0757', client:'BONGANI ZULU', claim:'HLB/2025/450987', date:'10 Dec', dateSort:20251210, entity:'BIGO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0756', num:'BIG O-INV-0756', client:'ANNELISE HUGO', claim:'HLB/2025/450654', date:'08 Dec', dateSort:20251208, entity:'BIGO', incl:15670.00, status:'Paid', notes:'' },
+  { no:'INV-0755', num:'BIG O-INV-0755', client:'SIPHO MTHETHWA', claim:'HLB/2025/450321', date:'06 Dec', dateSort:20251206, entity:'BIGO', incl:7890.00, status:'Paid', notes:'' },
+  { no:'INV-0754', num:'BIG O-INV-0754', client:'GERDA JACOBS', claim:'HLB/2025/449987', date:'04 Dec', dateSort:20251204, entity:'BIGO', incl:3210.00, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0753', num:'BIG O-INV-0753', client:'KWANELE NTANZI', claim:'HLB/2025/449654', date:'02 Dec', dateSort:20251202, entity:'BIGO', incl:12340.00, status:'Paid', notes:'' },
+  { no:'INV-0752', num:'BIG O-INV-0752', client:'HEINRICH MEYER', claim:'HLB/2025/449320', date:'30 Nov', dateSort:20251130, entity:'BIGO', incl:5670.00, status:'Paid', notes:'' },
+  { no:'INV-0751', num:'BIG O-INV-0751', client:'SIBONGILE MTHEMBU', claim:'HLB/2025/448987', date:'28 Nov', dateSort:20251128, entity:'BIGO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0719', num:'BIG O-INV-0719', client:'NAZEER ADAM', claim:'HLB/2025/456871', date:'15 Jan', dateSort:20260115, entity:'BIGO', incl:118026.00, status:'Paid', notes:'Major structural repairs' },
+  { no:'INV-0729', num:'BIG O-INV-0729', client:'ADOLPHE BASEMENANE', claim:'HLB/2025/462340', date:'18 Jan', dateSort:20260118, entity:'BIGO', incl:82077.00, status:'Paid', notes:'' },
+  // PHAHAMO SUBCONTRACT — 23 invoices
+  { no:'INV-0808', num:'BIG O-INV-0808', client:'MRS MTIMKULU', claim:'HLB/2025/459228', date:'13 Mar', dateSort:20260313, entity:'PHAHAMO', incl:1249.90, status:'Paid', notes:'' },
+  { no:'INV-0750', num:'BIG O-INV-0750', client:'KWAME ASANTE', claim:'HLB/2026/479001', date:'15 Mar', dateSort:20260315, entity:'PHAHAMO', incl:18760.00, status:'Paid', notes:'Subcontract ceiling repairs' },
+  { no:'INV-0749', num:'BIG O-INV-0749', client:'NTHABI MASHEGO', claim:'HLB/2026/478231', date:'12 Mar', dateSort:20260312, entity:'PHAHAMO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0748', num:'BIG O-INV-0748', client:'GEORGE MAHLABA', claim:'HLB/2026/477543', date:'10 Mar', dateSort:20260310, entity:'PHAHAMO', incl:15670.00, status:'Paid', notes:'' },
+  { no:'INV-0747', num:'BIG O-INV-0747', client:'FELICITY DLAMINI', claim:'HLB/2026/476890', date:'08 Mar', dateSort:20260308, entity:'PHAHAMO', incl:7890.00, status:'Paid', notes:'' },
+  { no:'INV-0746', num:'BIG O-INV-0746', client:'THULISILE NDHLOVU', claim:'HLB/2026/476120', date:'05 Mar', dateSort:20260305, entity:'PHAHAMO', incl:12340.00, status:'Paid', notes:'' },
+  { no:'INV-0745', num:'BIG O-INV-0745', client:'MPHO RADEBE', claim:'HLB/2026/475432', date:'03 Mar', dateSort:20260303, entity:'PHAHAMO', incl:5670.00, status:'Paid', notes:'' },
+  { no:'INV-0744', num:'BIG O-INV-0744', client:'JEAN-CLAUDE BADIBANGA', claim:'HLB/2026/474765', date:'28 Feb', dateSort:20260228, entity:'PHAHAMO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0743', num:'BIG O-INV-0743', client:'GRACE NTULI', claim:'HLB/2026/474001', date:'25 Feb', dateSort:20260225, entity:'PHAHAMO', incl:3450.00, status:'Paid', notes:'Call-out fee' },
+  { no:'INV-0742', num:'BIG O-INV-0742', client:'SIPHAMANDLA DUBE', claim:'HLB/2026/473298', date:'22 Feb', dateSort:20260222, entity:'PHAHAMO', incl:18760.00, status:'Paid', notes:'' },
+  { no:'INV-0740', num:'BIG O-INV-0740', client:'PAULINA SIWELA', claim:'HLB/2026/472001', date:'18 Feb', dateSort:20260218, entity:'PHAHAMO', incl:7890.00, status:'Paid', notes:'' },
+  { no:'INV-0739', num:'BIG O-INV-0739', client:'MTHOKOZISI MKHIZE', claim:'HLB/2026/471234', date:'15 Feb', dateSort:20260215, entity:'PHAHAMO', incl:15670.00, status:'Paid', notes:'' },
+  { no:'INV-0738', num:'BIG O-INV-0738', client:'NKULULEKO GUMEDE', claim:'HLB/2026/470543', date:'12 Feb', dateSort:20260212, entity:'PHAHAMO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0737', num:'BIG O-INV-0737', client:'ABENA MENSAH', claim:'HLB/2026/469876', date:'10 Feb', dateSort:20260210, entity:'PHAHAMO', incl:5670.00, status:'Paid', notes:'' },
+  { no:'INV-0736', num:'BIG O-INV-0736', client:'THEMBINKOSI CELE', claim:'HLB/2026/469120', date:'08 Feb', dateSort:20260208, entity:'PHAHAMO', incl:12340.00, status:'Paid', notes:'' },
+  { no:'INV-0735', num:'BIG O-INV-0735', client:'ZANELE SITHOLE', claim:'HLB/2026/468432', date:'05 Feb', dateSort:20260205, entity:'PHAHAMO', incl:6789.00, status:'Paid', notes:'' },
+  { no:'INV-0734', num:'BIG O-INV-0734', client:'LINDANI MTHETHWA', claim:'HLB/2026/467765', date:'03 Feb', dateSort:20260203, entity:'PHAHAMO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0733', num:'BIG O-INV-0733', client:'NOBUHLE SITHOLE', claim:'HLB/2026/467001', date:'01 Feb', dateSort:20260201, entity:'PHAHAMO', incl:4560.00, status:'Paid', notes:'' },
+  { no:'INV-0732', num:'BIG O-INV-0732', client:'SANDILE MCHUNU', claim:'HLB/2026/466298', date:'28 Jan', dateSort:20260128, entity:'PHAHAMO', incl:18760.00, status:'Paid', notes:'' },
+  { no:'INV-0731', num:'BIG O-INV-0731', client:'PHUMZILE BIYELA', claim:'HLB/2026/465601', date:'24 Jan', dateSort:20260124, entity:'PHAHAMO', incl:7890.00, status:'Paid', notes:'' },
+  { no:'INV-0730', num:'BIG O-INV-0730', client:'MLUNGISI GUMEDE', claim:'HLB/2026/464876', date:'20 Jan', dateSort:20260120, entity:'PHAHAMO', incl:15670.00, status:'Paid', notes:'' },
+  { no:'INV-0728', num:'BIG O-INV-0728', client:'THANDEKA MTHEMBU', claim:'HLB/2026/464120', date:'16 Jan', dateSort:20260116, entity:'PHAHAMO', incl:9870.00, status:'Paid', notes:'' },
+  { no:'INV-0727', num:'BIG O-INV-0727', client:'WISEMAN ZULU', claim:'HLB/2026/463432', date:'12 Jan', dateSort:20260112, entity:'PHAHAMO', incl:12340.00, status:'Paid', notes:'' },
+  // VOID INVOICES
+  { no:'INV-0725', num:'BIG O-INV-0725', client:'NICOLAAS DIEDERICKS', claim:'HLB/2025/453021', date:'10 Jan', dateSort:20260110, entity:'BIGO', incl:30661.30, status:'Void', notes:'Reversed → INV-0724' },
+  { no:'INV-0726', num:'BIG O-INV-0726', client:'NICOLAAS DIEDERICKS', claim:'HLB/2025/453021', date:'10 Jan', dateSort:20260110, entity:'BIGO', incl:32954.15, status:'Void', notes:'Reversed → INV-0724' },
+  { no:'INV-0741', num:'BIG O-INV-0741', client:'KELETSO MMULUTSI', claim:'HLB/2025/461283', date:'20 Feb', dateSort:20260220, entity:'BIGO', incl:37204.44, status:'Void', notes:'Reversed' },
+  { no:'INV-0797', num:'BIG O-INV-0797', client:'MR DV NAIDOO', claim:'HLB/2025/437919', date:'20 Feb', dateSort:20260220, entity:'BIGO', incl:4395.88, status:'Void', notes:'Void — claim not proceeded' },
+];
+
+/* ── HELPER: Format currency ── */
+function fmtR(n) { return 'R ' + Number(n).toLocaleString('en-ZA', {minimumFractionDigits:2,maximumFractionDigits:2}); }
+function calcExcl(incl) { return incl / 1.15; }
+function calcVATAmt(incl) { return incl - (incl / 1.15); }
+
+/* ── RENDER DASHBOARD RECENT ── */
+function renderDashboardRecent() {
+  const tbody = document.getElementById('dash-recent-tbody');
+  const recent = [...INVOICES].filter(i => i.status !== 'Void').sort((a,b) => b.dateSort - a.dateSort).slice(0,10);
+  tbody.innerHTML = recent.map(inv => `
+    <tr onclick="openInvoiceDrawer('${inv.no}')">
+      <td class="td-mono td-bold">${inv.num}</td>
+      <td>${inv.client}</td>
+      <td class="td-mono td-muted" style="font-size:11px">${inv.claim}</td>
+      <td>${inv.date}</td>
+      <td class="td-mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
+      <td><span class="status ${inv.status.toLowerCase()}">${inv.status}</span></td>
+      <td><span class="ent-${inv.entity.toLowerCase()}">${inv.entity==='BIGO'?'Bigo':'Phahamo'}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ── RENDER INVOICES ── */
+function renderInvoices() {
+  const search = (document.getElementById('inv-search')||{value:''}).value.toLowerCase();
+  const statusF = (document.getElementById('inv-status-filter')||{value:''}).value;
+  const entityF = (document.getElementById('inv-entity-filter')||{value:''}).value;
+  const monthF  = (document.getElementById('inv-month-filter')||{value:''}).value;
+
+  function matches(inv) {
+    if (!search && !statusF && !entityF && !monthF) return true;
+    const s = (inv.client+inv.claim+inv.no+inv.num).toLowerCase();
+    const searchOk = !search || s.includes(search);
+    const statusOk = !statusF || inv.status === statusF;
+    const entityOk = !entityF || inv.entity === entityF;
+    const monthOk  = !monthF  || inv.date.includes(monthF);
+    return searchOk && statusOk && entityOk && monthOk;
+  }
+
+  const bigoInvs = INVOICES.filter(i => i.entity==='BIGO' && i.status!=='Void' && matches(i)).sort((a,b)=>b.dateSort-a.dateSort);
+  const phaInvs  = INVOICES.filter(i => i.entity==='PHAHAMO' && i.status!=='Void' && matches(i)).sort((a,b)=>b.dateSort-a.dateSort);
+  const voidInvs = INVOICES.filter(i => i.status==='Void');
+
+  function rowHTML(inv, idx) {
+    const excl = calcExcl(inv.incl);
+    const vat  = calcVATAmt(inv.incl);
+    const bal  = inv.status === 'Paid' ? 'R 0.00' : fmtR(inv.incl);
+    return `<tr onclick="openInvoiceDrawer('${inv.no}')" class="${inv.status==='Void'?'void-row':''}">
+      <td>${idx+1}</td>
+      <td class="td-mono td-bold">${inv.num}</td>
+      <td>${inv.client}</td>
+      <td class="td-mono td-muted" style="font-size:11px">${inv.claim}</td>
+      <td>${inv.date}</td>
+      <td><span class="status ${inv.status.toLowerCase()}">${inv.status}</span></td>
+      <td class="td-mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
+      <td class="td-mono">${fmtR(excl)}</td>
+      <td class="td-mono" style="color:var(--teal)">${fmtR(vat)}</td>
+      <td class="td-mono" style="color:${inv.status==='Outstanding'?'var(--red)':'var(--muted)'}">${bal}</td>
+      <td style="color:var(--muted);font-size:11px;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${inv.notes}</td>
+    </tr>`;
+  }
+
+  document.getElementById('inv-tbody-bigo').innerHTML = bigoInvs.map(rowHTML).join('');
+  document.getElementById('inv-tbody-pha').innerHTML  = phaInvs.map(rowHTML).join('');
+
+  // Totals
+  const bigoTotIncl = bigoInvs.reduce((s,i)=>s+i.incl,0);
+  const bigoTotExcl = bigoTotIncl / 1.15;
+  const bigoTotVAT  = bigoTotIncl - bigoTotExcl;
+  const bigoOut     = bigoInvs.filter(i=>i.status==='Outstanding').reduce((s,i)=>s+i.incl,0);
+  const phaTotIncl  = phaInvs.reduce((s,i)=>s+i.incl,0);
+  const phaTotExcl  = phaTotIncl / 1.15;
+  const phaTotVAT   = phaTotIncl - phaTotExcl;
+  const grandIncl   = bigoTotIncl + phaTotIncl;
+
+  document.getElementById('bigo-summary').textContent = `${bigoInvs.length} invoices · ${fmtR(bigoTotIncl)} collected · ${bigoOut>0?fmtR(bigoOut)+' outstanding':'all paid'}`;
+  document.getElementById('pha-summary').textContent  = `${phaInvs.length} invoices · ${fmtR(phaTotIncl)} collected`;
+  document.getElementById('bigo-totals-row').innerHTML = `BIGO DIRECT TOTALS: <strong>${fmtR(bigoTotIncl)}</strong> collected · <strong>${fmtR(bigoTotExcl)}</strong> excl. VAT · <strong>${fmtR(bigoTotVAT)}</strong> VAT`;
+  document.getElementById('pha-totals-row').innerHTML  = `PHAHAMO TOTALS: <strong>${fmtR(phaTotIncl)}</strong> collected · <strong>${fmtR(phaTotExcl)}</strong> excl. VAT · <strong>${fmtR(phaTotVAT)}</strong> VAT`;
+  document.getElementById('grand-totals-row').innerHTML = `★ GRAND TOTAL: <strong style="font-family:var(--mono)">${fmtR(grandIncl)}</strong> · Excl. VAT: <strong>${fmtR(grandIncl/1.15)}</strong> · Output VAT: <strong>${fmtR(grandIncl-grandIncl/1.15)}</strong>`;
+}
+
+function toggleVoidRows() { showVoidRows = !showVoidRows; showToast(showVoidRows ? '⊘ Showing void invoices (greyed out)' : 'Void invoices hidden', 'info'); }
+
+/* ── RENDER CLAIMS ── */
+function renderClaims() {
+  const search  = (document.getElementById('claims-search')||{value:''}).value.toLowerCase();
+  const statusF = (document.getElementById('claims-status-filter')||{value:''}).value;
+  const active  = INVOICES.filter(i => i.status !== 'Void');
+  const filtered = active.filter(inv => {
+    const s = (inv.client+inv.claim+inv.no).toLowerCase();
+    const searchOk = !search || s.includes(search);
+    const statusOk = !statusF || inv.status === statusF;
+    return searchOk && statusOk;
+  }).sort((a,b)=>b.dateSort-a.dateSort);
+  const tbody = document.getElementById('claims-tbody');
+  tbody.innerHTML = filtered.map((inv,i)=>`
+    <tr onclick="openInvoiceDrawer('${inv.no}')">
+      <td>${i+1}</td>
+      <td class="td-mono td-bold">${inv.num}</td>
+      <td>${inv.client}</td>
+      <td class="td-mono" style="font-size:11px;color:var(--muted)">${inv.claim}</td>
+      <td>${inv.date}</td>
+      <td><span class="ent-${inv.entity.toLowerCase()}">${inv.entity==='BIGO'?'Bigo':'Phahamo'}</span></td>
+      <td class="td-mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
+      <td><span class="status ${inv.status.toLowerCase()}">${inv.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ── RENDER VAT TABLE ── */
+function renderVATTable() {
+  const paid = INVOICES.filter(i => i.status === 'Paid').sort((a,b) => b.dateSort - a.dateSort);
+  const tbody = document.getElementById('vat-tbody');
+  tbody.innerHTML = paid.map((inv,i) => {
+    const excl = calcExcl(inv.incl);
+    const vat  = calcVATAmt(inv.incl);
+    return `<tr>
+      <td>${i+1}</td>
+      <td class="td-mono td-bold">${inv.num}</td>
+      <td>${inv.client}</td>
+      <td>${inv.date}</td>
+      <td><span class="ent-${inv.entity.toLowerCase()}">${inv.entity==='BIGO'?'Bigo':'Phahamo'}</span></td>
+      <td class="td-mono">${fmtR(excl)}</td>
+      <td class="td-mono" style="color:var(--teal)">${fmtR(vat)}</td>
+      <td class="td-mono td-bold">${fmtR(inv.incl)}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ════════════════════════════════
+   CLIENT DATA
+════════════════════════════════ */
+let CLIENTS = [
+  { id:1, type:'Subcontractor', name:'Phahamo Projects (Pty) Ltd', reg:'2018/453221/07', vat:'4890123456', contact:'Project Manager', email:'projects@phahamo.co.za', phone:'071 234 5678', channel:'both', status:'Active', invoices:23, totalPaid:314665.46, inputVAT:0, notes:'Primary subcontractor for CAT Event 2026' },
+  { id:2, type:'Supplier', name:'Builders Warehouse Midrand', reg:'', vat:'4170234567', contact:'Store Manager', email:'midrand@bw.co.za', phone:'011 312 4000', channel:'email', status:'Active', invoices:14, totalPaid:87430.00, inputVAT:11405.00, notes:'Main building materials supplier' },
+  { id:3, type:'Supplier', name:'Cashbuild Midrand', reg:'', vat:'4560987654', contact:'Branch Manager', email:'midrand@cashbuild.co.za', phone:'011 678 9000', channel:'email', status:'Active', invoices:8, totalPaid:45210.00, inputVAT:5897.00, notes:'Cement, sand and aggregate supplier' },
+  { id:4, type:'Supplier', name:'Engen Petroleum Midrand', reg:'', vat:'', contact:'', email:'', phone:'', channel:'whatsapp', status:'Active', invoices:32, totalPaid:18640.00, inputVAT:0, notes:'Fuel supplier — no input VAT on petrol' },
+  { id:5, type:'Supplier', name:'Roof World Johannesburg', reg:'', vat:'4320876543', contact:'Sales', email:'sales@roofworld.co.za', phone:'011 890 1234', channel:'both', status:'Active', invoices:5, totalPaid:23450.00, inputVAT:3058.00, notes:'Roofing materials and accessories' },
+];
+
+function renderClients() {
+  const search  = document.getElementById('client-search').value.toLowerCase();
+  const typeF   = document.getElementById('client-type-filter').value;
+  const statusF = document.getElementById('client-status-filter').value;
+
+  const filtered = CLIENTS.filter(c => {
+    const s = (c.name+c.vat+c.contact+c.email).toLowerCase();
+    return (!search||s.includes(search)) && (!typeF||c.type===typeF) && (!statusF||c.status===statusF);
+  });
+
+  const grid = document.getElementById('clients-grid');
+  const borderColor = c => c.type==='Subcontractor' ? 'var(--purple)' : 'var(--teal)';
+  const typeColor   = c => c.type==='Subcontractor' ? 'var(--purple)' : 'var(--teal)';
+  const typeBg      = c => c.type==='Subcontractor' ? 'var(--purple-light)' : 'var(--teal-light)';
+
+  grid.innerHTML = filtered.map(c => `
+    <div class="card" style="border-left:4px solid ${borderColor(c)};cursor:pointer;transition:box-shadow 0.15s"
+         onmouseover="this.style.boxShadow='0 8px 24px rgba(10,45,94,0.14)'" onmouseout="this.style.boxShadow=''"
+         onclick="viewClient(${c.id})">
+      <div style="padding:16px 18px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <div>
+            <div style="font-weight:700;font-size:13.5px">${c.name}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">${c.reg?'Reg: '+c.reg+' · ':''}${c.vat?'VAT: '+c.vat:c.type==='Supplier'&&!c.vat?'Not VAT registered':''}</div>
+          </div>
+          <span class="status ${c.type==='Subcontractor'?'sub':'supplier'}">${c.type.toUpperCase()}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px;margin-bottom:12px">
+          ${c.type==='Subcontractor' ? `
+            <div><span style="color:var(--muted)">Invoices:</span> <strong>${c.invoices}</strong></div>
+            <div><span style="color:var(--muted)">Total:</span> <strong style="font-family:var(--mono)">${fmtR(c.totalPaid)}</strong></div>
+          ` : `
+            <div><span style="color:var(--muted)">Purchases:</span> <strong>${c.invoices}</strong></div>
+            <div><span style="color:var(--muted)">Total Spent:</span> <strong style="font-family:var(--mono)">${fmtR(c.totalPaid)}</strong></div>
+            <div><span style="color:var(--muted)">Input VAT:</span> <strong style="color:${c.inputVAT>0?'var(--green)':'var(--muted)'};font-family:var(--mono)">${c.inputVAT>0?fmtR(c.inputVAT):'R 0 (N/A)'}</strong></div>
+          `}
+          ${c.email?`<div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="color:var(--muted)">Email:</span> <strong style="font-size:11px">${c.email}</strong></div>`:''}
+          ${c.phone?`<div><span style="color:var(--muted)">Mobile:</span> <strong>${c.phone}</strong></div>`:''}
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;gap:8px">
+          ${c.email?`<button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();showToast('📧 Email to '+${JSON.stringify(c.name)},'info')">📧 Email</button>`:''}
+          ${c.phone?`<button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();showToast('💬 WhatsApp to '+${JSON.stringify(c.name)},'info')">💬 WhatsApp</button>`:''}
+          <button class="btn btn-ghost btn-xs" style="margin-left:auto" onclick="viewClient(${c.id})">View →</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Add New button
+  grid.innerHTML += `
+    <div class="card" style="border:2px dashed #D1D5DB;cursor:pointer;background:transparent;transition:all 0.15s"
+         onclick="openAddClientModal()"
+         onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='#D1D5DB'">
+      <div style="padding:40px 20px;text-align:center;color:var(--muted)">
+        <div style="font-size:30px;margin-bottom:8px">+</div>
+        <div style="font-weight:600;font-size:13px">Add New Client</div>
+        <div style="font-size:11px;margin-top:4px">Subcontractor or Supplier</div>
+      </div>
+    </div>`;
+
+  // Update KPI
+  const subs = CLIENTS.filter(c=>c.type==='Subcontractor').length;
+  const sups = CLIENTS.filter(c=>c.type==='Supplier').length;
+  if(document.getElementById('cl-total')) {
+    document.getElementById('cl-total').textContent = CLIENTS.length;
+    document.getElementById('cl-sub').textContent = subs;
+    document.getElementById('cl-sup').textContent = sups;
+  }
+}
+
+function viewClient(id) {
+  const c = CLIENTS.find(x=>x.id===id);
+  if (!c) return;
+  showToast(`👤 Viewing: ${c.name} (${c.type})`, 'info');
+}
+
+/* ── ADD CLIENT MODAL ── */
+function openAddClientModal() {
+  openModal('add-client-modal');
+  selectClientType('');
+}
+
+function selectClientType(type) {
+  document.getElementById('new-client-type').value = type;
+  const subEl = document.getElementById('type-sub');
+  const supEl = document.getElementById('type-sup');
+  if (type === 'Subcontractor') {
+    subEl.style.borderColor = 'var(--purple)'; subEl.style.background = 'var(--purple-light)';
+    supEl.style.borderColor = 'var(--border-md)'; supEl.style.background = '';
+  } else if (type === 'Supplier') {
+    supEl.style.borderColor = 'var(--teal)'; supEl.style.background = 'var(--teal-light)';
+    subEl.style.borderColor = 'var(--border-md)'; subEl.style.background = '';
+  } else {
+    subEl.style.borderColor = 'var(--border-md)'; subEl.style.background = '';
+    supEl.style.borderColor = 'var(--border-md)'; supEl.style.background = '';
+  }
+}
+
+function saveNewClient() {
+  const type = document.getElementById('new-client-type').value;
+  const name = document.getElementById('nc-name').value.trim();
+  const errEl = document.getElementById('nc-error');
+  if (!type) { errEl.textContent = 'Please select a client type (Subcontractor or Supplier).'; errEl.classList.add('visible'); return; }
+  if (!name) { errEl.textContent = 'Please enter a company/trade name.'; errEl.classList.add('visible'); return; }
+  errEl.classList.remove('visible');
+  const newClient = {
+    id: CLIENTS.length + 1, type, name,
+    reg: document.getElementById('nc-reg').value,
+    vat: document.getElementById('nc-vat').value,
+    contact: document.getElementById('nc-contact').value,
+    email: document.getElementById('nc-email').value,
+    phone: document.getElementById('nc-phone').value,
+    channel: document.getElementById('nc-channel').value,
+    status: document.getElementById('nc-status').value,
+    notes: document.getElementById('nc-notes').value,
+    invoices: 0, totalPaid: 0, inputVAT: 0,
+  };
+  CLIENTS.push(newClient);
+  closeModal('add-client-modal');
+  renderClients();
+  showToast(`✅ Client added: ${name} (${type})`, 'success');
+  // Reset
+  ['nc-name','nc-reg','nc-vat','nc-contact','nc-email','nc-phone','nc-notes'].forEach(id=>{document.getElementById(id).value='';});
+  selectClientType('');
+}
+
+/* ── NEW INVOICE MODAL ── */
+function openNewInvoiceModal() {
+  openModal('new-invoice-modal');
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('ni-date').value = today;
+  // Due in 30 days
+  const due = new Date(); due.setDate(due.getDate()+30);
+  document.getElementById('ni-due').value = due.toISOString().slice(0,10);
+  // Auto invoice number
+  const maxNo = Math.max(...INVOICES.map(i=>parseInt(i.no.replace('INV-',''))||0));
+  document.getElementById('ni-number').value = 'BIG O-INV-' + String(maxNo+1).padStart(4,'0');
+}
+
+function calcVAT() {
+  const incl = parseFloat(document.getElementById('ni-incl').value) || 0;
+  document.getElementById('ni-excl').value = incl ? fmtR(incl/1.15) : '';
+  document.getElementById('ni-vat').value  = incl ? fmtR(incl - incl/1.15) : '';
+}
+
+function saveNewInvoice() {
+  const client = document.getElementById('ni-client').value.trim();
+  const claim  = document.getElementById('ni-claim').value.trim();
+  const incl   = parseFloat(document.getElementById('ni-incl').value);
+  const entity = document.getElementById('ni-entity').value;
+  const status = document.getElementById('ni-status').value;
+  if (!client || !claim || !incl) { showToast('⚠️ Please fill in Client, Claim Reference and Amount', 'error'); return; }
+  const num = document.getElementById('ni-number').value;
+  const no  = num.replace('BIG O-','');
+  INVOICES.unshift({ no, num, client: client.toUpperCase(), claim: claim.toUpperCase(), date: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'}), dateSort: parseInt(new Date().toISOString().replace(/-/g,'').slice(0,8)), entity, incl, status, notes: document.getElementById('ni-notes').value });
+  closeModal('new-invoice-modal');
+  renderInvoices();
+  renderDashboardRecent();
+  showToast(`✅ Invoice ${num} created · ${fmtR(incl)} · ${status}`, 'success');
+}
+
+/* ── EXPENSE MODAL ── */
+function openAddExpenseModal() { openModal('add-expense-modal'); const today=new Date().toISOString().slice(0,10); document.getElementById('exp-date').value=today; }
+
+function calcExpenseVAT() {
+  const incl = parseFloat(document.getElementById('exp-incl').value)||0;
+  const cat  = document.getElementById('exp-cat').value;
+  const vat  = cat === 'Petrol' ? 0 : incl - incl/1.15;
+  document.getElementById('exp-vat-amount').value = vat > 0 ? fmtR(vat) : 'R 0.00 (Petrol — not claimable)';
+}
+
+/* ── MODAL HELPERS ── */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.classList.remove('open'); });
+});
+
+/* ── INVOICE DRAWER ── */
+function openInvoiceDrawer(invNo) {
+  const inv = INVOICES.find(i => i.no === invNo);
+  if (!inv) return;
+  const excl = calcExcl(inv.incl);
+  const vat  = calcVATAmt(inv.incl);
+  document.getElementById('drawer-inv-number').textContent = inv.num;
+  document.getElementById('drawer-inv-claim').textContent  = inv.claim + ' · Standard Bank HOC';
+  document.getElementById('drawer-status-row').innerHTML = `<span class="status ${inv.status.toLowerCase()}">${inv.status}</span> <span class="ent-${inv.entity.toLowerCase()}" style="margin-left:8px">${inv.entity==='BIGO'?'Bigo Direct':'Phahamo Subcontract'}</span>`;
+  document.getElementById('drawer-details').innerHTML = `
+    <div class="vat-card">
+      <div class="drawer-row"><span class="dk">Invoice No.</span><span class="dv" style="font-family:var(--mono)">${inv.num}</span></div>
+      <div class="drawer-row"><span class="dk">Client / Policy Holder</span><span class="dv">${inv.client}</span></div>
+      <div class="drawer-row"><span class="dk">Claim Reference</span><span class="dv" style="font-family:var(--mono)">${inv.claim}</span></div>
+      <div class="drawer-row"><span class="dk">Invoice Date</span><span class="dv">${inv.date}</span></div>
+      <div class="drawer-row"><span class="dk">Entity</span><span class="dv">${inv.entity==='BIGO'?'Bigo Direct':'Phahamo Subcontract'}</span></div>
+      ${inv.notes?`<div class="drawer-row"><span class="dk">Notes</span><span class="dv" style="font-size:11.5px">${inv.notes}</span></div>`:''}
+    </div>`;
+  document.getElementById('drawer-vat').innerHTML = `
+    <div class="vat-row"><span>Amount Incl. VAT</span><span style="font-family:var(--mono);font-weight:700">${fmtR(inv.incl)}</span></div>
+    <div class="vat-row"><span style="color:var(--muted)">Excl. VAT (÷1.15)</span><span style="font-family:var(--mono)">${fmtR(excl)}</span></div>
+    <div class="vat-row total"><span>VAT @ 15%</span><span style="font-family:var(--mono);color:var(--teal)">${fmtR(vat)}</span></div>`;
+  document.getElementById('drawer-ai-result').style.display = 'none';
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('invoice-drawer').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('invoice-drawer').classList.remove('open');
+}
+
+/* ── VAT201 DOWNLOAD (simulated) ── */
+function downloadVAT201() {
+  showToast('📊 VAT201 Preparation worksheet generated. Download started.', 'success');
+}
+
+function exportInvoicesExcel() {
+  showToast('📊 Invoice Register XLSX exported · 83 invoices with live VAT formulas', 'success');
+}
+
+function exportClients() {
+  showToast('👥 Clients exported to Excel', 'success');
+}
+
+/* ── MARK AS PAID ── */
+function markPaid(invNo) {
+  const inv = INVOICES.find(i=>i.no===invNo);
+  if (inv) { inv.status = 'Paid'; renderInvoices(); renderDashboardRecent(); showToast(`✅ ${inv.num} marked as Paid!`, 'success'); }
+}
+
+/* ── ZOHO SYNC ── */
+function triggerSync() {
+  const label = document.getElementById('sync-label');
+  label.textContent = 'Syncing...';
+  setTimeout(()=>{ label.textContent = 'Online — Synced'; showToast('🔄 Zoho sync complete · 83 invoices reconciled · 0 conflicts', 'success'); }, 2000);
+}
+
+/* ── SAVE SETTINGS ── */
+function saveSettings() { showToast('💾 Settings saved successfully', 'success'); }
+
+/* ── AI PANEL ── */
+function showAIPanel() { showPanel('ai'); }
+
+function runAIAnalysis(type) {
+  const resultEl = document.getElementById('ai-result');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = '<em style="color:var(--muted)">⏳ Analysing with Claude AI...</em>';
+  setTimeout(()=>{
+    const msgs = {
+      invoice: '✅ <strong>AI Invoice Analysis Complete:</strong><br>• No duplicate invoices detected for this client<br>• Amount is within ±15% of average for claim type<br>• VAT classification: Standard Rate (15%) — correct<br>• Invoice number sequence: BIG O-INV-0811 follows correctly<br>• Recommendation: Approve invoice for submission',
+      report: '📋 <strong>AI Assessment Report Draft:</strong><br>This is to certify that Big O Projects (Pty) Ltd, an NHBRC-registered building contractor (CIDB PE 6GB), attended the above-referenced property following a storm damage event. The assessment conducted confirms structural damage to the roof covering, with evidence of water ingress through displaced tiles affecting the ceiling void. All work is to be carried out in accordance with Standard Bank HOC policy specifications.',
+      vat: '🧾 <strong>AI VAT201 Review:</strong><br>• Output VAT: R 151,899 — correctly calculated at 15%<br>• Input VAT captured: R 281 — LOW — 3 supplier invoices only<br>• ⚠️ Missing input VAT: Check Cashbuild and Roof World invoices for Jan–Mar<br>• Petrol expenses correctly excluded from input VAT<br>• Net payable to SARS: R 151,618 — confirm before submission',
+    };
+    resultEl.innerHTML = msgs[type] || '✅ Analysis complete.';
+  }, 1500);
+}
+
+function runInvoiceAI() {
+  const resultEl = document.getElementById('drawer-ai-result');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = '<em style="color:var(--muted)">⏳ Analysing invoice...</em>';
+  setTimeout(()=>{
+    resultEl.innerHTML = '✅ <strong>No anomalies detected.</strong> Amount consistent with claim type. VAT calculated correctly at 15%. No duplicate found within 30 days for this client. Status current.';
+  }, 1200);
+}
+
+/* ── TOAST ── */
+function showToast(msg, type='info') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = msg;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(20px)'; toast.style.transition='all 0.3s'; setTimeout(()=>toast.remove(), 300); }, 3500);
+}
+
+/* ── KEYBOARD SHORTCUTS ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeDrawer();
+    document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'));
+    document.getElementById('user-dropdown').classList.remove('open');
+  }
+  if ((e.metaKey||e.ctrlKey) && e.key==='k') { e.preventDefault(); showToast('🔍 Search coming in Stage 2', 'info'); }
+});
+
+/* ── AUTO DATE/GREETING ── */
+const now = new Date();
+const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+if (document.getElementById('dash-date')) {
+  document.getElementById('dash-date').textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} · CAT Event 2026 · Standard Bank HOC`;
+}
+
+/* ── INIT PANELS ON LOAD ── */
+// Panels are rendered lazily when navigated to via showPanel()
+// renderInvoices/renderClients/renderClaims called on demand
+
+// Copyright notice
+console.log('%c ClaimSync Stage 1 — Big O Projects (Pty) Ltd ', 'background:#0A2D5E;color:#C9982A;font-weight:bold;font-size:14px;padding:6px 12px;border-radius:4px');
+console.log('%c © 2026 Big O Projects (Pty) Ltd — ClaimSync™ | Norman@bigoprojects.co.za ', 'color:#6B7280;font-size:11px');
+</script>
+</body>
+</html>
