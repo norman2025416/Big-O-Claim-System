@@ -596,108 +596,6 @@ select.form-input { cursor: pointer; }
   .content { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
 }
-
-
-/* ═══════════════════════════════════════════════════
-   STAGE 2 — FIELD OPERATIONS CSS
-   Job Cards · Kanban · Photo Vault · Mobile · AI Reports
-═══════════════════════════════════════════════════ */
-/* ═══════════════════════ AUTH ═══════════════════════ */
-#auth-screen {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--navy);
-  display: flex; align-items: center; justify-content: center;
-}
-.auth-bg-hex { position: absolute; font-size: 280px; color: rgba(255,255,255,0.025); user-select: none; pointer-events: none; }
-.auth-card {
-  position: relative; z-index: 2;
-  background: white; border-radius: 20px;
-  width: 420px; max-width: calc(100vw - 32px);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.35);
-  overflow: hidden; animation: authSlideUp 0.4s cubic-bezier(.22,1,.36,1);
-}
-@keyframes authSlideUp { from{opacity:0;transform:translateY(24px) scale(0.97)} to{opacity:1;transform:none} }
-.auth-header { background: var(--navy); padding: 28px 32px 22px; text-align: center; }
-.auth-logo { font-size: 24px; font-weight: 700; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.auth-logo .hex { color: var(--gold); } .auth-logo .dot { color: var(--gold); }
-.auth-tag { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
-.auth-stage-badge { display: inline-block; margin-top: 10px; background: rgba(201,152,42,0.2); border: 1px solid rgba(201,152,42,0.3); color: var(--gold); font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; letter-spacing: 1px; }
-.auth-body { padding: 26px 30px 30px; }
-.auth-tabs { display: flex; border: 1px solid var(--border-md); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
-.auth-tab { flex: 1; padding: 8px; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer; color: var(--muted); transition: all 0.15s; }
-.auth-tab.active { background: var(--navy); color: white; }
-.auth-demo { background: var(--gold-pale); border: 1px solid rgba(201,152,42,0.25); border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; font-size: 11px; line-height: 1.6; }
-.auth-demo strong { color: var(--navy); }
-.auth-group { margin-bottom: 14px; }
-.auth-label { display: block; font-size: 10.5px; font-weight: 700; color: var(--text); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-.auth-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border-md); border-radius: var(--radius-sm); font-size: 13px; font-family: var(--font); outline: none; transition: border-color 0.15s; }
-.auth-input:focus { border-color: var(--navy); }
-.auth-btn { width: 100%; padding: 12px; background: var(--navy); color: white; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; margin-top: 8px; }
-.auth-btn:hover { background: var(--navy-light); }
-.auth-btn.gold { background: var(--gold); color: var(--navy-dark); }
-.auth-err { background: var(--red-pale); border: 1px solid rgba(192,57,43,0.25); color: var(--red); font-size: 12px; padding: 8px 12px; border-radius: 6px; margin-top: 10px; display: none; }
-.auth-err.show { display: block; }
-.auth-trust { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 16px; font-size: 10px; color: var(--muted); }
-
-/* ═══════════════════════ APP SHELL ═══════════════════════ */
-#app-shell { display: none; flex-direction: column; height: 100%; }
-#app-shell.visible { display: flex; }
-
-/* ═══════════════════════ TOPBAR ═══════════════════════ */
-.topbar {
-  height: var(--topbar-h); background: var(--navy);
-  display: flex; align-items: center; padding: 0 20px; gap: 12px;
-  flex-shrink: 0; z-index: 200;
-}
-.topbar-logo { font-size: 16px; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; cursor: pointer; }
-.topbar-logo .hex { color: var(--gold); } .topbar-logo .dot { color: var(--gold); }
-.topbar-badge { background: rgba(201,152,42,0.2); color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(201,152,42,0.3); }
-.topbar-stage { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #22C55E; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
-.topbar-spacer { flex: 1; }
-.topbar-sync { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #22C55E; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px; cursor: pointer; }
-.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #22C55E; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.topbar-offline { background: rgba(217,119,6,0.15); border: 1px solid rgba(217,119,6,0.3); color: var(--amber); font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: none; align-items: center; gap: 5px; }
-.topbar-user { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: background 0.15s; position: relative; }
-.topbar-user:hover { background: rgba(255,255,255,0.08); }
-.topbar-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: var(--navy); font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-.topbar-name { font-size: 12px; color: rgba(255,255,255,0.85); font-weight: 600; line-height: 1.2; }
-.topbar-role { font-size: 10px; color: rgba(255,255,255,0.4); }
-.user-dd { position: absolute; top: calc(100% + 8px); right: 0; background: white; border-radius: 10px; box-shadow: var(--shadow-lg); width: 190px; z-index: 500; border: 1px solid var(--border); display: none; overflow: hidden; }
-.user-dd.open { display: block; }
-.user-dd-item { padding: 10px 16px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.1s; }
-.user-dd-item:hover { background: var(--bg); }
-.user-dd-item.danger { color: var(--red); }
-hr.dd-div { border: none; border-top: 1px solid var(--border-md); }
-
-/* ═══════════════════════ LAYOUT ═══════════════════════ */
-.main-wrap { display: flex; flex: 1; overflow: hidden; }
-
-/* ═══════════════════════ SIDEBAR ═══════════════════════ */
-.sidebar { width: var(--sidebar-w); background: var(--navy); flex-shrink: 0; display: flex; flex-direction: column; overflow-y: auto; padding: 12px 0; }
-.sidebar::-webkit-scrollbar { width: 0; }
-.nav-group-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 12px 18px 5px; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; cursor: pointer; transition: all 0.14s; color: rgba(255,255,255,0.5); font-size: 12.5px; font-weight: 500; position: relative; margin: 1px 8px; border-radius: 8px; }
-.nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
-.nav-item.active { background: rgba(201,152,42,0.15); color: var(--gold); }
-.nav-item.active::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; background: var(--gold); border-radius: 0 3px 3px 0; }
-.nav-icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
-.nav-badge { margin-left: auto; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 20px; min-width: 18px; text-align: center; }
-.nb-red { background: var(--red); color: white; }
-.nb-gold { background: var(--gold); color: var(--navy-dark); }
-.nb-green { background: var(--green); color: white; }
-.nb-amber { background: var(--amber); color: white; }
-.nb-blue { background: var(--blue); color: white; }
-.sidebar-footer { margin-top: auto; padding: 10px 8px; border-top: 1px solid rgba(255,255,255,0.07); }
-.sidebar-build { margin: 8px 16px 4px; padding: 8px 12px; background: rgba(201,152,42,0.1); border: 1px solid rgba(201,152,42,0.18); border-radius: 8px; font-size: 10px; color: rgba(255,255,255,0.45); line-height: 1.5; }
-.sidebar-build strong { color: var(--gold); display: block; font-size: 10.5px; margin-bottom: 2px; }
-
-/* ═══════════════════════ CONTENT ═══════════════════════ */
-.content { flex: 1; overflow-y: auto; padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; }
-.panel { display: none; flex-direction: column; gap: 18px; animation: fadeIn 0.18s ease; }
-.panel.active { display: flex; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
-
 /* ═══════════════════════ PAGE HEADER ═══════════════════════ */
 .ph { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 .ph-title { font-size: 21px; font-weight: 700; letter-spacing: -0.5px; color: var(--navy); }
@@ -1063,66 +961,47 @@ textarea.finput { resize: vertical; }
       <div class="auth-tagline">Insurance Field Management Platform</div>
     </div>
     <div class="auth-body">
-      <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
-        <button class="auth-tab" onclick="switchAuthTab('register')">Create Account</button>
+      <div class="auth-title">Sign In</div>
+      <div class="auth-sub">Big O Projects (Pty) Ltd · bigoprojects.co.za</div>
+
+      <!-- QUICK LOGIN BUTTONS -->
+      <div style="display:flex;gap:10px;margin-bottom:20px;">
+        <button class="auth-btn" style="flex:1;padding:14px 10px;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:10px;" onclick="doLoginAs('admin')">
+          <span style="font-size:22px">🔐</span>
+          <strong>Admin Login</strong>
+          <span style="font-size:10px;opacity:0.75;font-weight:400">Full system access</span>
+        </button>
+        <button class="auth-btn gold" style="flex:1;padding:14px 10px;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:10px;" onclick="doLoginAs('field')">
+          <span style="font-size:22px">🏗️</span>
+          <strong>Field Login</strong>
+          <span style="font-size:10px;opacity:0.75;font-weight:400">Field operations</span>
+        </button>
       </div>
 
-      <!-- LOGIN FORM -->
-      <div id="auth-login">
-        <div class="auth-demo">
-          <strong>Demo Credentials:</strong><br>
-          Admin: <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="660809140b070826040f01091614090c03051215480509481c07">[email&#160;protected]</a></code> / <code>BigO2026!</code><br>
-          Field: <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c1a7a8a4ada5b4b2a4b381a3a8a6aeb1b3aeaba4a2b5b2efa2aeefbba0">[email&#160;protected]</a></code> / <code>Field123!</code>
-        </div>
-        <div class="auth-form-group">
-          <label class="auth-label">Email Address</label>
-          <input class="auth-input" type="email" id="login-email" placeholder="you@bigoprojects.co.za" value="norman@bigoprojects.co.za">
-        </div>
-        <div class="auth-form-group">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" id="login-password" placeholder="••••••••" value="BigO2026!">
-          <span class="auth-forgot" onclick="forgotPassword()">Forgot password?</span>
-        </div>
-        <div class="auth-error" id="login-error">Invalid email or password. Please try again.</div>
-        <button class="auth-btn" onclick="doLogin()">Sign In to ClaimSync →</button>
-        <hr class="auth-divider">
-        <div class="auth-trust">
-          <div class="auth-trust-badge">🔒 SSL Encrypted</div>
-          <div class="auth-trust-badge">🇿🇦 SA Hosted</div>
-          <div class="auth-trust-badge">📋 POPIA Compliant</div>
-        </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+        <hr style="flex:1;border:none;border-top:1px solid #E5E7EB;">
+        <span style="font-size:11px;color:#9CA3AF;white-space:nowrap;">or sign in manually</span>
+        <hr style="flex:1;border:none;border-top:1px solid #E5E7EB;">
       </div>
 
-      <!-- REGISTER FORM -->
-      <div id="auth-register" style="display:none;">
-        <div class="auth-form-group">
-          <label class="auth-label">Full Name</label>
-          <input class="auth-input" type="text" id="reg-name" placeholder="Your full name">
-        </div>
-        <div class="auth-form-group">
-          <label class="auth-label">Email Address</label>
-          <input class="auth-input" type="email" id="reg-email" placeholder="you@company.co.za">
-        </div>
-        <div class="auth-form-group">
-          <label class="auth-label">Password</label>
-          <input class="auth-input" type="password" id="reg-password" placeholder="Min 8 characters">
-        </div>
-        <div class="auth-form-group">
-          <label class="auth-label">Company Name</label>
-          <input class="auth-input" type="text" id="reg-company" placeholder="Your company name">
-        </div>
-        <div class="auth-form-group">
-          <label class="auth-label">Role</label>
-          <select class="auth-input" id="reg-role">
-            <option value="">— Select your role —</option>
-            <option value="admin">Administrator</option>
-            <option value="field">Field / Team Leader</option>
-            <option value="accounts">Accounts</option>
-          </select>
-        </div>
-        <div class="auth-error" id="reg-error"></div>
-        <button class="auth-btn gold" onclick="doRegister()">Create Account →</button>
+      <!-- MANUAL LOGIN FORM -->
+      <div class="auth-form-group">
+        <label class="auth-label">Email Address</label>
+        <input class="auth-input" type="email" id="login-email" placeholder="you@bigoprojects.co.za">
+      </div>
+      <div class="auth-form-group">
+        <label class="auth-label">Password</label>
+        <input class="auth-input" type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <span class="auth-forgot" onclick="forgotPassword()">Forgot password?</span>
+      </div>
+      <div class="auth-error" id="login-error">Invalid email or password. Please try again.</div>
+      <button class="auth-btn" onclick="doLogin()" style="margin-top:12px;">Sign In to ClaimSync →</button>
+
+      <hr class="auth-divider">
+      <div class="auth-trust">
+        <div class="auth-trust-badge">🔒 SSL Encrypted</div>
+        <div class="auth-trust-badge">🇿🇦 SA Hosted</div>
+        <div class="auth-trust-badge">📋 POPIA Compliant</div>
       </div>
     </div>
   </div>
@@ -1142,7 +1021,7 @@ textarea.finput { resize: vertical; }
       <span class="hex">⬡</span> ClaimSync<span class="dot">.</span>
     </div>
     <div class="topbar-badge">Big O Projects</div>
-    <div class="topbar-stage">Stage 1 · v1.0</div>
+    <div class="topbar-stage">Full System · v1.0</div>
     <div class="topbar-spacer"></div>
     <div class="topbar-sync" onclick="triggerSync()">
       <div class="sync-dot"></div><span id="sync-label">Online — Synced</span>
@@ -2975,72 +2854,46 @@ textarea.finput { resize: vertical; }
 
 /* ── USER DATABASE ── */
 const USERS = [
-  { email: 'norman@bigoprojects.co.za',      password: 'BigO2026!',  pass: 'BigO2026!',  name: 'Norman',       role: 'Administrator', initials: 'N' },
-  { email: 'fielduser@bigoprojects.co.za',   password: 'Field123!',  pass: 'Field123!',  name: 'Field User',   role: 'Team Leader',   initials: 'F' },
-  { email: 'teamleader@bigoprojects.co.za',  password: 'Field123!',  pass: 'Field123!',  name: 'Thabo Mkhize', role: 'Team Leader',   initials: 'T' },
+  { email: 'admin@bigoprojects.co.za',  password: 'BigO2026!',  name: 'Norman',     role: 'Administrator', initials: 'N', type: 'admin' },
+  { email: 'field@bigoprojects.co.za',  password: 'Field123!',  name: 'Field User',  role: 'Team Leader',   initials: 'F', type: 'field' },
 ];
 let currentUser = null;
-let CU = null;
 let showVoidRows = false;
 
 /* ── AUTH ── */
-function switchAuthTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('auth-login').style.display = tab === 'login' ? '' : 'none';
-  document.getElementById('auth-register').style.display = tab === 'register' ? '' : 'none';
-}
-
 function doLogin() {
   const email = document.getElementById('login-email').value.trim().toLowerCase();
-  const pass = document.getElementById('login-password').value;
-  const user = USERS.find(u => u.email === email && u.password === pass);
+  const pass  = document.getElementById('login-password').value;
+  const user  = USERS.find(u => u.email === email && u.password === pass);
   const errEl = document.getElementById('login-error');
   if (!user) { errEl.classList.add('visible'); return; }
   errEl.classList.remove('visible');
   currentUser = user;
-  CU = user; // sync Stage 2 ref
-  document.getElementById('user-name').textContent = user.name;
-  document.getElementById('user-role').textContent = user.role;
+  // Update topbar (single topbar — Stage 1 IDs)
+  document.getElementById('user-name').textContent   = user.name;
+  document.getElementById('user-role').textContent   = user.role;
   document.getElementById('user-avatar').textContent = user.initials;
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app-shell').classList.add('visible');
   initDashboard();
-  initStage2();
   showToast(`👋 Welcome back, ${user.name}!`, 'success');
 }
 
-function doRegister() {
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-password').value;
-  const company = document.getElementById('reg-company').value.trim();
-  const role = document.getElementById('reg-role').value;
-  const errEl = document.getElementById('reg-error');
-  if (!name || !email || !pass || !company || !role) { errEl.textContent = 'Please fill in all required fields.'; errEl.classList.add('visible'); return; }
-  if (pass.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.classList.add('visible'); return; }
-  if (!email.includes('@')) { errEl.textContent = 'Please enter a valid email address.'; errEl.classList.add('visible'); return; }
-  errEl.classList.remove('visible');
-  // Add user and auto-login
-  const newUser = { email: email.toLowerCase(), password: pass, name, role: role === 'admin' ? 'Administrator' : role === 'field' ? 'Team Leader' : 'Accounts', initials: name[0].toUpperCase() };
-  USERS.push(newUser);
-  currentUser = newUser;
-  document.getElementById('user-name').textContent = newUser.name;
-  document.getElementById('user-role').textContent = newUser.role;
-  document.getElementById('user-avatar').textContent = newUser.initials;
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-shell').classList.add('visible');
-  initDashboard();
-  initStage2();
-  showToast(`✅ Account created! Welcome, ${newUser.name}!`, 'success');
+function doLoginAs(type) {
+  const user = USERS.find(u => u.type === type);
+  if (!user) return;
+  document.getElementById('login-email').value    = user.email;
+  document.getElementById('login-password').value = user.password;
+  doLogin();
 }
 
 function doLogout() {
   currentUser = null;
   document.getElementById('app-shell').classList.remove('visible');
   document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('login-email').value = 'norman@bigoprojects.co.za';
-  document.getElementById('login-password').value = 'BigO2026!';
+  document.getElementById('login-email').value    = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-error').classList.remove('visible');
   document.getElementById('user-dropdown').classList.remove('open');
 }
 
@@ -3637,55 +3490,7 @@ if (document.getElementById('dash-date')) {
 // Panels are rendered lazily when navigated to via showPanel()
 // renderInvoices/renderClients/renderClai
 
-/* ════════════════════════════════════════════════════
-   STAGE 2 — FIELD OPERATIONS ENGINE
-   Job Cards · Kanban · Photo Vault · CAT Claims · Mobile View · AI Reports
-════════════════════════════════════════════════════ */
-/* ═══════════════════════════════════════════════════
-   CLAIMSYNC STAGE 2 — COMPLETE JAVASCRIPT ENGINE
-   © 2026 Big O Projects (Pty) Ltd — ClaimSync™
-═══════════════════════════════════════════════════ */
 
-/* ── USERS ── */
-// USERS merged above — see unified USERS declaration
-let mobileOffline = false;
-let currentStep = 1;
-let boqRows = [];
-let assessPhotos = [];
-
-/* ═══════════════ AUTH ═══════════════ */
-function authTab(tab, el) {
-  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('auth-login-form').style.display = tab==='login'?'':'none';
-  document.getElementById('auth-reg-form').style.display = tab==='reg'?'':'none';
-}
-
-
-
-
-
-function loginUser(u) {
-  CU = u;
-  currentUser = u; // sync Stage 1 ref
-  document.getElementById('u-name').textContent = u.name;
-  document.getElementById('u-role').textContent = u.role;
-  document.getElementById('u-avatar').textContent = u.initials;
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-shell').classList.add('visible');
-  initStage2();
-  showToast(`👋 Welcome back, ${u.name}!`, 'ok');
-}
-
-
-
-
-
-function toggleDD() { document.getElementById('user-dd').classList.toggle('open'); }
-document.addEventListener('click', e => { if (!e.target.closest('.topbar-user')) document.getElementById('user-dd').classList.remove('open'); });
-document.addEventListener('keydown', e => { if(e.key==='Escape'){closeDrawer();document.querySelectorAll('.modal-ov').forEach(m=>m.classList.remove('open'));} });
-
-/* ═══════════════ INIT ═══════════════ */
 function initStage2() {
   const h = new Date().getHours();
   const g = h<12?'Good morning':h<17?'Good afternoon':'Good evening';
@@ -4482,7 +4287,7 @@ function toggleMobileOffline() {
 
 function toggleMobilePreview() {
   showPanel('mobile-view');
-  document.getElementById('user-dd').classList.remove('open');
+  document.getElementById('user-dropdown').classList.remove('open');
 }
 
 function renderTeamLocations() {
