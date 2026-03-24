@@ -2975,10 +2975,12 @@ textarea.finput { resize: vertical; }
 
 /* ── USER DATABASE ── */
 const USERS = [
-  { email: 'norman@bigoprojects.co.za', password: 'BigO2026!', name: 'Norman', role: 'Administrator', initials: 'N' },
-  { email: 'fielduser@bigoprojects.co.za', password: 'Field123!', name: 'Field User', role: 'Team Leader', initials: 'F' },
+  { email: 'norman@bigoprojects.co.za',      password: 'BigO2026!',  pass: 'BigO2026!',  name: 'Norman',       role: 'Administrator', initials: 'N' },
+  { email: 'fielduser@bigoprojects.co.za',   password: 'Field123!',  pass: 'Field123!',  name: 'Field User',   role: 'Team Leader',   initials: 'F' },
+  { email: 'teamleader@bigoprojects.co.za',  password: 'Field123!',  pass: 'Field123!',  name: 'Thabo Mkhize', role: 'Team Leader',   initials: 'T' },
 ];
 let currentUser = null;
+let CU = null;
 let showVoidRows = false;
 
 /* ── AUTH ── */
@@ -2997,12 +2999,14 @@ function doLogin() {
   if (!user) { errEl.classList.add('visible'); return; }
   errEl.classList.remove('visible');
   currentUser = user;
+  CU = user; // sync Stage 2 ref
   document.getElementById('user-name').textContent = user.name;
   document.getElementById('user-role').textContent = user.role;
   document.getElementById('user-avatar').textContent = user.initials;
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app-shell').classList.add('visible');
   initDashboard();
+  initStage2();
   showToast(`👋 Welcome back, ${user.name}!`, 'success');
 }
 
@@ -3027,6 +3031,7 @@ function doRegister() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app-shell').classList.add('visible');
   initDashboard();
+  initStage2();
   showToast(`✅ Account created! Welcome, ${newUser.name}!`, 'success');
 }
 
@@ -3642,11 +3647,7 @@ if (document.getElementById('dash-date')) {
 ═══════════════════════════════════════════════════ */
 
 /* ── USERS ── */
-const USERS = [
-  { email:'norman@bigoprojects.co.za', pass:'BigO2026!', name:'Norman', role:'Administrator', initials:'N' },
-  { email:'teamleader@bigoprojects.co.za', pass:'Field123!', name:'Thabo Mkhize', role:'Team Leader', initials:'T' },
-];
-let CU = null; // current user
+// USERS merged above — see unified USERS declaration
 let mobileOffline = false;
 let currentStep = 1;
 let boqRows = [];
@@ -3666,6 +3667,7 @@ function authTab(tab, el) {
 
 function loginUser(u) {
   CU = u;
+  currentUser = u; // sync Stage 1 ref
   document.getElementById('u-name').textContent = u.name;
   document.getElementById('u-role').textContent = u.role;
   document.getElementById('u-avatar').textContent = u.initials;
