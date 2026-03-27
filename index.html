@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>ClaimSync v3.0 — Big O Projects (Pty) Ltd</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
+/* ═══════════════════════════════════════════
+   CLAIMSYNC v3.0 — CSS DESIGN SYSTEM
+   © 2026 Big O Projects (Pty) Ltd
+═══════════════════════════════════════════ */
 :root{
   --navy:#0A2D5E;--navy-l:#1A4A8A;--navy-d:#071D3E;
   --gold:#C9982A;--gold-l:#F5C842;--gold-p:#FEF8E7;
@@ -33,9 +37,9 @@ input,select,textarea,button{font-family:var(--font)}
 ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.14);border-radius:4px}
 
 /* ── AUTH ── */
-#auth-screen{position:fixed;inset:0;z-index:9999;background:var(--navy);display:flex;align-items:center;justify-content:center;overflow:auto}
+#auth-screen{position:fixed;inset:0;z-index:9999;background:var(--navy);display:flex;align-items:center;justify-content:center;overflow:auto;padding:16px}
 .auth-bg-hex{position:absolute;font-size:300px;line-height:1;color:rgba(255,255,255,0.025);user-select:none;pointer-events:none}
-.auth-card{position:relative;z-index:2;background:white;border-radius:20px;width:420px;max-width:calc(100vw - 32px);box-shadow:0 40px 80px rgba(0,0,0,0.35);overflow:hidden;animation:authUp .4s cubic-bezier(.22,1,.36,1)}
+.auth-card{position:relative;z-index:2;background:white;border-radius:20px;width:420px;max-width:100%;box-shadow:0 40px 80px rgba(0,0,0,0.35);overflow:hidden;animation:authUp .4s cubic-bezier(.22,1,.36,1)}
 @keyframes authUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
 .auth-hdr{background:var(--navy);padding:28px 32px 24px;text-align:center}
 .auth-logo{font-size:26px;font-weight:700;color:white;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
@@ -70,17 +74,19 @@ input,select,textarea,button{font-family:var(--font)}
 #app.on{display:flex}
 
 /* ── TOPBAR ── */
-.topbar{height:var(--topbar-h);background:var(--navy);display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.05)}
+.topbar{height:var(--topbar-h);background:var(--navy);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.05)}
+.tb-hamburger{display:none;background:none;border:none;color:white;font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:background .15s;flex-shrink:0}
+.tb-hamburger:hover{background:rgba(255,255,255,.1)}
 .tb-logo{font-size:16px;font-weight:700;color:white;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
 .tb-logo .hex{color:var(--gold)}
 .tb-badge{background:rgba(201,152,42,.2);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:20px;border:1px solid rgba(201,152,42,.3)}
 .tb-spacer{flex:1}
-.tb-sync{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22C55E;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;cursor:pointer}
-.sync-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse 2s infinite}
+.tb-sync{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22C55E;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .tb-user{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 8px;border-radius:8px;transition:background .15s;position:relative}
 .tb-user:hover{background:rgba(255,255,255,.08)}
-.tb-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.tb-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .tb-name{font-size:12px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.2}
 .tb-role{font-size:10px;color:rgba(255,255,255,.4)}
 .user-dd{position:absolute;top:calc(100% + 8px);right:0;background:white;border-radius:10px;box-shadow:var(--shadow-lg);width:190px;z-index:500;border:1px solid var(--border);display:none;overflow:hidden;animation:ddDown .15s ease}
@@ -89,13 +95,17 @@ input,select,textarea,button{font-family:var(--font)}
 .dd-item{padding:10px 16px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .1s}
 .dd-item:hover{background:var(--bg)}
 .dd-item.danger{color:var(--red)}
-.dd-div{border:none;border-top:1px solid var(--border-md)}
+.dd-div{border:none;border-top:1px solid var(--border-md);margin:0;padding:0}
 
 /* ── LAYOUT ── */
-.main-wrap{display:flex;flex:1;overflow:hidden}
+.main-wrap{display:flex;flex:1;overflow:hidden;position:relative}
+
+/* ── SIDEBAR OVERLAY (mobile) ── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;backdrop-filter:blur(2px)}
+.sidebar-overlay.open{display:block}
 
 /* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar-w);background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto;padding:10px 0}
+.sidebar{width:var(--sidebar-w);background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto;padding:10px 0;transition:transform .25s cubic-bezier(.22,1,.36,1);z-index:201}
 .sidebar::-webkit-scrollbar{width:0}
 .nav-sec{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 18px 5px}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:all .14s;color:rgba(255,255,255,.5);font-size:12.5px;font-weight:500;position:relative;margin:1px 8px;border-radius:8px}
@@ -127,7 +137,7 @@ input,select,textarea,button{font-family:var(--font)}
 
 /* ── CARDS ── */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
-.card-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .card-title{font-size:13px;font-weight:700;color:var(--navy)}
 .card-sub{font-size:11px;color:var(--muted);margin-top:2px}
 .card-body{padding:16px 18px}
@@ -143,12 +153,13 @@ input,select,textarea,button{font-family:var(--font)}
 .btn-green{background:var(--green);color:white;border-color:var(--green)}
 .btn-red{background:var(--red);color:white;border-color:var(--red)}
 .btn-teal{background:var(--teal);color:white;border-color:var(--teal)}
+.btn-amber{background:var(--amber);color:white;border-color:var(--amber)}
 .btn-sm{padding:6px 12px;font-size:11.5px}
 .btn-xs{padding:4px 9px;font-size:10.5px}
 .btn-full{width:100%;justify-content:center}
 
 /* ── STATS ── */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
 .stat{background:var(--card);border-radius:var(--radius);padding:16px 18px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:default}
 .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 .stat.s-navy{background:var(--navy)}.stat.s-gold{background:linear-gradient(135deg,#B8831F,var(--gold))}
@@ -170,10 +181,10 @@ input,select,textarea,button{font-family:var(--font)}
 .tbl td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 .tbl tbody tr{cursor:pointer;transition:background .1s}
 .tbl tbody tr:hover{background:#F8F9FC}
-.tbl-wrap{overflow-x:auto;max-height:420px;overflow-y:auto}
+.tbl-wrap{overflow-x:auto;max-height:420px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 
 /* ── BADGES ── */
-.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
 .b-paid{background:var(--green-p);color:var(--green)}
 .b-outstanding{background:var(--red-p);color:var(--red)}
 .b-draft{background:#F3F4F6;color:var(--muted)}
@@ -188,6 +199,10 @@ input,select,textarea,button{font-family:var(--font)}
 .b-low{background:var(--green-p);color:var(--green)}
 .b-navy{background:#EAF0FB;color:var(--navy)}
 .b-purple{background:var(--purple-l);color:var(--purple)}
+.b-teal{background:var(--teal-l);color:var(--teal)}
+.b-green{background:var(--green-p);color:var(--green)}
+.b-amber{background:var(--amber-p);color:var(--amber)}
+.b-red{background:var(--red-p);color:var(--red)}
 .b-coming{background:#F3F4F6;color:var(--muted)}
 
 /* ── FORMS ── */
@@ -200,7 +215,7 @@ textarea.fi{resize:vertical}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fgrid .full{grid-column:span 2}
 .filter-bar{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#FAFBFD}
-.fi-search{border:1.5px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 12px;font-size:12.5px;font-family:var(--font);background:white;outline:none;transition:border-color .15s;color:var(--text);flex:1;min-width:180px}
+.fi-search{border:1.5px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 12px;font-size:12.5px;font-family:var(--font);background:white;outline:none;transition:border-color .15s;color:var(--text);flex:1;min-width:150px}
 .fi-search:focus{border-color:var(--navy)}
 .fi-sel{border:1.5px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 12px;font-size:12.5px;font-family:var(--font);background:white;outline:none;color:var(--text)}
 
@@ -213,12 +228,12 @@ textarea.fi{resize:vertical}
 .alert-icon{font-size:20px;flex-shrink:0;line-height:1;margin-top:1px}
 .alert-title{font-weight:700;color:var(--navy);margin-bottom:3px}
 .alert-body{font-size:12px;color:var(--text);line-height:1.5}
-.alert-actions{margin-top:10px;display:flex;gap:8px}
+.alert-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
 
 /* ── MODALS ── */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(2px);padding:16px}
 .modal-ov.open{display:flex}
-.modal{background:white;border-radius:16px;box-shadow:var(--shadow-lg);width:560px;max-width:calc(100vw - 32px);max-height:calc(100vh - 64px);display:flex;flex-direction:column;animation:mslide .2s ease}
+.modal{background:white;border-radius:16px;box-shadow:var(--shadow-lg);width:560px;max-width:100%;max-height:calc(100vh - 32px);display:flex;flex-direction:column;animation:mslide .2s ease}
 .modal-lg{width:760px}
 @keyframes mslide{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
 .modal-hdr{padding:18px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -226,25 +241,26 @@ textarea.fi{resize:vertical}
 .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);line-height:1;padding:0}
 .modal-close:hover{color:var(--text)}
 .modal-body{padding:22px;overflow-y:auto;flex:1}
-.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;flex-wrap:wrap}
 
 /* ── TOAST ── */
-.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:9990;display:flex;flex-direction:column;gap:8px}
-.toast{background:#1F2937;color:white;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;max-width:340px}
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:9990;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:#1F2937;color:white;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;max-width:340px;pointer-events:auto}
 .toast.ok{background:#065F46;border-left:3px solid var(--green-l)}
 .toast.err{background:#7F1D1D;border-left:3px solid var(--red)}
 .toast.inf{background:#1E3A5F;border-left:3px solid #60A5FA}
 .toast.warn{background:#78350F;border-left:3px solid var(--amber)}
 @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+@keyframes toastOut{from{opacity:1;transform:none}to{opacity:0;transform:translateX(20px)}}
 
 /* ── MISC ── */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-@media(max-width:900px){.two-col,.three-col{grid-template-columns:1fr}}
 .pb{background:rgba(0,0,0,.07);border-radius:4px;height:6px;overflow:hidden}
 .pb-fill{height:100%;border-radius:4px;transition:width .4s ease}
-.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border-md)}
-.tab{padding:9px 16px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border-md);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-bar::-webkit-scrollbar{height:0}
+.tab{padding:9px 16px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--navy);border-bottom-color:var(--navy)}
 .chart-wrap{position:relative;height:220px}
@@ -257,15 +273,85 @@ textarea.fi{resize:vertical}
 .mono{font-family:var(--mono)}
 .td-bold{font-weight:700}
 .td-muted{color:var(--muted)}
-.vat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12.5px}
+.vat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12.5px;gap:8px}
 .vat-row.total{background:#F4F5F9;font-weight:700;font-size:13px}
 .coming-soon{background:var(--amber-p);border:1px solid rgba(217,119,6,.2);border-radius:var(--radius);padding:24px;text-align:center}
 .coming-icon{font-size:40px;margin-bottom:12px}
 .coming-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
 .coming-body{font-size:12.5px;color:var(--muted);max-width:360px;margin:0 auto 16px}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤ 960px)
+═══════════════════════════════════════════ */
+@media(max-width:960px){
+  :root{--sidebar-w:280px}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);z-index:201}
+  .sidebar.open{transform:translateX(0)}
+  .tb-hamburger{display:flex;align-items:center;justify-content:center}
+  .tb-badge{display:none}
+  .tb-sync{display:none}
+  .content{padding:16px}
+  .two-col{grid-template-columns:1fr}
+  .three-col{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 600px)
+═══════════════════════════════════════════ */
+@media(max-width:600px){
+  html,body{overflow:auto}
+  #app{height:auto;min-height:100%}
+  .main-wrap{overflow:visible}
+  .content{overflow:visible;padding:12px;gap:12px}
+  .ph{flex-direction:column;align-items:flex-start}
+  .ph-title{font-size:18px}
+  .ph-actions{width:100%}
+  .ph-actions .btn{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .sv{font-size:18px}
+  .card-hdr{flex-direction:column;align-items:flex-start}
+  .card-body{padding:12px}
+  .tbl-wrap{max-height:none}
+  .filter-bar{gap:8px}
+  .fi-search{min-width:100%;flex:none}
+  .fgrid{grid-template-columns:1fr}
+  .fgrid .full{grid-column:span 1}
+  .modal{border-radius:12px 12px 0 0;position:fixed;bottom:0;left:0;right:0;max-height:90vh;width:100%}
+  .modal-ov{align-items:flex-end;padding:0}
+  .toast-wrap{bottom:12px;right:12px;left:12px}
+  .toast{max-width:100%}
+  .tb-name,.tb-role{display:none}
+  .auth-body{padding:20px}
+  .auth-hdr{padding:20px}
+  .three-col{grid-template-columns:1fr}
+  .two-col{grid-template-columns:1fr}
+  .btn-sm{font-size:11px;padding:5px 10px}
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE BOTTOM NAV (≤ 600px)
+═══════════════════════════════════════════ */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--navy);border-top:1px solid rgba(255,255,255,.1);z-index:150;padding:6px 0 env(safe-area-inset-bottom,0)}
+@media(max-width:600px){
+  .mobile-nav{display:flex}
+  .content{padding-bottom:80px}
+}
+.mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;cursor:pointer;color:rgba(255,255,255,.45);transition:color .15s;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.mob-nav-item .m-icon{font-size:18px;line-height:1}
+.mob-nav-item.active{color:var(--gold)}
+
+/* ═══════════════════════════════════════════
+   DEVICE BADGE (for demo awareness)
+═══════════════════════════════════════════ */
+.device-badge{display:none;position:fixed;top:60px;right:12px;background:rgba(10,45,94,.9);color:rgba(255,255,255,.7);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:20px;z-index:99;text-transform:uppercase}
+@media(max-width:600px){.device-badge{display:block}}
 </style>
 </head>
 <body>
+
+<!-- DEVICE BADGE -->
+<div class="device-badge" id="device-badge">📱 Mobile View</div>
 
 <!-- AUTH -->
 <div id="auth-screen">
@@ -290,11 +376,11 @@ textarea.fi{resize:vertical}
       <div class="auth-divider">or sign in manually</div>
       <div class="auth-fg">
         <label class="auth-label">Email Address</label>
-        <input class="auth-input" type="email" id="login-email" placeholder="you@bigoprojects.co.za">
+        <input class="auth-input" type="email" id="login-email" placeholder="you@bigoprojects.co.za" autocomplete="email">
       </div>
       <div class="auth-fg">
         <label class="auth-label">Password</label>
-        <input class="auth-input" type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <input class="auth-input" type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" autocomplete="current-password">
       </div>
       <div class="auth-err" id="login-err">Invalid email or password. Please try again.</div>
       <button class="auth-btn" onclick="doLogin()">Sign In to ClaimSync →</button>
@@ -310,11 +396,15 @@ textarea.fi{resize:vertical}
 <!-- TOAST -->
 <div class="toast-wrap" id="toasts"></div>
 
+<!-- SIDEBAR OVERLAY (mobile/tablet) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <!-- APP SHELL -->
 <div id="app">
 
   <!-- TOPBAR -->
   <div class="topbar">
+    <button class="tb-hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
     <div class="tb-logo" onclick="showPanel('dashboard')">
       <span class="hex">⬡</span> ClaimSync<span style="color:var(--gold)">.</span>
     </div>
@@ -330,7 +420,7 @@ textarea.fi{resize:vertical}
         <div class="tb-role" id="tb-role">Administrator</div>
       </div>
       <div class="user-dd" id="user-dd">
-        <div class="dd-item" onclick="showPanel('settings')">⚙️ Settings</div>
+        <div class="dd-item" onclick="showPanel('settings');closeDD()">⚙️ Settings</div>
         <div class="dd-item">👤 My Profile</div>
         <div class="dd-item">🔑 Change Password</div>
         <hr class="dd-div">
@@ -343,7 +433,7 @@ textarea.fi{resize:vertical}
   <div class="main-wrap">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
       <div class="nav-sec">Main</div>
       <div class="nav-item active" id="nav-dashboard" onclick="showPanel('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
       <div class="nav-item" id="nav-clients" onclick="showPanel('clients')"><span class="nav-icon">👥</span> Clients</div>
@@ -392,31 +482,31 @@ textarea.fi{resize:vertical}
   </div>
 
   <div class="stats-grid">
-    <div class="stat s-navy" onclick="showPanel('invoices')">
+    <div class="stat s-navy" onclick="showPanel('invoices')" style="cursor:pointer">
       <div class="sl">Grand Total Collected</div><div class="sv">R 1,164,559</div>
       <div class="ss">Incl. VAT · 83 claims</div><div class="si">💰</div>
     </div>
-    <div class="stat s-gold" onclick="showPanel('invoices')">
+    <div class="stat s-gold" onclick="showPanel('invoices')" style="cursor:pointer">
       <div class="sl">Bigo Direct</div><div class="sv">R 849,894</div>
       <div class="ss">60 invoices · 59 paid</div><div class="si">🏢</div>
     </div>
-    <div class="stat s-teal" onclick="showPanel('invoices')">
+    <div class="stat s-teal" onclick="showPanel('invoices')" style="cursor:pointer">
       <div class="sl">Phahamo Subcontract</div><div class="sv">R 314,665</div>
       <div class="ss">23 invoices · all paid</div><div class="si">🤝</div>
     </div>
-    <div class="stat s-green" onclick="showPanel('vatsars')">
+    <div class="stat s-green" onclick="showPanel('vatsars')" style="cursor:pointer">
       <div class="sl">Output VAT</div><div class="sv">R 151,899</div>
       <div class="ss">15% · VAT201 pending</div><div class="si">🧾</div>
     </div>
-    <div class="stat s-red" onclick="showPanel('payments')">
+    <div class="stat s-red" onclick="showPanel('payments')" style="cursor:pointer">
       <div class="sl">Outstanding</div><div class="sv">R 6,264</div>
       <div class="ss">1 claim · Ziphozihle Wonci</div><div class="si">⚠️</div>
     </div>
-    <div class="stat s-navy" onclick="showPanel('vatsars')">
+    <div class="stat s-navy" onclick="showPanel('vatsars')" style="cursor:pointer">
       <div class="sl">Net VAT Payable</div><div class="sv">R 138,799</div>
       <div class="ss">Due 30 Apr 2026</div><div class="si">🏛️</div>
     </div>
-    <div class="stat s-teal" onclick="showPanel('reports')">
+    <div class="stat s-teal" onclick="showPanel('reports')" style="cursor:pointer">
       <div class="sl">Gross Profit</div><div class="sv">R 663,437</div>
       <div class="ss">65.5% margin</div><div class="si">📈</div>
     </div>
@@ -428,7 +518,7 @@ textarea.fi{resize:vertical}
       <div class="alert-title">Action Required — Outstanding Invoice</div>
       <div class="alert-body">ZIPHOZIHLE WONCI · HLB/2026/466333 · BIG O-INV-0810 · R6,264.05 incl. VAT · Invoiced 17 Mar 2026. Send statement to Standard Bank Insurance portal.</div>
       <div class="alert-actions">
-        <button class="btn btn-red btn-xs" onclick="mockAction('View Claim')">View Claim →</button>
+        <button class="btn btn-red btn-xs" onclick="showPanel('claims')">View Claim →</button>
         <button class="btn btn-ghost btn-xs" onclick="showPanel('payments')">Outstanding View</button>
       </div>
     </div>
@@ -509,7 +599,7 @@ textarea.fi{resize:vertical}
       <button class="btn btn-gold btn-sm" onclick="openModal('modal-client')">+ Add Client</button>
     </div>
   </div>
-  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
     <div class="stat"><div class="sl">Total Clients</div><div class="sv">5</div></div>
     <div class="stat"><div class="sl">Subcontractors</div><div class="sv">1</div></div>
     <div class="stat"><div class="sl">Suppliers</div><div class="sv">4</div></div>
@@ -535,7 +625,6 @@ textarea.fi{resize:vertical}
       </table>
     </div>
   </div>
-  <!-- Client Detail Card -->
   <div class="card">
     <div class="card-hdr"><div class="card-title">Client Detail View</div><div class="card-sub">Click any row above to load</div></div>
     <div class="card-body">
@@ -555,7 +644,7 @@ textarea.fi{resize:vertical}
       <button class="btn btn-gold btn-sm" onclick="openModal('modal-quote')">+ Create Quote</button>
     </div>
   </div>
-  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
     <div class="stat"><div class="sl">Total Quotes</div><div class="sv">7</div><div class="ss">This month</div></div>
     <div class="stat s-amber"><div class="sl">Pending</div><div class="sv">3</div><div class="ss">Awaiting response</div></div>
     <div class="stat s-green"><div class="sl">Accepted</div><div class="sv">3</div><div class="ss">Converted to invoice</div></div>
@@ -567,13 +656,13 @@ textarea.fi{resize:vertical}
       <table class="tbl">
         <thead><tr><th>Quote No.</th><th>Client</th><th>Description</th><th>Date</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
         <tbody>
-          <tr><td class="mono td-bold">QTE-001</td><td>NAZEER ADAM</td><td>Roof repair — storm damage</td><td>10 Jan</td><td class="mono">R 118,026.00</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Convert to Invoice')">→ Invoice</button></td></tr>
-          <tr><td class="mono td-bold">QTE-002</td><td>SONJA DE BRUIN</td><td>Flood damage — ceiling + floor</td><td>15 Jan</td><td class="mono">R 63,510.00</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Convert to Invoice')">→ Invoice</button></td></tr>
-          <tr><td class="mono td-bold">QTE-003</td><td>JEAN FERREIRA</td><td>Gutter + roof sheets</td><td>20 Jan</td><td class="mono">R 3,218.50</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder')">Remind</button></td></tr>
-          <tr><td class="mono td-bold">QTE-004</td><td>STANLEY KHAN</td><td>Hail damage assessment</td><td>22 Jan</td><td class="mono">R 1,083.30</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder')">Remind</button></td></tr>
-          <tr><td class="mono td-bold">QTE-005</td><td>MRS E KRIEL</td><td>Call-out assessment fee</td><td>25 Jan</td><td class="mono">R 826.85</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder')">Remind</button></td></tr>
-          <tr><td class="mono td-bold">QTE-006</td><td>THABO MOLEFE</td><td>Interior wall damp treatment</td><td>28 Jan</td><td class="mono">R 7,654.30</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View')">View</button></td></tr>
-          <tr><td class="mono td-bold">QTE-007</td><td>FATIMA OSMAN</td><td>Windows replacement</td><td>01 Feb</td><td class="mono">R 3,218.00</td><td><span class="badge b-void">Declined</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Archive')">Archive</button></td></tr>
+          <tr><td class="mono td-bold">QTE-001</td><td>NAZEER ADAM</td><td>Roof repair — storm damage</td><td>10 Jan</td><td class="mono">R 118,026.00</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Convert QTE-001 to Invoice')">→ Invoice</button></td></tr>
+          <tr><td class="mono td-bold">QTE-002</td><td>SONJA DE BRUIN</td><td>Flood damage — ceiling + floor</td><td>15 Jan</td><td class="mono">R 63,510.00</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Convert QTE-002 to Invoice')">→ Invoice</button></td></tr>
+          <tr><td class="mono td-bold">QTE-003</td><td>JEAN FERREIRA</td><td>Gutter + roof sheets</td><td>20 Jan</td><td class="mono">R 3,218.50</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder QTE-003')">Remind</button></td></tr>
+          <tr><td class="mono td-bold">QTE-004</td><td>STANLEY KHAN</td><td>Hail damage assessment</td><td>22 Jan</td><td class="mono">R 1,083.30</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder QTE-004')">Remind</button></td></tr>
+          <tr><td class="mono td-bold">QTE-005</td><td>MRS E KRIEL</td><td>Call-out assessment fee</td><td>25 Jan</td><td class="mono">R 826.85</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder QTE-005')">Remind</button></td></tr>
+          <tr><td class="mono td-bold">QTE-006</td><td>THABO MOLEFE</td><td>Interior wall damp treatment</td><td>28 Jan</td><td class="mono">R 7,654.30</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View QTE-006')">View</button></td></tr>
+          <tr><td class="mono td-bold">QTE-007</td><td>FATIMA OSMAN</td><td>Windows replacement</td><td>01 Feb</td><td class="mono">R 3,218.00</td><td><span class="badge b-void">Declined</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Archive QTE-007')">Archive</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -581,7 +670,7 @@ textarea.fi{resize:vertical}
   <div class="card">
     <div class="card-hdr"><div class="card-title">Quote Templates</div><div class="card-sub">Pre-built templates for common repair types</div></div>
     <div class="card-body">
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
         <div style="border:1px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'" onclick="mockAction('Use Storm Damage template')">
           <div style="font-size:22px;margin-bottom:6px">🌩️</div><div style="font-weight:700;font-size:12.5px">Storm Damage</div>
           <div style="font-size:11px;color:var(--muted);margin-top:3px">Roof, ceiling, gutters</div>
@@ -617,7 +706,7 @@ textarea.fi{resize:vertical}
       <button class="btn btn-gold btn-sm" onclick="openModal('modal-invoice')">+ Add Invoice</button>
     </div>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
     <div style="background:var(--navy);color:white;border-radius:10px;padding:14px 16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin-bottom:6px">Grand Total</div><div style="font-size:20px;font-weight:700;font-family:var(--mono)">R 1,164,559</div><div style="font-size:10px;opacity:.5;margin-top:3px">Incl. VAT · 83 invoices</div></div>
     <div style="background:#EAF0FB;border-radius:10px;padding:14px 16px;border:1px solid rgba(10,45,94,.1)"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Bigo Direct</div><div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--navy)">R 849,894</div><div style="font-size:10px;color:var(--muted);margin-top:3px">60 invoices</div></div>
     <div style="background:var(--purple-l);border-radius:10px;padding:14px 16px;border:1px solid rgba(75,40,135,.1)"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Phahamo</div><div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--purple)">R 314,665</div><div style="font-size:10px;color:var(--muted);margin-top:3px">23 invoices</div></div>
@@ -645,7 +734,6 @@ textarea.fi{resize:vertical}
       ⊘ 4 void invoices excluded: INV-0725, INV-0726, INV-0741, INV-0797
     </div>
   </div>
-  <!-- Recurring Invoices -->
   <div class="card">
     <div class="card-hdr"><div class="card-title">Recurring Invoices</div><div class="card-sub">Auto-generated on schedule</div></div>
     <div class="card-body">
@@ -664,7 +752,7 @@ textarea.fi{resize:vertical}
       <button class="btn btn-gold btn-sm" onclick="openModal('modal-payment')">+ Record Payment</button>
     </div>
   </div>
-  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
     <div class="stat s-green"><div class="sl">Total Received</div><div class="sv">R 1,158,295</div><div class="ss">82 payments</div></div>
     <div class="stat s-red"><div class="sl">Outstanding</div><div class="sv">R 6,264</div><div class="ss">1 invoice overdue</div></div>
     <div class="stat"><div class="sl">Avg Days to Pay</div><div class="sv">8.3</div><div class="ss">Days from invoice</div></div>
@@ -715,7 +803,7 @@ textarea.fi{resize:vertical}
       <button class="btn btn-gold btn-sm" onclick="showPanel('field')">+ New Assessment</button>
     </div>
   </div>
-  <div class="stats-grid" style="grid-template-columns:repeat(5,1fr)">
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
     <div class="stat s-navy"><div class="sl">Total Claims</div><div class="sv">83</div><div class="ss">CAT Event 2026</div></div>
     <div class="stat s-green"><div class="sl">Fully Paid</div><div class="sv">71</div><div class="ss">Completed</div></div>
     <div class="stat s-amber"><div class="sl">In Progress</div><div class="sv">8</div><div class="ss">On site</div></div>
@@ -724,18 +812,18 @@ textarea.fi{resize:vertical}
   </div>
   <div class="card">
     <div class="filter-bar">
-      <input class="fi-search" placeholder="🔍 Search claim, client, assessor...">
+      <input class="fi-search" placeholder="🔍 Search claim, client, assessor..." oninput="filterTable('tbl-claims',this.value)">
       <select class="fi-sel"><option>All Status</option><option>New</option><option>Assigned</option><option>In Progress</option><option>Completed</option><option>Invoiced</option></select>
       <select class="fi-sel"><option>All Entities</option><option>Bigo Direct</option><option>Phahamo Sub</option></select>
     </div>
     <div class="tbl-wrap">
-      <table class="tbl"><thead><tr><th>#</th><th>Claim Ref</th><th>Policy Holder</th><th>Address</th><th>Peril</th><th>Assessor</th><th>Entity</th><th>Status</th><th>Action</th></tr></thead>
+      <table class="tbl" id="tbl-claims"><thead><tr><th>#</th><th>Claim Ref</th><th>Policy Holder</th><th>Address</th><th>Peril</th><th>Assessor</th><th>Entity</th><th>Status</th><th>Action</th></tr></thead>
       <tbody id="claims-tbody"></tbody></table>
     </div>
   </div>
   <div class="alert info">
     <div class="alert-icon">💡</div>
-    <div><div class="alert-title">Link Claims to Invoices & Assessments</div>
+    <div><div class="alert-title">Link Claims to Invoices &amp; Assessments</div>
     <div class="alert-body">Each claim can be linked to its invoice and field assessment. Use the action buttons above to navigate between modules.</div>
     <div class="alert-actions">
       <button class="btn btn-navy btn-xs" onclick="showPanel('invoices')">🧾 View Invoices</button>
@@ -778,14 +866,13 @@ textarea.fi{resize:vertical}
     <div class="card">
       <div class="card-hdr"><div class="card-title">📷 Photo Upload</div><div class="card-sub">AI auto-categorises by damage type</div></div>
       <div class="card-body">
-        <div style="border:2px dashed var(--border-md);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s" onclick="mockAction('Upload photos')" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'">
+        <div style="border:2px dashed var(--border-md);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .2s" onclick="mockAction('Upload photos')" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'">
           <div style="font-size:40px;margin-bottom:10px">📷</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:6px">Drop photos or click to upload</div>
           <div style="font-size:12px;color:var(--muted)">JPG, PNG · AI classifies: Roof · Ceiling · Interior · Damage Detail</div>
-          <input type="file" accept="image/*" multiple style="display:none" id="photo-upload">
-          <div style="margin-top:14px;display:flex;gap:8px;justify-content:center">
-            <button class="btn btn-navy btn-sm" onclick="mockAction('Camera capture')">📸 Camera</button>
-            <button class="btn btn-ghost btn-sm" onclick="mockAction('File upload')">📁 Files</button>
+          <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-navy btn-sm" onclick="event.stopPropagation();mockAction('Camera capture')">📸 Camera</button>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();mockAction('File upload')">📁 Files</button>
           </div>
         </div>
         <div style="margin-top:12px;background:var(--green-p);border-radius:8px;padding:10px 12px;font-size:11.5px;border:1px solid rgba(26,122,74,.2)">
@@ -794,22 +881,21 @@ textarea.fi{resize:vertical}
       </div>
     </div>
   </div>
-  <!-- Job Cards Mobile View Placeholder -->
   <div class="card">
     <div class="card-hdr"><div class="card-title">📱 Mobile Job Cards</div><div class="card-sub">Team leader field interface</div></div>
     <div class="card-body">
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
         <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
           <div style="background:var(--amber-p);padding:10px 14px;border-bottom:2px solid #FDE68A"><div style="font-size:11px;color:var(--muted);font-family:var(--mono)">JC-0082</div><div style="font-weight:700;font-size:13px;color:var(--navy)">SONJA DE BRUIN</div></div>
           <div style="padding:10px 14px;font-size:12px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Peril</span><span>Flood Damage</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Assessor</span><span>Moses Nkosi</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Status</span><span class="badge b-progress">In Progress</span></div></div>
-          <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-0082')">View</button><button class="btn btn-navy btn-xs" onclick="mockAction('Update status')">Update</button></div>
+          <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-0082')">View</button><button class="btn btn-navy btn-xs" onclick="mockAction('Update JC-0082')">Update</button></div>
         </div>
         <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
           <div style="background:#EDE9FE;padding:10px 14px;border-bottom:2px solid #C4B5FD"><div style="font-size:11px;color:var(--muted);font-family:var(--mono)">JC-0081</div><div style="font-weight:700;font-size:13px;color:var(--navy)">AUGUST KROG</div></div>
           <div style="padding:10px 14px;font-size:12px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Peril</span><span>Hail Damage</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Assessor</span><span>Thabo Mkhize</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Status</span><span class="badge b-progress">In Progress</span></div></div>
-          <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-0081')">View</button><button class="btn btn-navy btn-xs" onclick="mockAction('Update status')">Update</button></div>
+          <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-0081')">View</button><button class="btn btn-navy btn-xs" onclick="mockAction('Update JC-0081')">Update</button></div>
         </div>
-        <div style="border:2px dashed var(--border-md);border-radius:10px;display:flex;align-items:center;justify-content:center;padding:30px;cursor:pointer;flex-direction:column;gap:8px;color:var(--muted)" onclick="mockAction('New job card')">
+        <div style="border:2px dashed var(--border-md);border-radius:10px;display:flex;align-items:center;justify-content:center;padding:30px;cursor:pointer;flex-direction:column;gap:8px;color:var(--muted);min-height:120px" onclick="mockAction('New job card')">
           <div style="font-size:28px">+</div><div style="font-size:12px;font-weight:600">New Job Card</div>
         </div>
       </div>
@@ -828,7 +914,7 @@ textarea.fi{resize:vertical}
       <button class="btn btn-gold btn-sm" onclick="openModal('modal-expense')">+ Add Expense</button>
     </div>
   </div>
-  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
     <div class="stat"><div class="sl">Total Expenses</div><div class="sv">R 349,223</div><div class="ss">Jan–Mar 2026</div></div>
     <div class="stat s-green"><div class="sl">Input VAT Claimed</div><div class="sv">R 13,100</div><div class="ss">From VAT suppliers</div></div>
     <div class="stat s-amber"><div class="sl">Fuel (No VAT)</div><div class="sv">R 18,432</div><div class="ss">SARS exclusion</div></div>
@@ -842,7 +928,7 @@ textarea.fi{resize:vertical}
           <div style="font-size:36px;margin-bottom:10px">📄</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:6px">Photograph Supplier Invoice</div>
           <div style="font-size:12px;color:var(--muted)">AI reads: supplier name, VAT no., date, amount</div>
-          <div style="margin-top:12px"><button class="btn btn-navy btn-sm" onclick="mockOCR()">📷 Scan Now (Mock)</button></div>
+          <div style="margin-top:12px"><button class="btn btn-navy btn-sm" onclick="event.stopPropagation();mockOCR()">📷 Scan Now (Mock)</button></div>
         </div>
         <div style="margin-top:12px;padding:10px 12px;background:var(--green-p);border-radius:8px;font-size:12px;border:1px solid rgba(26,122,74,.2)">
           ✅ <strong>Last scan:</strong> Builders Warehouse · R 1,265.00 · VAT R 164.78 · 15 Jan 2026
@@ -894,9 +980,9 @@ textarea.fi{resize:vertical}
     <div class="tab" onclick="switchAccTab(this,'acc-ledger')">📋 General Ledger</div>
     <div class="tab" onclick="switchAccTab(this,'acc-trial')">⚖️ Trial Balance</div>
   </div>
-  <!-- COA -->
+  <!-- Chart of Accounts -->
   <div id="acc-coa">
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px">
       <div style="background:var(--blue-p);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Assets')"><div style="font-size:22px;margin-bottom:6px">🏦</div><div style="font-weight:700;font-size:13px;color:var(--blue)">Assets</div><div style="font-size:10px;color:var(--muted)">1000–1999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--blue)">R 913,357</div></div>
       <div style="background:var(--red-p);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Liabilities')"><div style="font-size:22px;margin-bottom:6px">📉</div><div style="font-weight:700;font-size:13px;color:var(--red)">Liabilities</div><div style="font-size:10px;color:var(--muted)">2000–2999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--red)">R 168,433</div></div>
       <div style="background:var(--teal-l);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Equity')"><div style="font-size:22px;margin-bottom:6px">💼</div><div style="font-weight:700;font-size:13px;color:var(--teal)">Equity</div><div style="font-size:10px;color:var(--muted)">3000–3999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--teal)">R 744,924</div></div>
@@ -909,17 +995,20 @@ textarea.fi{resize:vertical}
         <tbody>
           <tr><td class="mono">1010</td><td>Bank Account — FNB Operating</td><td><span class="badge b-navy">Assets</span></td><td style="color:var(--muted)">Current Asset</td><td class="mono" style="text-align:right">R 849,893.81</td></tr>
           <tr><td class="mono">1100</td><td>Accounts Receivable</td><td><span class="badge b-navy">Assets</span></td><td style="color:var(--muted)">Current Asset</td><td class="mono" style="text-align:right">R 6,264.05</td></tr>
+          <tr><td class="mono">1300</td><td>Equipment &amp; Tools</td><td><span class="badge b-navy">Assets</span></td><td style="color:var(--muted)">Fixed Asset</td><td class="mono" style="text-align:right">R 45,200.00</td></tr>
+          <tr><td class="mono">2100</td><td>Accounts Payable</td><td><span class="badge b-red">Liabilities</span></td><td style="color:var(--muted)">Current Liability</td><td class="mono" style="text-align:right">R 18,432.00</td></tr>
           <tr><td class="mono">2200</td><td>VAT Payable — Output VAT</td><td><span class="badge b-red">Liabilities</span></td><td style="color:var(--muted)">Current Liability</td><td class="mono" style="text-align:right">R 138,798.91</td></tr>
           <tr><td class="mono">3200</td><td>Retained Earnings</td><td><span class="badge b-teal">Equity</span></td><td style="color:var(--muted)">Retained Earnings</td><td class="mono" style="text-align:right">R 744,924.36</td></tr>
           <tr><td class="mono">4100</td><td>Invoice Revenue — Bigo Direct</td><td><span class="badge b-green">Income</span></td><td style="color:var(--muted)">Operating Revenue</td><td class="mono" style="text-align:right">R 849,893.81</td></tr>
           <tr><td class="mono">4200</td><td>Invoice Revenue — Phahamo Sub</td><td><span class="badge b-green">Income</span></td><td style="color:var(--muted)">Operating Revenue</td><td class="mono" style="text-align:right">R 314,665.46</td></tr>
           <tr><td class="mono">5100</td><td>Subcontractor Costs</td><td><span class="badge b-amber">Expenses</span></td><td style="color:var(--muted)">Direct Cost</td><td class="mono" style="text-align:right">R 248,390.00</td></tr>
+          <tr><td class="mono">5200</td><td>Materials &amp; Hardware</td><td><span class="badge b-amber">Expenses</span></td><td style="color:var(--muted)">Direct Cost</td><td class="mono" style="text-align:right">R 72,150.00</td></tr>
           <tr><td class="mono">5300</td><td>Fuel &amp; Transport</td><td><span class="badge b-amber">Expenses</span></td><td style="color:var(--muted)">Operating Expense</td><td class="mono" style="text-align:right">R 18,432.00</td></tr>
         </tbody></table>
       </div>
     </div>
   </div>
-  <!-- Journals placeholder -->
+  <!-- Journals -->
   <div id="acc-journals" style="display:none">
     <div class="card">
       <div class="card-hdr"><div class="card-title">Journal Entries</div><div class="card-sub">Double-entry · Dr = Cr validation</div></div>
@@ -927,24 +1016,27 @@ textarea.fi{resize:vertical}
         <div class="alert info"><div class="alert-icon">📝</div><div><div class="alert-title">Journal Entry Form</div><div class="alert-body">Post balanced journal entries. Each entry requires Dr = Cr. All entries auto-post to the General Ledger.</div><div class="alert-actions"><button class="btn btn-navy btn-xs" onclick="mockAction('New journal')">+ New Journal</button><button class="btn btn-ghost btn-xs" onclick="mockAction('Load sample')">📋 Load Sample</button></div></div></div>
         <div style="margin-top:14px;background:var(--bg);border-radius:8px;padding:12px;font-size:12px">
           <div style="font-weight:700;color:var(--navy);margin-bottom:8px">Recent Journals</div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span class="mono">JE-0001</span><span>Invoice INV-0810 raised</span><span class="mono" style="color:var(--green)">R 6,264.05</span><span><span class="badge b-active">Posted</span></span></div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span class="mono">JE-0002</span><span>Payment batch — Jan 2026</span><span class="mono" style="color:var(--green)">R 412,841.00</span><span><span class="badge b-active">Posted</span></span></div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0"><span class="mono">JE-0003</span><span>VAT output — Jan 2026</span><span class="mono" style="color:var(--teal)">R 45,621.30</span><span><span class="badge b-active">Posted</span></span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap"><span class="mono">JE-0001</span><span>Invoice INV-0810 raised</span><span class="mono" style="color:var(--green)">R 6,264.05</span><span class="badge b-active">Posted</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap"><span class="mono">JE-0002</span><span>Payment batch — Jan 2026</span><span class="mono" style="color:var(--green)">R 412,841.00</span><span class="badge b-active">Posted</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;gap:8px;flex-wrap:wrap"><span class="mono">JE-0003</span><span>VAT output — Jan 2026</span><span class="mono" style="color:var(--teal)">R 45,621.30</span><span class="badge b-active">Posted</span></div>
         </div>
       </div>
     </div>
   </div>
-  <!-- Ledger placeholder -->
+  <!-- General Ledger -->
   <div id="acc-ledger" style="display:none">
     <div class="card">
       <div class="card-hdr"><div class="card-title">General Ledger</div><div class="card-sub">Select an account to view transactions</div></div>
       <div class="card-body">
-        <div style="display:flex;gap:10px;margin-bottom:14px">
-          <select class="fi" style="flex:1" onchange="mockAction('Load ledger for '+this.value)">
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+          <select class="fi" style="flex:1;min-width:200px" onchange="mockAction('Load ledger for '+this.value)">
             <option>— Select Account —</option>
-            <option>1010 — Bank Account (FNB)</option><option>1100 — Accounts Receivable</option>
-            <option>2200 — VAT Payable</option><option>4100 — Revenue Bigo</option>
+            <option>1010 — Bank Account (FNB)</option>
+            <option>1100 — Accounts Receivable</option>
+            <option>2200 — VAT Payable</option>
+            <option>4100 — Revenue Bigo</option>
           </select>
+          <button class="btn btn-ghost btn-sm" onclick="mockAction('Export ledger')">⬇ Export</button>
         </div>
         <div class="tbl-wrap">
           <table class="tbl"><thead><tr><th>Date</th><th>Reference</th><th>Description</th><th style="text-align:right">Debit</th><th style="text-align:right">Credit</th><th style="text-align:right">Balance</th></tr></thead>
@@ -952,6 +1044,7 @@ textarea.fi{resize:vertical}
             <tr><td>25 Jan</td><td class="mono">PMT-001</td><td>SB Insurance payment batch 1</td><td class="mono" style="text-align:right">R 412,841.00</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono td-bold" style="text-align:right">R 412,841.00</td></tr>
             <tr><td>10 Feb</td><td class="mono">PMT-002</td><td>SB Insurance payment batch 2</td><td class="mono" style="text-align:right">R 214,500.50</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono td-bold" style="text-align:right">R 627,341.50</td></tr>
             <tr><td>15 Feb</td><td class="mono">EXP-001</td><td>Subcontractor payments</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono" style="text-align:right">R 145,200.00</td><td class="mono td-bold" style="text-align:right">R 482,141.50</td></tr>
+            <tr><td>22 Mar</td><td class="mono">PMT-003</td><td>SB Insurance payment batch 3</td><td class="mono" style="text-align:right">R 222,450.31</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono td-bold" style="text-align:right">R 849,893.81</td></tr>
           </tbody></table>
         </div>
       </div>
@@ -959,7 +1052,7 @@ textarea.fi{resize:vertical}
   </div>
   <!-- Trial Balance -->
   <div id="acc-trial" style="display:none">
-    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
       <div class="stat s-navy"><div class="sl">Total Debits</div><div class="sv">R 1,164,559</div></div>
       <div class="stat s-teal"><div class="sl">Total Credits</div><div class="sv">R 1,164,559</div></div>
       <div class="stat s-green"><div class="sl">Balance Check</div><div class="sv" style="font-size:16px">✅ Balanced</div></div>
@@ -991,10 +1084,10 @@ textarea.fi{resize:vertical}
     <div><div class="ph-title">VAT &amp; SARS</div><div class="ph-sub">VAT201 Prep · Input/Output Summary · eFiling · Deadlines</div></div>
     <div class="ph-actions">
       <button class="btn btn-ghost btn-sm" onclick="mockAction('Download VAT201 worksheet')">⬇ VAT201 Prep</button>
-      <button class="btn btn-gold btn-sm" onclick="mockAction('Submit VAT201')">🏛️ Submit VAT201</button>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Submit VAT201 (mock)')">🏛️ Submit VAT201</button>
     </div>
   </div>
-  <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
     <div class="stat s-red"><div class="sl">Output VAT</div><div class="sv">R 151,899</div><div class="ss">On R 1,012,661 excl.</div></div>
     <div class="stat s-green"><div class="sl">Input VAT</div><div class="sv">R 13,100</div><div class="ss">Claimable expenses</div></div>
     <div class="stat s-navy"><div class="sl">Net VAT Payable</div><div class="sv">R 138,799</div><div class="ss">To SARS</div></div>
@@ -1005,22 +1098,22 @@ textarea.fi{resize:vertical}
       <div class="card-hdr"><div class="card-title">VAT201 Worksheet</div><div class="card-sub">Period: Jan–Feb 2026</div></div>
       <div class="card-body">
         <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Output VAT</div>
-        <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-family:var(--font)">Field 1 — Standard-rated supplies (Excl.)</span><strong>R 1,012,660.23</strong></div>
-        <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-family:var(--font)">Field 4 — Output VAT @ 15%</span><strong>R 151,899.04</strong></div>
+        <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 1 — Standard-rated supplies (Excl.)</span><strong>R 1,012,660.23</strong></div>
+        <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 4 — Output VAT @ 15%</span><strong>R 151,899.04</strong></div>
         <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Input VAT</div>
-        <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-family:var(--font)">Field 14 — Standard-rated purchases</span><strong>R 87,334.22</strong></div>
-        <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-family:var(--font)">Field 15 — Input VAT @ 15%</span><strong>R 13,100.13</strong></div>
-        <div style="background:var(--red);color:white;border-radius:6px;padding:12px 14px;font-size:13px;font-weight:700;font-family:var(--mono);display:flex;justify-content:space-between"><span style="font-family:var(--font)">Field 20 — Net VAT Payable</span><strong>R 138,798.91</strong></div>
+        <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 14 — Standard-rated purchases</span><strong>R 87,334.22</strong></div>
+        <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 15 — Input VAT @ 15%</span><strong>R 13,100.13</strong></div>
+        <div style="background:var(--red);color:white;border-radius:6px;padding:12px 14px;font-size:13px;font-weight:700;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 20 — Net VAT Payable</span><strong>R 138,798.91</strong></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-hdr"><div class="card-title">🏛️ SARS eFiling Submission</div><div class="card-sub">Direct API · Inactive (Demo mode)</div></div>
+      <div class="card-hdr"><div class="card-title">🏛️ SARS eFiling Submission</div><div class="card-sub">Direct API · Inactive (Demo)</div></div>
       <div class="card-body">
         <div class="coming-soon">
           <div class="coming-icon">🏛️</div>
           <div class="coming-title">SARS eFiling Integration</div>
           <div class="coming-body">Direct SARS eFiling API submission will be available in Phase 2. VAT201 prep worksheet is ready for manual submission.</div>
-          <button class="btn btn-amber btn-sm" onclick="mockAction('Coming soon — SARS eFiling API')">📋 Download VAT201 Worksheet</button>
+          <button class="btn btn-amber btn-sm" onclick="mockAction('Download VAT201 Worksheet')">📋 Download VAT201 Worksheet</button>
         </div>
       </div>
     </div>
@@ -1035,7 +1128,6 @@ textarea.fi{resize:vertical}
       </tbody></table>
     </div>
   </div>
-  <!-- Filing Deadlines -->
   <div class="card">
     <div class="card-hdr"><div class="card-title">Filing Deadlines &amp; Alerts</div></div>
     <div class="card-body">
@@ -1063,32 +1155,32 @@ textarea.fi{resize:vertical}
       <div class="card-hdr"><div class="card-title">📈 Income Statement</div><div class="card-sub">01 Jan – 27 Mar 2026</div></div>
       <div class="card-body" style="font-size:12px;font-family:var(--mono)">
         <div style="font-weight:700;color:var(--navy);padding:8px 0;border-bottom:2px solid var(--navy);margin-bottom:6px;font-family:var(--font);font-size:13px">REVENUE</div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Invoice Revenue — Bigo Direct</span><span>R 849,893.81</span></div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Invoice Revenue — Phahamo Sub</span><span>R 314,665.46</span></div>
-        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--blue-p);border-radius:4px;margin:6px 0;font-weight:700;color:var(--navy)"><span style="font-family:var(--font)">TOTAL REVENUE (Incl. VAT)</span><span>R 1,164,559.27</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Invoice Revenue — Bigo Direct</span><span>R 849,893.81</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Invoice Revenue — Phahamo Sub</span><span>R 314,665.46</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--blue-p);border-radius:4px;margin:6px 0;font-weight:700;color:var(--navy);gap:8px"><span style="font-family:var(--font)">TOTAL REVENUE (Incl. VAT)</span><span>R 1,164,559.27</span></div>
         <div style="font-weight:700;color:var(--red);padding:8px 0;border-bottom:2px solid var(--red);margin:10px 0 6px;font-family:var(--font);font-size:13px">EXPENSES</div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Subcontractor Costs</span><span style="color:var(--red)">(R 248,390.00)</span></div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Materials &amp; Hardware</span><span style="color:var(--red)">(R 72,150.00)</span></div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Fuel &amp; Transport</span><span style="color:var(--red)">(R 18,432.00)</span></div>
-        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Output VAT (SARS)</span><span style="color:var(--red)">(R 151,899.04)</span></div>
-        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--red-p);border-radius:4px;margin:6px 0;font-weight:700;color:var(--red)"><span style="font-family:var(--font)">TOTAL EXPENSES</span><span>(R 501,122.22)</span></div>
-        <div style="display:flex;justify-content:space-between;padding:10px 8px;background:var(--green-p);border-radius:4px;font-weight:700;font-size:14px;color:var(--green);margin-top:8px"><span style="font-family:var(--font)">NET PROFIT</span><span>R 663,437.05</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Subcontractor Costs</span><span style="color:var(--red)">(R 248,390.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Materials &amp; Hardware</span><span style="color:var(--red)">(R 72,150.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Fuel &amp; Transport</span><span style="color:var(--red)">(R 18,432.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Output VAT (SARS)</span><span style="color:var(--red)">(R 151,899.04)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--red-p);border-radius:4px;margin:6px 0;font-weight:700;color:var(--red);gap:8px"><span style="font-family:var(--font)">TOTAL EXPENSES</span><span>(R 501,122.22)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 8px;background:var(--green-p);border-radius:4px;font-weight:700;font-size:14px;color:var(--green);margin-top:8px;gap:8px"><span style="font-family:var(--font)">NET PROFIT</span><span>R 663,437.05</span></div>
       </div>
     </div>
     <div class="card">
       <div class="card-hdr"><div class="card-title">⚖️ Balance Sheet</div><div class="card-sub">27 Mar 2026</div></div>
       <div class="card-body" style="font-size:12px;font-family:var(--mono)">
         <div style="font-weight:700;color:var(--navy);padding:6px 0;border-bottom:2px solid var(--navy);margin-bottom:6px;font-family:var(--font)">ASSETS</div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Bank Account (1010)</span><span>R 849,893.81</span></div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Accounts Receivable (1100)</span><span>R 6,264.05</span></div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Equipment &amp; Tools (1300)</span><span>R 45,200.00</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 8px;background:var(--blue-p);border-radius:4px;margin:4px 0;font-weight:700;color:var(--navy)"><span style="font-family:var(--font)">TOTAL ASSETS</span><span>R 901,357.86</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Bank Account (1010)</span><span>R 849,893.81</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Accounts Receivable (1100)</span><span>R 6,264.05</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Equipment &amp; Tools (1300)</span><span>R 45,200.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 8px;background:var(--blue-p);border-radius:4px;margin:4px 0;font-weight:700;color:var(--navy);gap:8px"><span style="font-family:var(--font)">TOTAL ASSETS</span><span>R 901,357.86</span></div>
         <div style="font-weight:700;color:var(--red);padding:6px 0;border-bottom:2px solid var(--red);margin:8px 0 6px;font-family:var(--font)">LIABILITIES</div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">VAT Payable (2200)</span><span style="color:var(--red)">R 138,798.91</span></div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Accounts Payable (2100)</span><span style="color:var(--red)">R 18,432.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">VAT Payable (2200)</span><span style="color:var(--red)">R 138,798.91</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Accounts Payable (2100)</span><span style="color:var(--red)">R 18,432.00</span></div>
         <div style="font-weight:700;color:var(--teal);padding:6px 0;border-bottom:2px solid var(--teal);margin:8px 0 6px;font-family:var(--font)">EQUITY</div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Retained Earnings (3200)</span><span>R 744,126.95</span></div>
-        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--teal-l);border-radius:4px;font-weight:700;font-size:13px;color:var(--teal);margin-top:6px"><span style="font-family:var(--font)">TOTAL L + EQUITY</span><span>R 901,357.86</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Retained Earnings (3200)</span><span>R 744,126.95</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--teal-l);border-radius:4px;font-weight:700;font-size:13px;color:var(--teal);margin-top:6px;gap:8px"><span style="font-family:var(--font)">TOTAL L + EQUITY</span><span>R 901,357.86</span></div>
         <div style="text-align:center;margin-top:8px;font-size:10px;background:var(--green-p);color:var(--green);border-radius:4px;padding:6px;font-family:var(--font);font-weight:600">✅ Balance Sheet Balanced</div>
       </div>
     </div>
@@ -1096,7 +1188,7 @@ textarea.fi{resize:vertical}
   <div class="card">
     <div class="card-hdr"><div class="card-title">CAT Reconciliation</div><div class="card-sub">Claims vs Invoices · All 83 reconciled</div></div>
     <div class="card-body">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px">
         <div style="text-align:center;padding:12px;background:var(--bg);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--navy);font-family:var(--mono)">83</div><div style="font-size:11px;color:var(--muted)">Total Claims</div></div>
         <div style="text-align:center;padding:12px;background:var(--green-p);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--mono)">82</div><div style="font-size:11px;color:var(--muted)">Invoiced &amp; Paid</div></div>
         <div style="text-align:center;padding:12px;background:var(--red-p);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--red);font-family:var(--mono)">1</div><div style="font-size:11px;color:var(--muted)">Outstanding</div></div>
@@ -1141,7 +1233,7 @@ textarea.fi{resize:vertical}
           <div class="fg"><label class="fl">VAT Rate</label><input class="fi" value="15%" readonly></div>
           <div class="fg full"><label class="fl">Head Office Address</label><input class="fi" value="11 Monza Close, Kyalami Park, Midrand, Gauteng"></div>
         </div>
-        <div style="margin-top:16px;display:flex;gap:8px">
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-navy" onclick="mockAction('Save company profile')">💾 Save Profile</button>
           <button class="btn btn-ghost" onclick="mockAction('Upload logo')">🖼️ Upload Logo</button>
         </div>
@@ -1162,54 +1254,34 @@ textarea.fi{resize:vertical}
       <div class="card">
         <div class="card-hdr"><div class="card-title">📧 Exchange Email</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
         <div class="card-body">
-          <div class="coming-soon" style="padding:16px">
-            <div style="font-size:28px">📧</div>
-            <div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Microsoft Exchange</div>
-            <div style="font-size:11px;color:var(--muted)">OAuth 2.0 · Auto send invoices</div>
-          </div>
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">📧</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Microsoft Exchange</div><div style="font-size:11px;color:var(--muted)">OAuth 2.0 · Auto send invoices</div></div>
           <div style="margin-top:10px"><label class="fl">Azure Client ID</label><input class="fi" type="password" placeholder="Configure in Phase 2"></div>
         </div>
       </div>
       <div class="card">
         <div class="card-hdr"><div class="card-title">💬 WhatsApp Business</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
         <div class="card-body">
-          <div class="coming-soon" style="padding:16px">
-            <div style="font-size:28px">💬</div>
-            <div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Meta WhatsApp API</div>
-            <div style="font-size:11px;color:var(--muted)">Send invoices &amp; reminders</div>
-          </div>
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">💬</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Meta WhatsApp API</div><div style="font-size:11px;color:var(--muted)">Send invoices &amp; reminders</div></div>
           <div style="margin-top:10px"><label class="fl">Access Token</label><input class="fi" type="password" placeholder="Configure in Phase 2"></div>
         </div>
       </div>
       <div class="card">
         <div class="card-hdr"><div class="card-title">🏛️ SARS eFiling</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
         <div class="card-body">
-          <div class="coming-soon" style="padding:16px">
-            <div style="font-size:28px">🏛️</div>
-            <div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">SARS eFiling API</div>
-            <div style="font-size:11px;color:var(--muted)">VAT201, EMP201 direct submit</div>
-          </div>
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">🏛️</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">SARS eFiling API</div><div style="font-size:11px;color:var(--muted)">VAT201, EMP201 direct submit</div></div>
         </div>
       </div>
       <div class="card">
         <div class="card-hdr"><div class="card-title">🤖 AI Assistant</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
         <div class="card-body">
-          <div class="coming-soon" style="padding:16px">
-            <div style="font-size:28px">🤖</div>
-            <div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">AI Analysis Engine</div>
-            <div style="font-size:11px;color:var(--muted)">Report generation · Anomaly detection</div>
-          </div>
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">🤖</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">AI Analysis Engine</div><div style="font-size:11px;color:var(--muted)">Report generation · Anomaly detection</div></div>
           <div style="margin-top:10px"><label class="fl">Anthropic API Key</label><input class="fi" type="password" placeholder="sk-ant-... (Phase 2)"></div>
         </div>
       </div>
       <div class="card">
         <div class="card-hdr"><div class="card-title">📡 PWA / Offline</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
         <div class="card-body">
-          <div class="coming-soon" style="padding:16px">
-            <div style="font-size:28px">📡</div>
-            <div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Offline PWA Mode</div>
-            <div style="font-size:11px;color:var(--muted)">IndexedDB · Service Worker sync</div>
-          </div>
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">📡</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Offline PWA Mode</div><div style="font-size:11px;color:var(--muted)">IndexedDB · Service Worker sync</div></div>
         </div>
       </div>
     </div>
@@ -1221,7 +1293,7 @@ textarea.fi{resize:vertical}
       <div class="tbl-wrap">
         <table class="tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Last Login</th><th>Status</th><th>Action</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="td-bold">Norman</td><td>Norman@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+          <tr><td>1</td><td class="td-bold">Norman</td><td>norman@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
           <tr><td>2</td><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
           <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td>thabo@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
           <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td>moses@bigoprojects.co.za</td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
@@ -1270,6 +1342,16 @@ textarea.fi{resize:vertical}
 
     </div><!-- /content -->
   </div><!-- /main-wrap -->
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <div class="mob-nav-item active" id="mnav-dashboard" onclick="showPanel('dashboard')"><span class="m-icon">◈</span>Dashboard</div>
+    <div class="mob-nav-item" id="mnav-claims" onclick="showPanel('claims')"><span class="m-icon">📋</span>Claims</div>
+    <div class="mob-nav-item" id="mnav-invoices" onclick="showPanel('invoices')"><span class="m-icon">🧾</span>Invoices</div>
+    <div class="mob-nav-item" id="mnav-field" onclick="showPanel('field')"><span class="m-icon">🗺️</span>Field</div>
+    <div class="mob-nav-item" id="mnav-more" onclick="toggleSidebar()"><span class="m-icon">☰</span>More</div>
+  </nav>
+
 </div><!-- /app -->
 
 <!-- ════════════════════════════════════════
@@ -1338,7 +1420,7 @@ textarea.fi{resize:vertical}
     <div class="modal-body">
       <div class="fgrid">
         <div class="fg"><label class="fl">Quote Number</label><input class="fi" value="QTE-008" readonly style="font-family:var(--mono)"></div>
-        <div class="fg"><label class="fl">Template</label><select class="fi"><option>— None —</option><option>Storm Damage</option><option>Hail Damage</option><option>Flood Damage</option></select></div>
+        <div class="fg"><label class="fl">Template</label><select class="fi"><option>— None —</option><option>Storm Damage</option><option>Hail Damage</option><option>Flood Damage</option><option>Burst Geyser</option></select></div>
         <div class="fg"><label class="fl">Client *</label><input class="fi" placeholder="Policy holder name"></div>
         <div class="fg"><label class="fl">Claim Reference</label><input class="fi" placeholder="HLB/2026/XXXXXX" style="font-family:var(--mono)"></div>
         <div class="fg"><label class="fl">Date</label><input class="fi" type="date"></div>
@@ -1407,6 +1489,7 @@ textarea.fi{resize:vertical}
 /* ═══════════════════════════════════════════
    CLAIMSYNC v3.0 — COMPLETE MOCKUP ENGINE
    © 2026 Big O Projects (Pty) Ltd
+   Blueprint-aligned · Mobile-responsive
 ═══════════════════════════════════════════ */
 
 /* ── USERS ── */
@@ -1415,6 +1498,23 @@ const USERS = [
   {email:'field@bigoprojects.co.za', password:'Field123!', name:'Field User', role:'Team Leader', initials:'F', type:'field'},
 ];
 let currentUser = null;
+
+/* ── DEVICE DETECTION ── */
+function detectDevice() {
+  const w = window.innerWidth;
+  const badge = document.getElementById('device-badge');
+  if (w <= 600) {
+    badge.style.display = 'block';
+    badge.textContent = '📱 Mobile View';
+  } else if (w <= 960) {
+    badge.style.display = 'block';
+    badge.textContent = '📱 Tablet View';
+    setTimeout(() => { badge.style.display = 'none'; }, 3000);
+  } else {
+    badge.style.display = 'none';
+  }
+}
+window.addEventListener('resize', detectDevice);
 
 /* ── AUTH ── */
 function quickLogin(type) {
@@ -1439,6 +1539,7 @@ function doLogin() {
   const h = new Date().getHours();
   const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   document.getElementById('dash-greet').textContent = `${g}, ${user.name} 👋`;
+  detectDevice();
   initCharts();
   renderDashRecent();
   renderInvoiceTables();
@@ -1453,22 +1554,45 @@ function doLogout() {
   document.getElementById('login-email').value = '';
   document.getElementById('login-password').value = '';
   document.getElementById('user-dd').classList.remove('open');
+  closeSidebar();
 }
 
 /* ── USER DROPDOWN ── */
 function toggleDD() { document.getElementById('user-dd').classList.toggle('open'); }
-document.addEventListener('click', e => { if (!e.target.closest('.tb-user')) document.getElementById('user-dd').classList.remove('open'); });
+function closeDD() { document.getElementById('user-dd').classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tb-user')) closeDD();
+});
+
+/* ── SIDEBAR TOGGLE (mobile/tablet) ── */
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
 
 /* ── PANEL NAVIGATION ── */
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mob-nav-item').forEach(n => n.classList.remove('active'));
   const panel = document.getElementById('panel-' + id);
   if (panel) panel.classList.add('active');
   const nav = document.getElementById('nav-' + id);
   if (nav) nav.classList.add('active');
-  document.getElementById('main-content').scrollTop = 0;
-  document.getElementById('user-dd').classList.remove('open');
+  const mnav = document.getElementById('mnav-' + id);
+  if (mnav) mnav.classList.add('active');
+  const mc = document.getElementById('main-content');
+  if (mc) mc.scrollTop = 0;
+  closeDD();
+  closeSidebar();
+  // scroll to top on mobile
+  if (window.innerWidth <= 600) window.scrollTo(0, 0);
 }
 
 /* ── TAB SWITCHING ── */
@@ -1547,15 +1671,18 @@ function renderDashRecent() {
   const tbody = document.getElementById('dash-recent');
   if (!tbody) return;
   const rows = [...INVOICES_BIGO.slice(0,5), ...INVOICES_PHA.slice(0,3)];
-  tbody.innerHTML = rows.map(inv => `<tr onclick="showPanel('invoices')">
-    <td class="mono td-bold">BIG O-${inv.no}</td>
-    <td>${inv.client}</td>
-    <td class="mono td-muted" style="font-size:11px">${inv.claim}</td>
-    <td>${inv.date}</td>
-    <td class="mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
-    <td>${statusBadge(inv.status)}</td>
-    <td><span class="badge ${INVOICES_BIGO.find(x=>x.no===inv.no)?'b-navy':'b-purple'}">${INVOICES_BIGO.find(x=>x.no===inv.no)?'Bigo':'Phahamo'}</span></td>
-  </tr>`).join('');
+  tbody.innerHTML = rows.map(inv => {
+    const isBigo = INVOICES_BIGO.some(x => x.no === inv.no);
+    return `<tr onclick="showPanel('invoices')">
+      <td class="mono td-bold">BIG O-${inv.no}</td>
+      <td>${inv.client}</td>
+      <td class="mono td-muted" style="font-size:11px">${inv.claim}</td>
+      <td>${inv.date}</td>
+      <td class="mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
+      <td>${statusBadge(inv.status)}</td>
+      <td><span class="badge ${isBigo?'b-navy':'b-purple'}">${isBigo?'Bigo':'Phahamo'}</span></td>
+    </tr>`;
+  }).join('');
 }
 
 function renderInvoiceTables() {
@@ -1596,8 +1723,10 @@ function renderClaimsTable() {
 }
 
 /* ── CHARTS ── */
+let chartsInitialised = false;
 function initCharts() {
-  // Revenue chart
+  if (chartsInitialised) return;
+  chartsInitialised = true;
   const rc = document.getElementById('chart-revenue');
   if (rc) {
     new Chart(rc, {
@@ -1609,10 +1738,9 @@ function initCharts() {
           {label:'Phahamo',data:[226134,28438,60093],backgroundColor:'rgba(75,40,135,0.75)',borderRadius:6},
         ]
       },
-      options: {responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>'R '+Number(v/1000).toFixed(0)+'k'}}}}
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>'R '+Number(v/1000).toFixed(0)+'k'}}}}
     });
   }
-  // Aged debtors chart
   const ac = document.getElementById('chart-aged');
   if (ac) {
     new Chart(ac, {
@@ -1680,21 +1808,23 @@ function showToast(msg, type='inf') {
   t.className = 'toast ' + type;
   t.textContent = msg;
   wrap.appendChild(t);
-  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(20px)'; t.style.transition='all .3s'; setTimeout(()=>t.remove(),300); }, 3500);
+  setTimeout(() => {
+    t.style.animation = 'toastOut .3s ease forwards';
+    setTimeout(() => { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, 4000);
 }
 
-/* ── KEYBOARD ── */
+/* ── KEYBOARD SHORTCUTS ── */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-ov').forEach(m => m.classList.remove('open'));
-    document.getElementById('user-dd').classList.remove('open');
+    document.querySelectorAll('.modal-ov.open').forEach(m => m.classList.remove('open'));
+    closeSidebar();
+    closeDD();
   }
 });
 
-/* ── SET CURRENT DATE ON INVOICE FORM ── */
-const today = new Date().toISOString().slice(0,10);
-const niDate = document.getElementById('ni-date');
-if (niDate) niDate.value = today;
+/* ── INIT ── */
+detectDevice();
 </script>
 </body>
 </html>
