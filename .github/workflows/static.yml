@@ -1,1 +1,1831 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ClaimSync v3.0 — Big O Projects (Pty) Ltd</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════
+   CLAIMSYNC v3.0 — CSS DESIGN SYSTEM
+   © 2026 Big O Projects (Pty) Ltd
+═══════════════════════════════════════════ */
+:root{
+  --navy:#0A2D5E;--navy-l:#1A4A8A;--navy-d:#071D3E;
+  --gold:#C9982A;--gold-l:#F5C842;--gold-p:#FEF8E7;
+  --teal:#0F5F5A;--teal-l:#E8F3F2;
+  --purple:#4B2887;--purple-l:#F3EEFF;
+  --green:#1A7A4A;--green-l:#22C55E;--green-p:#E8F7EF;
+  --red:#C0392B;--red-p:#FFF5F5;
+  --amber:#D97706;--amber-p:#FEF3C7;
+  --blue:#1D4ED8;--blue-p:#EFF6FF;
+  --bg:#F0F2F7;--card:#FFFFFF;--border:rgba(0,0,0,0.07);--border-md:#E5E7EB;
+  --text:#111827;--muted:#6B7280;
+  --sidebar-w:252px;--topbar-h:52px;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --shadow:0 2px 12px rgba(10,45,94,0.08);--shadow-lg:0 8px 32px rgba(10,45,94,0.14);
+  --radius:12px;--radius-sm:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+input,select,textarea,button{font-family:var(--font)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.14);border-radius:4px}
+
+/* ── AUTH ── */
+#auth-screen{position:fixed;inset:0;z-index:9999;background:var(--navy);display:flex;align-items:center;justify-content:center;overflow:auto;padding:16px}
+.auth-bg-hex{position:absolute;font-size:300px;line-height:1;color:rgba(255,255,255,0.025);user-select:none;pointer-events:none}
+.auth-card{position:relative;z-index:2;background:white;border-radius:20px;width:420px;max-width:100%;box-shadow:0 40px 80px rgba(0,0,0,0.35);overflow:hidden;animation:authUp .4s cubic-bezier(.22,1,.36,1)}
+@keyframes authUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+.auth-hdr{background:var(--navy);padding:28px 32px 24px;text-align:center}
+.auth-logo{font-size:26px;font-weight:700;color:white;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
+.auth-logo .hex{color:var(--gold)}
+.auth-tagline{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase}
+.auth-body{padding:28px 32px 32px}
+.auth-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.auth-sub{font-size:12px;color:var(--muted);margin-bottom:24px}
+.auth-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.auth-quick-btn{padding:14px 10px;border:none;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--font);font-size:13px;font-weight:700;transition:all .15s}
+.auth-quick-btn.admin{background:var(--navy);color:white}
+.auth-quick-btn.admin:hover{background:var(--navy-l)}
+.auth-quick-btn.field{background:var(--gold);color:var(--navy-d)}
+.auth-quick-btn.field:hover{background:var(--gold-l)}
+.auth-quick-btn span{font-size:22px}
+.auth-quick-btn small{font-size:10px;opacity:.75;font-weight:400}
+.auth-divider{display:flex;align-items:center;gap:10px;margin-bottom:18px;color:var(--muted);font-size:11px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;border-top:1px solid var(--border-md)}
+.auth-fg{margin-bottom:16px}
+.auth-label{display:block;font-size:11px;font-weight:600;color:var(--text);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.auth-input{width:100%;padding:10px 14px;border:1.5px solid var(--border-md);border-radius:var(--radius-sm);font-size:13px;font-family:var(--font);color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s}
+.auth-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(10,45,94,.1)}
+.auth-btn{width:100%;padding:12px;background:var(--navy);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:8px}
+.auth-btn:hover{background:var(--navy-l);transform:translateY(-1px);box-shadow:0 4px 16px rgba(10,45,94,.25)}
+.auth-err{background:var(--red-p);border:1px solid rgba(192,57,43,.25);color:var(--red);font-size:12px;padding:8px 12px;border-radius:6px;margin-top:10px;display:none}
+.auth-err.show{display:block}
+.auth-trust{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.auth-trust span{font-size:10px;color:var(--muted)}
+
+/* ── SHELL ── */
+#app{display:none;flex-direction:column;height:100%}
+#app.on{display:flex}
+
+/* ── TOPBAR ── */
+.topbar{height:var(--topbar-h);background:var(--navy);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.05)}
+.tb-hamburger{display:none;background:none;border:none;color:white;font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:background .15s;flex-shrink:0}
+.tb-hamburger:hover{background:rgba(255,255,255,.1)}
+.tb-logo{font-size:16px;font-weight:700;color:white;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tb-logo .hex{color:var(--gold)}
+.tb-badge{background:rgba(201,152,42,.2);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:20px;border:1px solid rgba(201,152,42,.3)}
+.tb-spacer{flex:1}
+.tb-sync{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22C55E;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.tb-user{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 8px;border-radius:8px;transition:background .15s;position:relative}
+.tb-user:hover{background:rgba(255,255,255,.08)}
+.tb-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-name{font-size:12px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.2}
+.tb-role{font-size:10px;color:rgba(255,255,255,.4)}
+.user-dd{position:absolute;top:calc(100% + 8px);right:0;background:white;border-radius:10px;box-shadow:var(--shadow-lg);width:190px;z-index:500;border:1px solid var(--border);display:none;overflow:hidden;animation:ddDown .15s ease}
+@keyframes ddDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.user-dd.open{display:block}
+.dd-item{padding:10px 16px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .1s}
+.dd-item:hover{background:var(--bg)}
+.dd-item.danger{color:var(--red)}
+.dd-div{border:none;border-top:1px solid var(--border-md);margin:0;padding:0}
+
+/* ── LAYOUT ── */
+.main-wrap{display:flex;flex:1;overflow:hidden;position:relative}
+
+/* ── SIDEBAR OVERLAY (mobile) ── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;backdrop-filter:blur(2px)}
+.sidebar-overlay.open{display:block}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto;padding:10px 0;transition:transform .25s cubic-bezier(.22,1,.36,1);z-index:201}
+.sidebar::-webkit-scrollbar{width:0}
+.nav-sec{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 18px 5px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:all .14s;color:rgba(255,255,255,.5);font-size:12.5px;font-weight:500;position:relative;margin:1px 8px;border-radius:8px}
+.nav-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85)}
+.nav-item.active{background:rgba(201,152,42,.15);color:var(--gold)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
+.nav-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;min-width:18px;text-align:center}
+.nb-red{background:var(--red);color:white}
+.nb-gold{background:var(--gold);color:var(--navy-d)}
+.nb-green{background:var(--green);color:white}
+.nb-teal{background:var(--teal);color:white}
+.nb-blue{background:var(--blue);color:white}
+.sb-footer{margin-top:auto;padding:10px 8px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-build{margin:8px 16px;padding:8px 12px;background:rgba(201,152,42,.12);border:1px solid rgba(201,152,42,.2);border-radius:8px;font-size:10px;color:rgba(255,255,255,.5);line-height:1.5}
+.sb-build strong{color:var(--gold);display:block;font-size:11px;margin-bottom:2px}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:22px 24px;display:flex;flex-direction:column;gap:18px}
+.panel{display:none;flex-direction:column;gap:18px;animation:fadeIn .18s ease}
+.panel.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── PAGE HEADER ── */
+.ph{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.ph-title{font-size:21px;font-weight:700;letter-spacing:-.5px;color:var(--navy)}
+.ph-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.ph-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ── CARDS ── */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+.card-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.card-title{font-size:13px;font-weight:700;color:var(--navy)}
+.card-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.card-body{padding:16px 18px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .14s;white-space:nowrap}
+.btn-navy{background:var(--navy);color:white;border-color:var(--navy)}
+.btn-navy:hover{background:var(--navy-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(10,45,94,.2)}
+.btn-gold{background:var(--gold);color:var(--navy-d);border-color:var(--gold)}
+.btn-gold:hover{background:var(--gold-l)}
+.btn-ghost{background:white;color:var(--text);border-color:var(--border-md)}
+.btn-ghost:hover{background:var(--bg)}
+.btn-green{background:var(--green);color:white;border-color:var(--green)}
+.btn-red{background:var(--red);color:white;border-color:var(--red)}
+.btn-teal{background:var(--teal);color:white;border-color:var(--teal)}
+.btn-amber{background:var(--amber);color:white;border-color:var(--amber)}
+.btn-sm{padding:6px 12px;font-size:11.5px}
+.btn-xs{padding:4px 9px;font-size:10.5px}
+.btn-full{width:100%;justify-content:center}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.stat{background:var(--card);border-radius:var(--radius);padding:16px 18px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:default}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat.s-navy{background:var(--navy)}.stat.s-gold{background:linear-gradient(135deg,#B8831F,var(--gold))}
+.stat.s-teal{background:var(--teal)}.stat.s-green{background:var(--green)}
+.stat.s-red{background:var(--red)}.stat.s-amber{background:var(--amber)}
+.stat.s-blue{background:var(--blue)}
+.stat.s-navy .sl,.stat.s-gold .sl,.stat.s-teal .sl,.stat.s-green .sl,.stat.s-red .sl,.stat.s-amber .sl,.stat.s-blue .sl{color:rgba(255,255,255,.65)}
+.stat.s-navy .sv,.stat.s-gold .sv,.stat.s-teal .sv,.stat.s-green .sv,.stat.s-red .sv,.stat.s-amber .sv,.stat.s-blue .sv{color:white}
+.stat.s-navy .ss,.stat.s-gold .ss,.stat.s-teal .ss,.stat.s-green .ss,.stat.s-red .ss,.stat.s-amber .ss,.stat.s-blue .ss{color:rgba(255,255,255,.45)}
+.sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.sv{font-size:22px;font-weight:700;letter-spacing:-.5px;color:var(--navy);font-family:var(--mono)}
+.ss{font-size:11px;color:var(--muted);margin-top:5px}
+.si{position:absolute;right:14px;top:14px;font-size:20px;opacity:.45}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl thead tr{background:#F4F5F9}
+.tbl th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border-md);white-space:nowrap;position:sticky;top:0;background:#F4F5F9;z-index:2}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tbody tr{cursor:pointer;transition:background .1s}
+.tbl tbody tr:hover{background:#F8F9FC}
+.tbl-wrap{overflow-x:auto;max-height:420px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* ── BADGES ── */
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.b-paid{background:var(--green-p);color:var(--green)}
+.b-outstanding{background:var(--red-p);color:var(--red)}
+.b-draft{background:#F3F4F6;color:var(--muted)}
+.b-sent{background:var(--blue-p);color:var(--blue)}
+.b-void{background:#F3F4F6;color:#9CA3AF}
+.b-active{background:var(--green-p);color:var(--green)}
+.b-new{background:var(--blue-p);color:var(--blue)}
+.b-progress{background:#EDE9FE;color:#6D28D9}
+.b-done{background:var(--green-p);color:var(--green)}
+.b-high{background:var(--red-p);color:var(--red)}
+.b-medium{background:var(--amber-p);color:var(--amber)}
+.b-low{background:var(--green-p);color:var(--green)}
+.b-navy{background:#EAF0FB;color:var(--navy)}
+.b-purple{background:var(--purple-l);color:var(--purple)}
+.b-teal{background:var(--teal-l);color:var(--teal)}
+.b-green{background:var(--green-p);color:var(--green)}
+.b-amber{background:var(--amber-p);color:var(--amber)}
+.b-red{background:var(--red-p);color:var(--red)}
+.b-coming{background:#F3F4F6;color:var(--muted)}
+
+/* ── FORMS ── */
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{font-size:10.5px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px}
+.fi{border:1.5px solid var(--border-md);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;font-family:var(--font);color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s;background:white;width:100%}
+.fi:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(10,45,94,.1)}
+.fi[readonly]{background:var(--bg);color:var(--muted)}
+textarea.fi{resize:vertical}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fgrid .full{grid-column:span 2}
+.filter-bar{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#FAFBFD}
+.fi-search{border:1.5px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 12px;font-size:12.5px;font-family:var(--font);background:white;outline:none;transition:border-color .15s;color:var(--text);flex:1;min-width:150px}
+.fi-search:focus{border-color:var(--navy)}
+.fi-sel{border:1.5px solid var(--border-md);border-radius:var(--radius-sm);padding:7px 12px;font-size:12.5px;font-family:var(--font);background:white;outline:none;color:var(--text)}
+
+/* ── ALERT BOXES ── */
+.alert{padding:14px 18px;border-radius:var(--radius-sm);display:flex;align-items:flex-start;gap:12px;font-size:12.5px}
+.alert.warn{background:var(--red-p);border:1.5px solid rgba(192,57,43,.2)}
+.alert.ok{background:var(--green-p);border:1.5px solid rgba(26,122,74,.2)}
+.alert.info{background:var(--blue-p);border:1.5px solid rgba(37,99,235,.15)}
+.alert.amber{background:var(--amber-p);border:1.5px solid rgba(217,119,6,.2)}
+.alert-icon{font-size:20px;flex-shrink:0;line-height:1;margin-top:1px}
+.alert-title{font-weight:700;color:var(--navy);margin-bottom:3px}
+.alert-body{font-size:12px;color:var(--text);line-height:1.5}
+.alert-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+
+/* ── MODALS ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(2px);padding:16px}
+.modal-ov.open{display:flex}
+.modal{background:white;border-radius:16px;box-shadow:var(--shadow-lg);width:560px;max-width:100%;max-height:calc(100vh - 32px);display:flex;flex-direction:column;animation:mslide .2s ease}
+.modal-lg{width:760px}
+@keyframes mslide{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
+.modal-hdr{padding:18px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:700;color:var(--navy)}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);line-height:1;padding:0}
+.modal-close:hover{color:var(--text)}
+.modal-body{padding:22px;overflow-y:auto;flex:1}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;flex-wrap:wrap}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:9990;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:#1F2937;color:white;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;max-width:340px;pointer-events:auto}
+.toast.ok{background:#065F46;border-left:3px solid var(--green-l)}
+.toast.err{background:#7F1D1D;border-left:3px solid var(--red)}
+.toast.inf{background:#1E3A5F;border-left:3px solid #60A5FA}
+.toast.warn{background:#78350F;border-left:3px solid var(--amber)}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+@keyframes toastOut{from{opacity:1;transform:none}to{opacity:0;transform:translateX(20px)}}
+
+/* ── MISC ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.pb{background:rgba(0,0,0,.07);border-radius:4px;height:6px;overflow:hidden}
+.pb-fill{height:100%;border-radius:4px;transition:width .4s ease}
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border-md);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-bar::-webkit-scrollbar{height:0}
+.tab{padding:9px 16px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--navy);border-bottom-color:var(--navy)}
+.chart-wrap{position:relative;height:220px}
+.empty{text-align:center;padding:40px 24px;color:var(--muted)}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.4}
+.section-banner{padding:10px 14px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:8px}
+.sb-navy{background:var(--navy);color:white}
+.sb-purple{background:var(--purple);color:white}
+.sb-dark{background:var(--navy-d);color:rgba(255,255,255,.8)}
+.mono{font-family:var(--mono)}
+.td-bold{font-weight:700}
+.td-muted{color:var(--muted)}
+.vat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12.5px;gap:8px}
+.vat-row.total{background:#F4F5F9;font-weight:700;font-size:13px}
+.coming-soon{background:var(--amber-p);border:1px solid rgba(217,119,6,.2);border-radius:var(--radius);padding:24px;text-align:center}
+.coming-icon{font-size:40px;margin-bottom:12px}
+.coming-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.coming-body{font-size:12.5px;color:var(--muted);max-width:360px;margin:0 auto 16px}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤ 960px)
+═══════════════════════════════════════════ */
+@media(max-width:960px){
+  :root{--sidebar-w:280px}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);z-index:201}
+  .sidebar.open{transform:translateX(0)}
+  .tb-hamburger{display:flex;align-items:center;justify-content:center}
+  .tb-badge{display:none}
+  .tb-sync{display:none}
+  .content{padding:16px}
+  .two-col{grid-template-columns:1fr}
+  .three-col{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 600px)
+═══════════════════════════════════════════ */
+@media(max-width:600px){
+  html,body{overflow:auto}
+  #app{height:auto;min-height:100%}
+  .main-wrap{overflow:visible}
+  .content{overflow:visible;padding:12px;gap:12px}
+  .ph{flex-direction:column;align-items:flex-start}
+  .ph-title{font-size:18px}
+  .ph-actions{width:100%}
+  .ph-actions .btn{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .sv{font-size:18px}
+  .card-hdr{flex-direction:column;align-items:flex-start}
+  .card-body{padding:12px}
+  .tbl-wrap{max-height:none}
+  .filter-bar{gap:8px}
+  .fi-search{min-width:100%;flex:none}
+  .fgrid{grid-template-columns:1fr}
+  .fgrid .full{grid-column:span 1}
+  .modal{border-radius:12px 12px 0 0;position:fixed;bottom:0;left:0;right:0;max-height:90vh;width:100%}
+  .modal-ov{align-items:flex-end;padding:0}
+  .toast-wrap{bottom:12px;right:12px;left:12px}
+  .toast{max-width:100%}
+  .tb-name,.tb-role{display:none}
+  .auth-body{padding:20px}
+  .auth-hdr{padding:20px}
+  .three-col{grid-template-columns:1fr}
+  .two-col{grid-template-columns:1fr}
+  .btn-sm{font-size:11px;padding:5px 10px}
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE BOTTOM NAV (≤ 600px)
+═══════════════════════════════════════════ */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--navy);border-top:1px solid rgba(255,255,255,.1);z-index:150;padding:6px 0 env(safe-area-inset-bottom,0)}
+@media(max-width:600px){
+  .mobile-nav{display:flex}
+  .content{padding-bottom:80px}
+}
+.mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;cursor:pointer;color:rgba(255,255,255,.45);transition:color .15s;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.mob-nav-item .m-icon{font-size:18px;line-height:1}
+.mob-nav-item.active{color:var(--gold)}
+
+/* ═══════════════════════════════════════════
+   DEVICE BADGE (for demo awareness)
+═══════════════════════════════════════════ */
+.device-badge{display:none;position:fixed;top:60px;right:12px;background:rgba(10,45,94,.9);color:rgba(255,255,255,.7);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:20px;z-index:99;text-transform:uppercase}
+@media(max-width:600px){.device-badge{display:block}}
+</style>
+</head>
+<body>
+
+<!-- DEVICE BADGE -->
+<div class="device-badge" id="device-badge">📱 Mobile View</div>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-bg-hex" style="top:-80px;left:-100px">⬡</div>
+  <div class="auth-bg-hex" style="bottom:-100px;right:-80px;font-size:250px">⬡</div>
+  <div class="auth-card">
+    <div class="auth-hdr">
+      <div class="auth-logo"><span class="hex">⬡</span> ClaimSync<span style="color:var(--gold)">.</span></div>
+      <div class="auth-tagline">Insurance Field Management Platform</div>
+    </div>
+    <div class="auth-body">
+      <div class="auth-title">Sign In</div>
+      <div class="auth-sub">Big O Projects (Pty) Ltd · bigoprojects.co.za</div>
+      <div class="auth-quick">
+        <button class="auth-quick-btn admin" onclick="quickLogin('admin')">
+          <span>🔐</span><strong>Admin Login</strong><small>Full system access</small>
+        </button>
+        <button class="auth-quick-btn field" onclick="quickLogin('field')">
+          <span>🏗️</span><strong>Field Login</strong><small>Field operations</small>
+        </button>
+      </div>
+      <div class="auth-divider">or sign in manually</div>
+      <div class="auth-fg">
+        <label class="auth-label">Email Address</label>
+        <input class="auth-input" type="email" id="login-email" placeholder="you@bigoprojects.co.za" autocomplete="email">
+      </div>
+      <div class="auth-fg">
+        <label class="auth-label">Password</label>
+        <input class="auth-input" type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" autocomplete="current-password">
+      </div>
+      <div class="auth-err" id="login-err">Invalid email or password. Please try again.</div>
+      <button class="auth-btn" onclick="doLogin()">Sign In to ClaimSync →</button>
+      <div class="auth-trust">
+        <span>🔒 SSL Encrypted</span>
+        <span>🇿🇦 SA Hosted</span>
+        <span>📋 POPIA Compliant</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-wrap" id="toasts"></div>
+
+<!-- SIDEBAR OVERLAY (mobile/tablet) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- APP SHELL -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <button class="tb-hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+    <div class="tb-logo" onclick="showPanel('dashboard')">
+      <span class="hex">⬡</span> ClaimSync<span style="color:var(--gold)">.</span>
+    </div>
+    <div class="tb-badge">Big O Projects</div>
+    <div class="tb-spacer"></div>
+    <div class="tb-sync" onclick="triggerSync()">
+      <div class="sync-dot"></div><span id="sync-lbl">Online — Synced</span>
+    </div>
+    <div class="tb-user" onclick="toggleDD()">
+      <div class="tb-avatar" id="tb-av">N</div>
+      <div>
+        <div class="tb-name" id="tb-name">Norman</div>
+        <div class="tb-role" id="tb-role">Administrator</div>
+      </div>
+      <div class="user-dd" id="user-dd">
+        <div class="dd-item" onclick="showPanel('settings');closeDD()">⚙️ Settings</div>
+        <div class="dd-item">👤 My Profile</div>
+        <div class="dd-item">🔑 Change Password</div>
+        <hr class="dd-div">
+        <div class="dd-item danger" onclick="doLogout()">🚪 Sign Out</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-wrap">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <div class="nav-sec">Main</div>
+      <div class="nav-item active" id="nav-dashboard" onclick="showPanel('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+      <div class="nav-item" id="nav-clients" onclick="showPanel('clients')"><span class="nav-icon">👥</span> Clients</div>
+      <div class="nav-item" id="nav-quotes" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes<span class="nav-badge nb-gold">3</span></div>
+      <div class="nav-item" id="nav-invoices" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices<span class="nav-badge nb-red">1</span></div>
+      <div class="nav-item" id="nav-payments" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
+
+      <div class="nav-sec" style="margin-top:8px">Operations</div>
+      <div class="nav-item" id="nav-claims" onclick="showPanel('claims')"><span class="nav-icon">📋</span> Claims<span class="nav-badge nb-teal">83</span></div>
+      <div class="nav-item" id="nav-field" onclick="showPanel('field')"><span class="nav-icon">🗺️</span> Field</div>
+      <div class="nav-item" id="nav-expenses" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
+
+      <div class="nav-sec" style="margin-top:8px">Finance</div>
+      <div class="nav-item" id="nav-accounting" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
+      <div class="nav-item" id="nav-vatsars" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
+      <div class="nav-item" id="nav-reports" onclick="showPanel('reports')"><span class="nav-icon">📈</span> Reports</div>
+
+      <div class="nav-sec" style="margin-top:8px">System</div>
+      <div class="nav-item" id="nav-settings" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+
+      <div class="sb-footer">
+        <div class="sb-build">
+          <strong>ClaimSync v3.0</strong>
+          Full Interactive Mockup<br>
+          © 2026 Big O Projects (Pty) Ltd
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content" id="main-content">
+
+<!-- ════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════ -->
+<div class="panel active" id="panel-dashboard">
+  <div class="ph">
+    <div>
+      <div class="ph-title" id="dash-greet">Good day, Norman 👋</div>
+      <div class="ph-sub">CAT Event 2026 · Standard Bank HOC · Friday, 27 March 2026</div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export Excel')">⬇ Export</button>
+      <button class="btn btn-gold btn-sm" onclick="openModal('modal-invoice')">+ New Invoice</button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat s-navy" onclick="showPanel('invoices')" style="cursor:pointer">
+      <div class="sl">Grand Total Collected</div><div class="sv">R 1,164,559</div>
+      <div class="ss">Incl. VAT · 83 claims</div><div class="si">💰</div>
+    </div>
+    <div class="stat s-gold" onclick="showPanel('invoices')" style="cursor:pointer">
+      <div class="sl">Bigo Direct</div><div class="sv">R 849,894</div>
+      <div class="ss">60 invoices · 59 paid</div><div class="si">🏢</div>
+    </div>
+    <div class="stat s-teal" onclick="showPanel('invoices')" style="cursor:pointer">
+      <div class="sl">Phahamo Subcontract</div><div class="sv">R 314,665</div>
+      <div class="ss">23 invoices · all paid</div><div class="si">🤝</div>
+    </div>
+    <div class="stat s-green" onclick="showPanel('vatsars')" style="cursor:pointer">
+      <div class="sl">Output VAT</div><div class="sv">R 151,899</div>
+      <div class="ss">15% · VAT201 pending</div><div class="si">🧾</div>
+    </div>
+    <div class="stat s-red" onclick="showPanel('payments')" style="cursor:pointer">
+      <div class="sl">Outstanding</div><div class="sv">R 6,264</div>
+      <div class="ss">1 claim · Ziphozihle Wonci</div><div class="si">⚠️</div>
+    </div>
+    <div class="stat s-navy" onclick="showPanel('vatsars')" style="cursor:pointer">
+      <div class="sl">Net VAT Payable</div><div class="sv">R 138,799</div>
+      <div class="ss">Due 30 Apr 2026</div><div class="si">🏛️</div>
+    </div>
+    <div class="stat s-teal" onclick="showPanel('reports')" style="cursor:pointer">
+      <div class="sl">Gross Profit</div><div class="sv">R 663,437</div>
+      <div class="ss">65.5% margin</div><div class="si">📈</div>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div style="flex:1">
+      <div class="alert-title">Action Required — Outstanding Invoice</div>
+      <div class="alert-body">ZIPHOZIHLE WONCI · HLB/2026/466333 · BIG O-INV-0810 · R6,264.05 incl. VAT · Invoiced 17 Mar 2026. Send statement to Standard Bank Insurance portal.</div>
+      <div class="alert-actions">
+        <button class="btn btn-red btn-xs" onclick="showPanel('claims')">View Claim →</button>
+        <button class="btn btn-ghost btn-xs" onclick="showPanel('payments')">Outstanding View</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr">
+        <div><div class="card-title">Monthly Revenue</div><div class="card-sub">Bigo + Phahamo Combined · Jan–Mar 2026</div></div>
+      </div>
+      <div class="card-body"><div class="chart-wrap"><canvas id="chart-revenue"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <div><div class="card-title">VAT Summary</div><div class="card-sub">Output VAT @ 15% — Jan–Mar 2026</div></div>
+        <button class="btn btn-ghost btn-sm" onclick="showPanel('vatsars')">Full Report →</button>
+      </div>
+      <div class="card-body">
+        <div style="border:1px solid var(--border-md);border-radius:var(--radius-sm);overflow:hidden">
+          <div class="vat-row"><span>Bigo Direct (excl. VAT)</span><span class="mono">R 739,038.97</span></div>
+          <div class="vat-row"><span>Phahamo Subcontract</span><span class="mono">R 273,622.14</span></div>
+          <div class="vat-row"><span style="color:var(--muted)">Total Excl. VAT</span><span class="mono">R 1,012,661.11</span></div>
+          <div class="vat-row"><span style="color:var(--muted)">Output VAT (15%)</span><span class="mono" style="color:var(--teal)">+ R 151,898.16</span></div>
+          <div class="vat-row total"><span>Total Incl. VAT</span><span class="mono">R 1,164,559.27</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr">
+      <div><div class="card-title">Recent Invoices</div><div class="card-sub">Latest 8 transactions</div></div>
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('invoices')">View All →</button>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Invoice No.</th><th>Client</th><th>Claim Ref</th><th>Date</th><th>Amount</th><th>Status</th><th>Entity</th></tr></thead>
+        <tbody id="dash-recent"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">SARS Filing Deadlines</div></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+        <div style="background:var(--amber-p);border:1px solid rgba(217,119,6,.25);border-radius:8px;padding:12px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin-bottom:4px">VAT201 Due</div>
+          <div style="font-weight:700;font-size:14px">30 April 2026</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Bi-monthly · Jan–Feb 2026</div>
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-top:6px">⚡ 34 days remaining</div>
+        </div>
+        <div style="background:var(--green-p);border:1px solid rgba(26,122,74,.2);border-radius:8px;padding:12px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px">EMP201 Due</div>
+          <div style="font-weight:700;font-size:14px">7 April 2026</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Monthly · March 2026 PAYE</div>
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-top:6px">✅ 11 days remaining</div>
+        </div>
+        <div style="background:var(--blue-p);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:12px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:4px">EMP501 Due</div>
+          <div style="font-weight:700;font-size:14px">31 May 2026</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Bi-annual reconciliation</div>
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-top:6px">📅 65 days remaining</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     CLIENTS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-clients">
+  <div class="ph">
+    <div><div class="ph-title">Clients</div><div class="ph-sub">Subcontractors &amp; Suppliers</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export clients')">⬇ Export</button>
+      <button class="btn btn-gold btn-sm" onclick="openModal('modal-client')">+ Add Client</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+    <div class="stat"><div class="sl">Total Clients</div><div class="sv">5</div></div>
+    <div class="stat"><div class="sl">Subcontractors</div><div class="sv">1</div></div>
+    <div class="stat"><div class="sl">Suppliers</div><div class="sv">4</div></div>
+    <div class="stat s-green"><div class="sl">Input VAT Recoverable</div><div class="sv">R 11,682</div></div>
+  </div>
+  <div class="card">
+    <div class="filter-bar">
+      <input class="fi-search" placeholder="🔍 Search clients..." oninput="filterTable('tbl-clients',this.value)">
+      <select class="fi-sel" onchange="filterTable('tbl-clients',this.value)">
+        <option value="">All Types</option><option>Subcontractor</option><option>Supplier</option>
+      </select>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl" id="tbl-clients">
+        <thead><tr><th>#</th><th>Name</th><th>Type</th><th>VAT No.</th><th>Contact</th><th>Phone</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="td-bold">Phahamo Projects (Pty) Ltd</td><td><span class="badge b-purple">Subcontractor</span></td><td class="mono td-muted">4890123456</td><td>Project Manager</td><td>071 234 5678</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View Phahamo')">View</button></td></tr>
+          <tr><td>2</td><td class="td-bold">Builders Warehouse Midrand</td><td><span class="badge b-teal">Supplier</span></td><td class="mono td-muted">4170234567</td><td>Store Manager</td><td>011 312 4000</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View BW')">View</button></td></tr>
+          <tr><td>3</td><td class="td-bold">Cashbuild Midrand</td><td><span class="badge b-teal">Supplier</span></td><td class="mono td-muted">4560987654</td><td>Branch Manager</td><td>011 678 9000</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View Cashbuild')">View</button></td></tr>
+          <tr><td>4</td><td class="td-bold">Engen Petroleum Midrand</td><td><span class="badge b-teal">Supplier</span></td><td class="mono td-muted">—</td><td>—</td><td>—</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View Engen')">View</button></td></tr>
+          <tr><td>5</td><td class="td-bold">Roof World Johannesburg</td><td><span class="badge b-teal">Supplier</span></td><td class="mono td-muted">4320876543</td><td>Sales</td><td>011 890 1234</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View Roof World')">View</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Client Detail View</div><div class="card-sub">Click any row above to load</div></div>
+    <div class="card-body">
+      <div class="alert info"><div class="alert-icon">ℹ️</div><div><div class="alert-title">Select a client</div><div class="alert-body">Click any client row to view their full profile, invoice history, and contact details.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     QUOTES
+════════════════════════════════════════ -->
+<div class="panel" id="panel-quotes">
+  <div class="ph">
+    <div><div class="ph-title">Quotes</div><div class="ph-sub">Create, send and convert quotes to invoices</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export quotes')">⬇ Export</button>
+      <button class="btn btn-gold btn-sm" onclick="openModal('modal-quote')">+ Create Quote</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+    <div class="stat"><div class="sl">Total Quotes</div><div class="sv">7</div><div class="ss">This month</div></div>
+    <div class="stat s-amber"><div class="sl">Pending</div><div class="sv">3</div><div class="ss">Awaiting response</div></div>
+    <div class="stat s-green"><div class="sl">Accepted</div><div class="sv">3</div><div class="ss">Converted to invoice</div></div>
+    <div class="stat s-red"><div class="sl">Declined</div><div class="sv">1</div><div class="ss">No action needed</div></div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Quote Register</div></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Quote No.</th><th>Client</th><th>Description</th><th>Date</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td class="mono td-bold">QTE-001</td><td>NAZEER ADAM</td><td>Roof repair — storm damage</td><td>10 Jan</td><td class="mono">R 118,026.00</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Convert QTE-001 to Invoice')">→ Invoice</button></td></tr>
+          <tr><td class="mono td-bold">QTE-002</td><td>SONJA DE BRUIN</td><td>Flood damage — ceiling + floor</td><td>15 Jan</td><td class="mono">R 63,510.00</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Convert QTE-002 to Invoice')">→ Invoice</button></td></tr>
+          <tr><td class="mono td-bold">QTE-003</td><td>JEAN FERREIRA</td><td>Gutter + roof sheets</td><td>20 Jan</td><td class="mono">R 3,218.50</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder QTE-003')">Remind</button></td></tr>
+          <tr><td class="mono td-bold">QTE-004</td><td>STANLEY KHAN</td><td>Hail damage assessment</td><td>22 Jan</td><td class="mono">R 1,083.30</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder QTE-004')">Remind</button></td></tr>
+          <tr><td class="mono td-bold">QTE-005</td><td>MRS E KRIEL</td><td>Call-out assessment fee</td><td>25 Jan</td><td class="mono">R 826.85</td><td><span class="badge b-medium">Pending</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Send reminder QTE-005')">Remind</button></td></tr>
+          <tr><td class="mono td-bold">QTE-006</td><td>THABO MOLEFE</td><td>Interior wall damp treatment</td><td>28 Jan</td><td class="mono">R 7,654.30</td><td><span class="badge b-done">Accepted</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View QTE-006')">View</button></td></tr>
+          <tr><td class="mono td-bold">QTE-007</td><td>FATIMA OSMAN</td><td>Windows replacement</td><td>01 Feb</td><td class="mono">R 3,218.00</td><td><span class="badge b-void">Declined</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Archive QTE-007')">Archive</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Quote Templates</div><div class="card-sub">Pre-built templates for common repair types</div></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+        <div style="border:1px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'" onclick="mockAction('Use Storm Damage template')">
+          <div style="font-size:22px;margin-bottom:6px">🌩️</div><div style="font-weight:700;font-size:12.5px">Storm Damage</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">Roof, ceiling, gutters</div>
+        </div>
+        <div style="border:1px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'" onclick="mockAction('Use Hail Damage template')">
+          <div style="font-size:22px;margin-bottom:6px">🧊</div><div style="font-weight:700;font-size:12.5px">Hail Damage</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">Tiles, roof sheets, paint</div>
+        </div>
+        <div style="border:1px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'" onclick="mockAction('Use Flood Damage template')">
+          <div style="font-size:22px;margin-bottom:6px">💧</div><div style="font-weight:700;font-size:12.5px">Flood Damage</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">Floor, walls, ceilings</div>
+        </div>
+        <div style="border:1px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'" onclick="mockAction('Use Geyser template')">
+          <div style="font-size:22px;margin-bottom:6px">🚿</div><div style="font-weight:700;font-size:12.5px">Burst Geyser</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">Plumbing, damp, ceiling</div>
+        </div>
+        <div style="border:2px dashed var(--border-md);border-radius:10px;padding:14px;cursor:pointer;text-align:center;transition:all .15s" onclick="mockAction('Create new template')">
+          <div style="font-size:22px;margin-bottom:6px">+</div><div style="font-weight:600;font-size:12px;color:var(--muted)">New Template</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     INVOICES
+════════════════════════════════════════ -->
+<div class="panel" id="panel-invoices">
+  <div class="ph">
+    <div><div class="ph-title">Invoice Register</div><div class="ph-sub">Jan–Mar 2026 · CAT Event 2026 · Standard Bank HOC</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export Excel')">⬇ Excel</button>
+      <button class="btn btn-gold btn-sm" onclick="openModal('modal-invoice')">+ Add Invoice</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+    <div style="background:var(--navy);color:white;border-radius:10px;padding:14px 16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin-bottom:6px">Grand Total</div><div style="font-size:20px;font-weight:700;font-family:var(--mono)">R 1,164,559</div><div style="font-size:10px;opacity:.5;margin-top:3px">Incl. VAT · 83 invoices</div></div>
+    <div style="background:#EAF0FB;border-radius:10px;padding:14px 16px;border:1px solid rgba(10,45,94,.1)"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Bigo Direct</div><div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--navy)">R 849,894</div><div style="font-size:10px;color:var(--muted);margin-top:3px">60 invoices</div></div>
+    <div style="background:var(--purple-l);border-radius:10px;padding:14px 16px;border:1px solid rgba(75,40,135,.1)"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Phahamo</div><div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--purple)">R 314,665</div><div style="font-size:10px;color:var(--muted);margin-top:3px">23 invoices</div></div>
+    <div style="background:var(--red-p);border-radius:10px;padding:14px 16px;border:1px solid rgba(192,57,43,.15)"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Outstanding</div><div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--red)">R 6,264</div><div style="font-size:10px;color:var(--muted);margin-top:3px">1 invoice</div></div>
+  </div>
+  <div class="card">
+    <div class="tab-bar" style="padding:0 16px">
+      <div class="tab active" onclick="switchTab(this,'inv-bigo','inv-pha')">🏢 Bigo Direct (60)</div>
+      <div class="tab" onclick="switchTab(this,'inv-pha','inv-bigo')">🤝 Phahamo (23)</div>
+    </div>
+    <div class="filter-bar">
+      <input class="fi-search" placeholder="🔍 Search invoices..." oninput="filterTable('tbl-inv-bigo',this.value)">
+      <select class="fi-sel"><option>All Status</option><option>Paid</option><option>Outstanding</option><option>Draft</option></select>
+      <select class="fi-sel"><option>All Months</option><option>January</option><option>February</option><option>March</option></select>
+    </div>
+    <div id="inv-bigo">
+      <div class="section-banner sb-navy">🏢 BIG O DIRECT — 60 invoices · R 849,893.81 collected · 1 outstanding</div>
+      <div class="tbl-wrap"><table class="tbl" id="tbl-inv-bigo"><thead><tr><th>#</th><th>Invoice No.</th><th>Client</th><th>Claim Ref</th><th>Date</th><th>Incl. VAT</th><th>Status</th><th>Action</th></tr></thead><tbody id="inv-bigo-tbody"></tbody></table></div>
+    </div>
+    <div id="inv-pha" style="display:none">
+      <div class="section-banner sb-purple">🤝 PHAHAMO SUBCONTRACT — 23 invoices · R 314,665.46 all paid</div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Invoice No.</th><th>Client</th><th>Claim Ref</th><th>Date</th><th>Incl. VAT</th><th>Status</th><th>Action</th></tr></thead><tbody id="inv-pha-tbody"></tbody></table></div>
+    </div>
+    <div style="padding:10px 14px;background:#FAFBFD;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted)">
+      ⊘ 4 void invoices excluded: INV-0725, INV-0726, INV-0741, INV-0797
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Recurring Invoices</div><div class="card-sub">Auto-generated on schedule</div></div>
+    <div class="card-body">
+      <div class="alert info"><div class="alert-icon">ℹ️</div><div><div class="alert-title">No recurring invoices set up</div><div class="alert-body">Create recurring invoice schedules for regular clients. They will be auto-generated on the configured date.</div><div class="alert-actions"><button class="btn btn-navy btn-xs" onclick="mockAction('Setup recurring')">+ Setup Recurring</button></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAYMENTS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-payments">
+  <div class="ph">
+    <div><div class="ph-title">Payments</div><div class="ph-sub">Payment history · Outstanding balances · Aged debtors</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-gold btn-sm" onclick="openModal('modal-payment')">+ Record Payment</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+    <div class="stat s-green"><div class="sl">Total Received</div><div class="sv">R 1,158,295</div><div class="ss">82 payments</div></div>
+    <div class="stat s-red"><div class="sl">Outstanding</div><div class="sv">R 6,264</div><div class="ss">1 invoice overdue</div></div>
+    <div class="stat"><div class="sl">Avg Days to Pay</div><div class="sv">8.3</div><div class="ss">Days from invoice</div></div>
+    <div class="stat s-navy"><div class="sl">Collection Rate</div><div class="sv">98.8%</div><div class="ss">Of total invoiced</div></div>
+  </div>
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div style="flex:1">
+      <div class="alert-title">Outstanding: ZIPHOZIHLE WONCI — R 6,264.05 — 10 days overdue</div>
+      <div class="alert-body">Invoice BIG O-INV-0810 · Claim HLB/2026/466333 · Invoiced 17 Mar 2026. Contact Standard Bank Insurance via SB Claims portal.</div>
+      <div class="alert-actions">
+        <button class="btn btn-navy btn-xs" onclick="mockAction('Send statement email')">📧 Email Statement</button>
+        <button class="btn btn-ghost btn-xs" onclick="mockAction('WhatsApp SB')">💬 WhatsApp</button>
+        <button class="btn btn-green btn-xs" onclick="mockAction('Mark as paid')">✅ Mark Paid</button>
+      </div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Payment History</div></div>
+      <div class="tbl-wrap">
+        <table class="tbl"><thead><tr><th>Date</th><th>Invoice</th><th>Client</th><th>Amount</th><th>Method</th></tr></thead>
+        <tbody>
+          <tr><td>22 Mar</td><td class="mono">INV-0809</td><td>TERIZA O CONNELL</td><td class="mono">R 966.00</td><td>EFT</td></tr>
+          <tr><td>20 Mar</td><td class="mono">INV-0807</td><td>MRS MTIMKULU</td><td class="mono">R 9,665.80</td><td>EFT</td></tr>
+          <tr><td>18 Mar</td><td class="mono">INV-0806</td><td>MRS E KRIEL</td><td class="mono">R 826.85</td><td>EFT</td></tr>
+          <tr><td>15 Mar</td><td class="mono">INV-0805</td><td>AUGUST KROG</td><td class="mono">R 1,082.15</td><td>EFT</td></tr>
+          <tr><td>12 Mar</td><td class="mono">INV-0803</td><td>STANLEY KHAN</td><td class="mono">R 1,083.30</td><td>EFT</td></tr>
+          <tr><td>10 Mar</td><td class="mono">INV-0801</td><td>SONJA DE BRUIN</td><td class="mono">R 63,510.00</td><td>EFT</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Aged Debtors Analysis</div><div class="card-sub">Days outstanding</div></div>
+      <div class="card-body"><div class="chart-wrap"><canvas id="chart-aged"></canvas></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     CLAIMS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-claims">
+  <div class="ph">
+    <div><div class="ph-title">CAT Claims</div><div class="ph-sub">2026 Catastrophe Event · Standard Bank HOC</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export claims CSV')">⬇ CSV</button>
+      <button class="btn btn-gold btn-sm" onclick="showPanel('field')">+ New Assessment</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
+    <div class="stat s-navy"><div class="sl">Total Claims</div><div class="sv">83</div><div class="ss">CAT Event 2026</div></div>
+    <div class="stat s-green"><div class="sl">Fully Paid</div><div class="sv">71</div><div class="ss">Completed</div></div>
+    <div class="stat s-amber"><div class="sl">In Progress</div><div class="sv">8</div><div class="ss">On site</div></div>
+    <div class="stat s-red"><div class="sl">Outstanding</div><div class="sv">1</div><div class="ss">Wonci · INV-0810</div></div>
+    <div class="stat s-blue"><div class="sl">New / Unassigned</div><div class="sv">3</div><div class="ss">Awaiting dispatch</div></div>
+  </div>
+  <div class="card">
+    <div class="filter-bar">
+      <input class="fi-search" placeholder="🔍 Search claim, client, assessor..." oninput="filterTable('tbl-claims',this.value)">
+      <select class="fi-sel"><option>All Status</option><option>New</option><option>Assigned</option><option>In Progress</option><option>Completed</option><option>Invoiced</option></select>
+      <select class="fi-sel"><option>All Entities</option><option>Bigo Direct</option><option>Phahamo Sub</option></select>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl" id="tbl-claims"><thead><tr><th>#</th><th>Claim Ref</th><th>Policy Holder</th><th>Address</th><th>Peril</th><th>Assessor</th><th>Entity</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="claims-tbody"></tbody></table>
+    </div>
+  </div>
+  <div class="alert info">
+    <div class="alert-icon">💡</div>
+    <div><div class="alert-title">Link Claims to Invoices &amp; Assessments</div>
+    <div class="alert-body">Each claim can be linked to its invoice and field assessment. Use the action buttons above to navigate between modules.</div>
+    <div class="alert-actions">
+      <button class="btn btn-navy btn-xs" onclick="showPanel('invoices')">🧾 View Invoices</button>
+      <button class="btn btn-ghost btn-xs" onclick="showPanel('field')">🗺️ Field Assessments</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     FIELD
+════════════════════════════════════════ -->
+<div class="panel" id="panel-field">
+  <div class="ph">
+    <div><div class="ph-title">Field Operations</div><div class="ph-sub">Assessments · Photos · Job Cards · Team Management</div></div>
+    <div class="ph-actions">
+      <span style="background:var(--green-p);color:var(--green);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px">● GPS Active</span>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('New Assessment')">+ New Assessment</button>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat s-navy"><div class="sl">Total Jobs</div><div class="sv">83</div><div class="ss">CAT Event 2026</div></div>
+    <div class="stat s-green"><div class="sl">Completed</div><div class="sv">71</div><div class="ss">85.5%</div></div>
+    <div class="stat s-amber"><div class="sl">In Progress</div><div class="sv">8</div><div class="ss">On site</div></div>
+    <div class="stat s-blue"><div class="sl">Photos Captured</div><div class="sv">47</div><div class="ss">AI-categorised</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Recent Assessments</div></div>
+      <div class="tbl-wrap">
+        <table class="tbl"><thead><tr><th>Claim Ref</th><th>Client</th><th>Assessor</th><th>Date</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="font-size:11px">HLB/2026/466333</td><td>ZIPHOZIHLE WONCI</td><td>Norman</td><td>17 Mar</td><td><span class="badge b-done">Invoiced</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">HLB/2026/471982</td><td>SONJA DE BRUIN</td><td>Moses Nkosi</td><td>08 Mar</td><td><span class="badge b-progress">In Progress</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">HLB/2026/468350</td><td>AUGUST KROG</td><td>Thabo Mkhize</td><td>12 Mar</td><td><span class="badge b-progress">In Progress</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">HLB/2026/472154</td><td>JEAN FERREIRA</td><td>Sipho Dlamini</td><td>10 Mar</td><td><span class="badge b-medium">Assigned</span></td></tr>
+          <tr><td class="mono" style="font-size:11px">HLB/2026/478652</td><td>MRS S NAIDOO</td><td>Moses Nkosi</td><td>12 Mar</td><td><span class="badge b-new">New</span></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">📷 Photo Upload</div><div class="card-sub">AI auto-categorises by damage type</div></div>
+      <div class="card-body">
+        <div style="border:2px dashed var(--border-md);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .2s" onclick="mockAction('Upload photos')" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'">
+          <div style="font-size:40px;margin-bottom:10px">📷</div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:6px">Drop photos or click to upload</div>
+          <div style="font-size:12px;color:var(--muted)">JPG, PNG · AI classifies: Roof · Ceiling · Interior · Damage Detail</div>
+          <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-navy btn-sm" onclick="event.stopPropagation();mockAction('Camera capture')">📸 Camera</button>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();mockAction('File upload')">📁 Files</button>
+          </div>
+        </div>
+        <div style="margin-top:12px;background:var(--green-p);border-radius:8px;padding:10px 12px;font-size:11.5px;border:1px solid rgba(26,122,74,.2)">
+          ✅ Last upload: 47 photos · 11 claims · AI-categorised
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">📱 Mobile Job Cards</div><div class="card-sub">Team leader field interface</div></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+        <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
+          <div style="background:var(--amber-p);padding:10px 14px;border-bottom:2px solid #FDE68A"><div style="font-size:11px;color:var(--muted);font-family:var(--mono)">JC-0082</div><div style="font-weight:700;font-size:13px;color:var(--navy)">SONJA DE BRUIN</div></div>
+          <div style="padding:10px 14px;font-size:12px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Peril</span><span>Flood Damage</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Assessor</span><span>Moses Nkosi</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Status</span><span class="badge b-progress">In Progress</span></div></div>
+          <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-0082')">View</button><button class="btn btn-navy btn-xs" onclick="mockAction('Update JC-0082')">Update</button></div>
+        </div>
+        <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
+          <div style="background:#EDE9FE;padding:10px 14px;border-bottom:2px solid #C4B5FD"><div style="font-size:11px;color:var(--muted);font-family:var(--mono)">JC-0081</div><div style="font-weight:700;font-size:13px;color:var(--navy)">AUGUST KROG</div></div>
+          <div style="padding:10px 14px;font-size:12px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Peril</span><span>Hail Damage</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Assessor</span><span>Thabo Mkhize</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Status</span><span class="badge b-progress">In Progress</span></div></div>
+          <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-0081')">View</button><button class="btn btn-navy btn-xs" onclick="mockAction('Update JC-0081')">Update</button></div>
+        </div>
+        <div style="border:2px dashed var(--border-md);border-radius:10px;display:flex;align-items:center;justify-content:center;padding:30px;cursor:pointer;flex-direction:column;gap:8px;color:var(--muted);min-height:120px" onclick="mockAction('New job card')">
+          <div style="font-size:28px">+</div><div style="font-size:12px;font-weight:600">New Job Card</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     EXPENSES
+════════════════════════════════════════ -->
+<div class="panel" id="panel-expenses">
+  <div class="ph">
+    <div><div class="ph-title">Expenses</div><div class="ph-sub">Supplier invoices · Materials · Petrol · Input VAT tracking</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export expenses')">⬇ Export</button>
+      <button class="btn btn-gold btn-sm" onclick="openModal('modal-expense')">+ Add Expense</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+    <div class="stat"><div class="sl">Total Expenses</div><div class="sv">R 349,223</div><div class="ss">Jan–Mar 2026</div></div>
+    <div class="stat s-green"><div class="sl">Input VAT Claimed</div><div class="sv">R 13,100</div><div class="ss">From VAT suppliers</div></div>
+    <div class="stat s-amber"><div class="sl">Fuel (No VAT)</div><div class="sv">R 18,432</div><div class="ss">SARS exclusion</div></div>
+    <div class="stat s-red"><div class="sl">Receipts Missing</div><div class="sv">3</div><div class="ss">Action required</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">📷 OCR Receipt Scanner</div><div class="card-sub">AI extracts supplier details + amounts</div></div>
+      <div class="card-body">
+        <div style="border:2px dashed var(--border-md);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .15s" onclick="mockAction('Scan receipt')" onmouseover="this.style.borderColor='var(--navy)';this.style.background='#F0F4FB'" onmouseout="this.style.borderColor='var(--border-md)';this.style.background=''">
+          <div style="font-size:36px;margin-bottom:10px">📄</div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:6px">Photograph Supplier Invoice</div>
+          <div style="font-size:12px;color:var(--muted)">AI reads: supplier name, VAT no., date, amount</div>
+          <div style="margin-top:12px"><button class="btn btn-navy btn-sm" onclick="event.stopPropagation();mockOCR()">📷 Scan Now (Mock)</button></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 12px;background:var(--green-p);border-radius:8px;font-size:12px;border:1px solid rgba(26,122,74,.2)">
+          ✅ <strong>Last scan:</strong> Builders Warehouse · R 1,265.00 · VAT R 164.78 · 15 Jan 2026
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">VAT201 Position</div></div>
+      <div class="card-body">
+        <div style="border:1px solid var(--border-md);border-radius:var(--radius-sm);overflow:hidden">
+          <div class="vat-row"><span style="color:var(--muted)">Output VAT (invoiced)</span><span class="mono" style="color:var(--red)">+ R 151,899</span></div>
+          <div class="vat-row"><span style="color:var(--muted)">Input VAT (expenses)</span><span class="mono" style="color:var(--green)">- R 13,100</span></div>
+          <div class="vat-row total"><span>Net VAT Payable</span><span class="mono" style="color:var(--red)">R 138,799</span></div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);padding:8px;background:var(--amber-p);border-radius:6px;border:1px solid rgba(217,119,6,.2)">
+          ⚠️ <strong>Petrol/Fuel:</strong> Input VAT on petrol NOT claimable per SARS rules.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Expense Register</div></div>
+    <div class="tbl-wrap">
+      <table class="tbl"><thead><tr><th>#</th><th>Date</th><th>Supplier</th><th>Category</th><th>Claim Ref</th><th>Incl. VAT</th><th>Input VAT</th><th>Claimable</th><th>Receipt</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>15 Jan</td><td class="td-bold">BUILDERS WAREHOUSE</td><td><span class="badge b-navy">Materials</span></td><td class="mono td-muted" style="font-size:11px">HLB/2025/455580</td><td class="mono">R 1,265.00</td><td class="mono" style="color:var(--green)">R 164.78</td><td><span class="badge b-active">Yes</span></td><td>📎</td></tr>
+        <tr><td>2</td><td>20 Jan</td><td class="td-bold">CASHBUILD</td><td><span class="badge b-navy">Materials</span></td><td class="mono td-muted" style="font-size:11px">HLB/2025/462781</td><td class="mono">R 890.50</td><td class="mono" style="color:var(--green)">R 116.02</td><td><span class="badge b-active">Yes</span></td><td>📎</td></tr>
+        <tr><td>3</td><td>10 Feb</td><td class="td-bold">ENGEN PETROLEUM</td><td><span class="badge" style="background:var(--amber-p);color:var(--amber)">Petrol</span></td><td class="mono td-muted" style="font-size:11px">HLB/2025/453462</td><td class="mono">R 650.00</td><td class="mono td-muted">R 0 (N/A)</td><td><span class="badge b-void">No</span></td><td>📎</td></tr>
+        <tr><td>4</td><td>15 Feb</td><td class="td-bold">ROOF WORLD</td><td><span class="badge b-navy">Materials</span></td><td class="mono td-muted" style="font-size:11px">HLB/2026/471982</td><td class="mono">R 4,312.50</td><td class="mono" style="color:var(--green)">R 562.07</td><td><span class="badge b-active">Yes</span></td><td>📎</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ACCOUNTING
+════════════════════════════════════════ -->
+<div class="panel" id="panel-accounting">
+  <div class="ph">
+    <div><div class="ph-title">Accounting</div><div class="ph-sub">Chart of Accounts · Journals · General Ledger · Trial Balance</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('New journal entry')">📝 Post Journal</button>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Export accounting')">⬇ Export</button>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchAccTab(this,'acc-coa')">📒 Chart of Accounts</div>
+    <div class="tab" onclick="switchAccTab(this,'acc-journals')">📝 Journals</div>
+    <div class="tab" onclick="switchAccTab(this,'acc-ledger')">📋 General Ledger</div>
+    <div class="tab" onclick="switchAccTab(this,'acc-trial')">⚖️ Trial Balance</div>
+  </div>
+  <!-- Chart of Accounts -->
+  <div id="acc-coa">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px">
+      <div style="background:var(--blue-p);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Assets')"><div style="font-size:22px;margin-bottom:6px">🏦</div><div style="font-weight:700;font-size:13px;color:var(--blue)">Assets</div><div style="font-size:10px;color:var(--muted)">1000–1999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--blue)">R 913,357</div></div>
+      <div style="background:var(--red-p);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Liabilities')"><div style="font-size:22px;margin-bottom:6px">📉</div><div style="font-weight:700;font-size:13px;color:var(--red)">Liabilities</div><div style="font-size:10px;color:var(--muted)">2000–2999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--red)">R 168,433</div></div>
+      <div style="background:var(--teal-l);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Equity')"><div style="font-size:22px;margin-bottom:6px">💼</div><div style="font-weight:700;font-size:13px;color:var(--teal)">Equity</div><div style="font-size:10px;color:var(--muted)">3000–3999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--teal)">R 744,924</div></div>
+      <div style="background:var(--green-p);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Income')"><div style="font-size:22px;margin-bottom:6px">💰</div><div style="font-weight:700;font-size:13px;color:var(--green)">Income</div><div style="font-size:10px;color:var(--muted)">4000–4999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--green)">R 1,164,559</div></div>
+      <div style="background:var(--amber-p);border-radius:var(--radius);padding:14px;cursor:pointer" onclick="mockAction('Filter Expenses')"><div style="font-size:22px;margin-bottom:6px">💸</div><div style="font-weight:700;font-size:13px;color:var(--amber)">Expenses</div><div style="font-size:10px;color:var(--muted)">5000–5999</div><div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:var(--amber)">R 349,223</div></div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl"><thead><tr><th>Code</th><th>Account Name</th><th>Class</th><th>Type</th><th style="text-align:right">Balance</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">1010</td><td>Bank Account — FNB Operating</td><td><span class="badge b-navy">Assets</span></td><td style="color:var(--muted)">Current Asset</td><td class="mono" style="text-align:right">R 849,893.81</td></tr>
+          <tr><td class="mono">1100</td><td>Accounts Receivable</td><td><span class="badge b-navy">Assets</span></td><td style="color:var(--muted)">Current Asset</td><td class="mono" style="text-align:right">R 6,264.05</td></tr>
+          <tr><td class="mono">1300</td><td>Equipment &amp; Tools</td><td><span class="badge b-navy">Assets</span></td><td style="color:var(--muted)">Fixed Asset</td><td class="mono" style="text-align:right">R 45,200.00</td></tr>
+          <tr><td class="mono">2100</td><td>Accounts Payable</td><td><span class="badge b-red">Liabilities</span></td><td style="color:var(--muted)">Current Liability</td><td class="mono" style="text-align:right">R 18,432.00</td></tr>
+          <tr><td class="mono">2200</td><td>VAT Payable — Output VAT</td><td><span class="badge b-red">Liabilities</span></td><td style="color:var(--muted)">Current Liability</td><td class="mono" style="text-align:right">R 138,798.91</td></tr>
+          <tr><td class="mono">3200</td><td>Retained Earnings</td><td><span class="badge b-teal">Equity</span></td><td style="color:var(--muted)">Retained Earnings</td><td class="mono" style="text-align:right">R 744,924.36</td></tr>
+          <tr><td class="mono">4100</td><td>Invoice Revenue — Bigo Direct</td><td><span class="badge b-green">Income</span></td><td style="color:var(--muted)">Operating Revenue</td><td class="mono" style="text-align:right">R 849,893.81</td></tr>
+          <tr><td class="mono">4200</td><td>Invoice Revenue — Phahamo Sub</td><td><span class="badge b-green">Income</span></td><td style="color:var(--muted)">Operating Revenue</td><td class="mono" style="text-align:right">R 314,665.46</td></tr>
+          <tr><td class="mono">5100</td><td>Subcontractor Costs</td><td><span class="badge b-amber">Expenses</span></td><td style="color:var(--muted)">Direct Cost</td><td class="mono" style="text-align:right">R 248,390.00</td></tr>
+          <tr><td class="mono">5200</td><td>Materials &amp; Hardware</td><td><span class="badge b-amber">Expenses</span></td><td style="color:var(--muted)">Direct Cost</td><td class="mono" style="text-align:right">R 72,150.00</td></tr>
+          <tr><td class="mono">5300</td><td>Fuel &amp; Transport</td><td><span class="badge b-amber">Expenses</span></td><td style="color:var(--muted)">Operating Expense</td><td class="mono" style="text-align:right">R 18,432.00</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+  <!-- Journals -->
+  <div id="acc-journals" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Journal Entries</div><div class="card-sub">Double-entry · Dr = Cr validation</div></div>
+      <div class="card-body">
+        <div class="alert info"><div class="alert-icon">📝</div><div><div class="alert-title">Journal Entry Form</div><div class="alert-body">Post balanced journal entries. Each entry requires Dr = Cr. All entries auto-post to the General Ledger.</div><div class="alert-actions"><button class="btn btn-navy btn-xs" onclick="mockAction('New journal')">+ New Journal</button><button class="btn btn-ghost btn-xs" onclick="mockAction('Load sample')">📋 Load Sample</button></div></div></div>
+        <div style="margin-top:14px;background:var(--bg);border-radius:8px;padding:12px;font-size:12px">
+          <div style="font-weight:700;color:var(--navy);margin-bottom:8px">Recent Journals</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap"><span class="mono">JE-0001</span><span>Invoice INV-0810 raised</span><span class="mono" style="color:var(--green)">R 6,264.05</span><span class="badge b-active">Posted</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap"><span class="mono">JE-0002</span><span>Payment batch — Jan 2026</span><span class="mono" style="color:var(--green)">R 412,841.00</span><span class="badge b-active">Posted</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;gap:8px;flex-wrap:wrap"><span class="mono">JE-0003</span><span>VAT output — Jan 2026</span><span class="mono" style="color:var(--teal)">R 45,621.30</span><span class="badge b-active">Posted</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- General Ledger -->
+  <div id="acc-ledger" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">General Ledger</div><div class="card-sub">Select an account to view transactions</div></div>
+      <div class="card-body">
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+          <select class="fi" style="flex:1;min-width:200px" onchange="mockAction('Load ledger for '+this.value)">
+            <option>— Select Account —</option>
+            <option>1010 — Bank Account (FNB)</option>
+            <option>1100 — Accounts Receivable</option>
+            <option>2200 — VAT Payable</option>
+            <option>4100 — Revenue Bigo</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="mockAction('Export ledger')">⬇ Export</button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl"><thead><tr><th>Date</th><th>Reference</th><th>Description</th><th style="text-align:right">Debit</th><th style="text-align:right">Credit</th><th style="text-align:right">Balance</th></tr></thead>
+          <tbody>
+            <tr><td>25 Jan</td><td class="mono">PMT-001</td><td>SB Insurance payment batch 1</td><td class="mono" style="text-align:right">R 412,841.00</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono td-bold" style="text-align:right">R 412,841.00</td></tr>
+            <tr><td>10 Feb</td><td class="mono">PMT-002</td><td>SB Insurance payment batch 2</td><td class="mono" style="text-align:right">R 214,500.50</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono td-bold" style="text-align:right">R 627,341.50</td></tr>
+            <tr><td>15 Feb</td><td class="mono">EXP-001</td><td>Subcontractor payments</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono" style="text-align:right">R 145,200.00</td><td class="mono td-bold" style="text-align:right">R 482,141.50</td></tr>
+            <tr><td>22 Mar</td><td class="mono">PMT-003</td><td>SB Insurance payment batch 3</td><td class="mono" style="text-align:right">R 222,450.31</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono td-bold" style="text-align:right">R 849,893.81</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Trial Balance -->
+  <div id="acc-trial" style="display:none">
+    <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+      <div class="stat s-navy"><div class="sl">Total Debits</div><div class="sv">R 1,164,559</div></div>
+      <div class="stat s-teal"><div class="sl">Total Credits</div><div class="sv">R 1,164,559</div></div>
+      <div class="stat s-green"><div class="sl">Balance Check</div><div class="sv" style="font-size:16px">✅ Balanced</div></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Trial Balance — 01 Jan 2026 – 27 Mar 2026</div></div>
+      <div class="tbl-wrap">
+        <table class="tbl"><thead><tr style="background:var(--navy);color:white"><th style="background:var(--navy);color:white">Code</th><th style="background:var(--navy);color:white">Account</th><th style="background:var(--navy);color:white">Class</th><th style="background:var(--navy);color:white;text-align:right">Debit (Dr)</th><th style="background:var(--navy);color:white;text-align:right">Credit (Cr)</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">1010</td><td>Bank Account</td><td>Assets</td><td class="mono" style="text-align:right">R 849,893.81</td><td class="mono td-muted" style="text-align:right">—</td></tr>
+          <tr><td class="mono">1100</td><td>Accounts Receivable</td><td>Assets</td><td class="mono" style="text-align:right">R 6,264.05</td><td class="mono td-muted" style="text-align:right">—</td></tr>
+          <tr><td class="mono">2200</td><td>VAT Payable</td><td>Liabilities</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono" style="text-align:right">R 138,798.91</td></tr>
+          <tr><td class="mono">4100</td><td>Revenue — Bigo Direct</td><td>Income</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono" style="text-align:right">R 849,893.81</td></tr>
+          <tr><td class="mono">4200</td><td>Revenue — Phahamo</td><td>Income</td><td class="mono td-muted" style="text-align:right">—</td><td class="mono" style="text-align:right">R 314,665.46</td></tr>
+          <tr><td class="mono">5100</td><td>Subcontractor Costs</td><td>Expenses</td><td class="mono" style="text-align:right">R 248,390.00</td><td class="mono td-muted" style="text-align:right">—</td></tr>
+          <tr><td class="mono">5300</td><td>Fuel &amp; Transport</td><td>Expenses</td><td class="mono" style="text-align:right">R 18,432.00</td><td class="mono td-muted" style="text-align:right">—</td></tr>
+          <tr style="background:var(--navy);color:white"><td colspan="3" style="padding:10px 12px;font-weight:700">TOTALS</td><td class="mono" style="text-align:right;padding:10px 12px;font-weight:700">R 1,122,979.86</td><td class="mono" style="text-align:right;padding:10px 12px;font-weight:700">R 1,303,358.18</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     VAT & SARS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-vatsars">
+  <div class="ph">
+    <div><div class="ph-title">VAT &amp; SARS</div><div class="ph-sub">VAT201 Prep · Input/Output Summary · eFiling · Deadlines</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Download VAT201 worksheet')">⬇ VAT201 Prep</button>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Submit VAT201 (mock)')">🏛️ Submit VAT201</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+    <div class="stat s-red"><div class="sl">Output VAT</div><div class="sv">R 151,899</div><div class="ss">On R 1,012,661 excl.</div></div>
+    <div class="stat s-green"><div class="sl">Input VAT</div><div class="sv">R 13,100</div><div class="ss">Claimable expenses</div></div>
+    <div class="stat s-navy"><div class="sl">Net VAT Payable</div><div class="sv">R 138,799</div><div class="ss">To SARS</div></div>
+    <div class="stat s-amber"><div class="sl">Due Date</div><div class="sv" style="font-size:16px">30 Apr</div><div class="ss">34 days remaining</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">VAT201 Worksheet</div><div class="card-sub">Period: Jan–Feb 2026</div></div>
+      <div class="card-body">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Output VAT</div>
+        <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 1 — Standard-rated supplies (Excl.)</span><strong>R 1,012,660.23</strong></div>
+        <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 4 — Output VAT @ 15%</span><strong>R 151,899.04</strong></div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Input VAT</div>
+        <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 14 — Standard-rated purchases</span><strong>R 87,334.22</strong></div>
+        <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 15 — Input VAT @ 15%</span><strong>R 13,100.13</strong></div>
+        <div style="background:var(--red);color:white;border-radius:6px;padding:12px 14px;font-size:13px;font-weight:700;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 20 — Net VAT Payable</span><strong>R 138,798.91</strong></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">🏛️ SARS eFiling Submission</div><div class="card-sub">Direct API · Inactive (Demo)</div></div>
+      <div class="card-body">
+        <div class="coming-soon">
+          <div class="coming-icon">🏛️</div>
+          <div class="coming-title">SARS eFiling Integration</div>
+          <div class="coming-body">Direct SARS eFiling API submission will be available in Phase 2. VAT201 prep worksheet is ready for manual submission.</div>
+          <button class="btn btn-amber btn-sm" onclick="mockAction('Download VAT201 Worksheet')">📋 Download VAT201 Worksheet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Input/Output VAT Summary</div></div>
+    <div class="tbl-wrap">
+      <table class="tbl"><thead><tr><th>Period</th><th>Output VAT</th><th>Input VAT</th><th>Net Payable</th><th>Due Date</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Jan – Feb 2026</td><td class="mono" style="color:var(--red)">R 151,899.04</td><td class="mono" style="color:var(--green)">R 13,100.13</td><td class="mono td-bold" style="color:var(--red)">R 138,798.91</td><td>30 Apr 2026</td><td><span class="badge b-medium">Pending</span></td></tr>
+        <tr><td>Nov – Dec 2025</td><td class="mono" style="color:var(--red)">R 45,210.00</td><td class="mono" style="color:var(--green)">R 4,320.00</td><td class="mono td-bold" style="color:var(--red)">R 40,890.00</td><td>28 Feb 2026</td><td><span class="badge b-paid">Paid</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Filing Deadlines &amp; Alerts</div></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+        <div class="alert amber"><div class="alert-icon">⚡</div><div><div class="alert-title">VAT201 — 34 days</div><div class="alert-body">Due 30 April 2026 · R 138,799 payable</div></div></div>
+        <div class="alert ok"><div class="alert-icon">📅</div><div><div class="alert-title">EMP201 — 11 days</div><div class="alert-body">Due 7 April 2026 · PAYE submission</div></div></div>
+        <div class="alert info"><div class="alert-icon">📋</div><div><div class="alert-title">EMP501 — 65 days</div><div class="alert-body">Due 31 May 2026 · Bi-annual recon</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     REPORTS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-reports">
+  <div class="ph">
+    <div><div class="ph-title">Reports</div><div class="ph-sub">Income statement · Balance sheet · CAT reconciliation · Excel exports</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Export all reports to Excel')">⬇ Export All</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">📈 Income Statement</div><div class="card-sub">01 Jan – 27 Mar 2026</div></div>
+      <div class="card-body" style="font-size:12px;font-family:var(--mono)">
+        <div style="font-weight:700;color:var(--navy);padding:8px 0;border-bottom:2px solid var(--navy);margin-bottom:6px;font-family:var(--font);font-size:13px">REVENUE</div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Invoice Revenue — Bigo Direct</span><span>R 849,893.81</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Invoice Revenue — Phahamo Sub</span><span>R 314,665.46</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--blue-p);border-radius:4px;margin:6px 0;font-weight:700;color:var(--navy);gap:8px"><span style="font-family:var(--font)">TOTAL REVENUE (Incl. VAT)</span><span>R 1,164,559.27</span></div>
+        <div style="font-weight:700;color:var(--red);padding:8px 0;border-bottom:2px solid var(--red);margin:10px 0 6px;font-family:var(--font);font-size:13px">EXPENSES</div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Subcontractor Costs</span><span style="color:var(--red)">(R 248,390.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Materials &amp; Hardware</span><span style="color:var(--red)">(R 72,150.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Fuel &amp; Transport</span><span style="color:var(--red)">(R 18,432.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Output VAT (SARS)</span><span style="color:var(--red)">(R 151,899.04)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--red-p);border-radius:4px;margin:6px 0;font-weight:700;color:var(--red);gap:8px"><span style="font-family:var(--font)">TOTAL EXPENSES</span><span>(R 501,122.22)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 8px;background:var(--green-p);border-radius:4px;font-weight:700;font-size:14px;color:var(--green);margin-top:8px;gap:8px"><span style="font-family:var(--font)">NET PROFIT</span><span>R 663,437.05</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">⚖️ Balance Sheet</div><div class="card-sub">27 Mar 2026</div></div>
+      <div class="card-body" style="font-size:12px;font-family:var(--mono)">
+        <div style="font-weight:700;color:var(--navy);padding:6px 0;border-bottom:2px solid var(--navy);margin-bottom:6px;font-family:var(--font)">ASSETS</div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Bank Account (1010)</span><span>R 849,893.81</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Accounts Receivable (1100)</span><span>R 6,264.05</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Equipment &amp; Tools (1300)</span><span>R 45,200.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 8px;background:var(--blue-p);border-radius:4px;margin:4px 0;font-weight:700;color:var(--navy);gap:8px"><span style="font-family:var(--font)">TOTAL ASSETS</span><span>R 901,357.86</span></div>
+        <div style="font-weight:700;color:var(--red);padding:6px 0;border-bottom:2px solid var(--red);margin:8px 0 6px;font-family:var(--font)">LIABILITIES</div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">VAT Payable (2200)</span><span style="color:var(--red)">R 138,798.91</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Accounts Payable (2100)</span><span style="color:var(--red)">R 18,432.00</span></div>
+        <div style="font-weight:700;color:var(--teal);padding:6px 0;border-bottom:2px solid var(--teal);margin:8px 0 6px;font-family:var(--font)">EQUITY</div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);gap:8px"><span style="font-family:var(--font)">Retained Earnings (3200)</span><span>R 744,126.95</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--teal-l);border-radius:4px;font-weight:700;font-size:13px;color:var(--teal);margin-top:6px;gap:8px"><span style="font-family:var(--font)">TOTAL L + EQUITY</span><span>R 901,357.86</span></div>
+        <div style="text-align:center;margin-top:8px;font-size:10px;background:var(--green-p);color:var(--green);border-radius:4px;padding:6px;font-family:var(--font);font-weight:600">✅ Balance Sheet Balanced</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">CAT Reconciliation</div><div class="card-sub">Claims vs Invoices · All 83 reconciled</div></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px">
+        <div style="text-align:center;padding:12px;background:var(--bg);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--navy);font-family:var(--mono)">83</div><div style="font-size:11px;color:var(--muted)">Total Claims</div></div>
+        <div style="text-align:center;padding:12px;background:var(--green-p);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--mono)">82</div><div style="font-size:11px;color:var(--muted)">Invoiced &amp; Paid</div></div>
+        <div style="text-align:center;padding:12px;background:var(--red-p);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--red);font-family:var(--mono)">1</div><div style="font-size:11px;color:var(--muted)">Outstanding</div></div>
+        <div style="text-align:center;padding:12px;background:#F3F4F6;border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--muted);font-family:var(--mono)">4</div><div style="font-size:11px;color:var(--muted)">Void Invoices</div></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-navy btn-sm" onclick="mockAction('Export CAT reconciliation Excel')">⬇ Export Reconciliation</button>
+        <button class="btn btn-ghost btn-sm" onclick="mockAction('Export income statement')">📈 Income Statement XLSX</button>
+        <button class="btn btn-ghost btn-sm" onclick="mockAction('Export balance sheet')">⚖️ Balance Sheet XLSX</button>
+        <button class="btn btn-ghost btn-sm" onclick="mockAction('Export VAT report')">🧾 VAT Report XLSX</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SETTINGS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-settings">
+  <div class="ph">
+    <div><div class="ph-title">Settings</div><div class="ph-sub">Company profile · Integrations · Users · Billing</div></div>
+    <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('Save settings')">💾 Save Settings</button></div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchSettingsTab(this,'set-company')">🏢 Company</div>
+    <div class="tab" onclick="switchSettingsTab(this,'set-integrations')">🔌 Integrations</div>
+    <div class="tab" onclick="switchSettingsTab(this,'set-users')">👥 Users</div>
+    <div class="tab" onclick="switchSettingsTab(this,'set-billing')">💳 Billing</div>
+  </div>
+  <!-- Company -->
+  <div id="set-company">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Company Profile</div></div>
+      <div class="card-body">
+        <div class="fgrid">
+          <div class="fg full"><label class="fl">Company Name</label><input class="fi" value="Big O Projects (Pty) Ltd"></div>
+          <div class="fg"><label class="fl">NHBRC Number</label><input class="fi" value="Registered" readonly></div>
+          <div class="fg"><label class="fl">CIDB Rating</label><input class="fi" value="PE 6GB" readonly></div>
+          <div class="fg"><label class="fl">Admin Email</label><input class="fi" type="email" value="Norman@bigoprojects.co.za"></div>
+          <div class="fg"><label class="fl">WhatsApp Business</label><input class="fi" value="082 402 8027"></div>
+          <div class="fg"><label class="fl">VAT Number</label><input class="fi" placeholder="SA VAT Registration No."></div>
+          <div class="fg"><label class="fl">VAT Rate</label><input class="fi" value="15%" readonly></div>
+          <div class="fg full"><label class="fl">Head Office Address</label><input class="fi" value="11 Monza Close, Kyalami Park, Midrand, Gauteng"></div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-navy" onclick="mockAction('Save company profile')">💾 Save Profile</button>
+          <button class="btn btn-ghost" onclick="mockAction('Upload logo')">🖼️ Upload Logo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Integrations -->
+  <div id="set-integrations" style="display:none">
+    <div class="three-col">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">🔄 Zoho Books</div><div style="background:var(--green-p);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">● Active</div></div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;gap:10px;background:var(--green-p);border-radius:8px;padding:12px;margin-bottom:12px"><div style="font-size:28px">🔄</div><div><div style="font-weight:700;font-size:12px;color:var(--green)">Connected</div><div style="font-size:11px;color:var(--muted)">83 invoices synced</div></div></div>
+          <div style="font-size:12px;margin-bottom:10px">✅ Invoices synced<br>✅ Contacts imported<br>✅ Payments reconciled</div>
+          <button class="btn btn-teal btn-sm btn-full" onclick="mockAction('Sync Zoho now')">↻ Sync Now</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">📧 Exchange Email</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
+        <div class="card-body">
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">📧</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Microsoft Exchange</div><div style="font-size:11px;color:var(--muted)">OAuth 2.0 · Auto send invoices</div></div>
+          <div style="margin-top:10px"><label class="fl">Azure Client ID</label><input class="fi" type="password" placeholder="Configure in Phase 2"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">💬 WhatsApp Business</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
+        <div class="card-body">
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">💬</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Meta WhatsApp API</div><div style="font-size:11px;color:var(--muted)">Send invoices &amp; reminders</div></div>
+          <div style="margin-top:10px"><label class="fl">Access Token</label><input class="fi" type="password" placeholder="Configure in Phase 2"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">🏛️ SARS eFiling</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
+        <div class="card-body">
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">🏛️</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">SARS eFiling API</div><div style="font-size:11px;color:var(--muted)">VAT201, EMP201 direct submit</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">🤖 AI Assistant</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
+        <div class="card-body">
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">🤖</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">AI Analysis Engine</div><div style="font-size:11px;color:var(--muted)">Report generation · Anomaly detection</div></div>
+          <div style="margin-top:10px"><label class="fl">Anthropic API Key</label><input class="fi" type="password" placeholder="sk-ant-... (Phase 2)"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">📡 PWA / Offline</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
+        <div class="card-body">
+          <div class="coming-soon" style="padding:16px"><div style="font-size:28px">📡</div><div style="font-weight:600;font-size:12px;margin-top:6px;margin-bottom:4px">Offline PWA Mode</div><div style="font-size:11px;color:var(--muted)">IndexedDB · Service Worker sync</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Users -->
+  <div id="set-users" style="display:none">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">User Management</div><div class="card-sub">Active users &amp; roles</div><button class="btn btn-gold btn-sm" onclick="mockAction('Invite user')">+ Invite User</button></div>
+      <div class="tbl-wrap">
+        <table class="tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Last Login</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="td-bold">Norman</td><td>norman@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+          <tr><td>2</td><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
+          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td>thabo@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
+          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td>moses@bigoprojects.co.za</td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+  <!-- Billing -->
+  <div id="set-billing" style="display:none">
+    <div class="two-col">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Current Plan</div></div>
+        <div class="card-body">
+          <div style="background:var(--navy);color:white;border-radius:10px;padding:20px;text-align:center;margin-bottom:14px">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;opacity:.6;margin-bottom:6px">Current Plan</div>
+            <div style="font-size:28px;font-weight:700">Professional</div>
+            <div style="font-size:22px;font-weight:700;margin:8px 0;font-family:var(--mono)">R 1,499 / mo</div>
+            <div style="font-size:11px;opacity:.6">Billed monthly · All features included</div>
+          </div>
+          <div style="font-size:12px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--green)">✓</span> Unlimited invoices</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--green)">✓</span> All accounting modules</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--green)">✓</span> Zoho integration</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--green)">✓</span> 5 team members</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--muted)">○</span> <span style="color:var(--muted)">AI features (Phase 2)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Billing History</div></div>
+        <div class="tbl-wrap">
+          <table class="tbl"><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>01 Mar 2026</td><td>Professional Plan</td><td class="mono">R 1,499.00</td><td><span class="badge b-paid">Paid</span></td></tr>
+            <tr><td>01 Feb 2026</td><td>Professional Plan</td><td class="mono">R 1,499.00</td><td><span class="badge b-paid">Paid</span></td></tr>
+            <tr><td>01 Jan 2026</td><td>Professional Plan</td><td class="mono">R 1,499.00</td><td><span class="badge b-paid">Paid</span></td></tr>
+          </tbody></table>
+        </div>
+        <div style="padding:12px 14px;border-top:1px solid var(--border)">
+          <button class="btn btn-ghost btn-sm" onclick="mockAction('Update payment method')">💳 Update Payment Method</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div><!-- /content -->
+  </div><!-- /main-wrap -->
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <div class="mob-nav-item active" id="mnav-dashboard" onclick="showPanel('dashboard')"><span class="m-icon">◈</span>Dashboard</div>
+    <div class="mob-nav-item" id="mnav-claims" onclick="showPanel('claims')"><span class="m-icon">📋</span>Claims</div>
+    <div class="mob-nav-item" id="mnav-invoices" onclick="showPanel('invoices')"><span class="m-icon">🧾</span>Invoices</div>
+    <div class="mob-nav-item" id="mnav-field" onclick="showPanel('field')"><span class="m-icon">🗺️</span>Field</div>
+    <div class="mob-nav-item" id="mnav-more" onclick="toggleSidebar()"><span class="m-icon">☰</span>More</div>
+  </nav>
+
+</div><!-- /app -->
+
+<!-- ════════════════════════════════════════
+     MODALS
+════════════════════════════════════════ -->
+<!-- New Invoice Modal -->
+<div class="modal-ov" id="modal-invoice">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Create New Invoice</div><button class="modal-close" onclick="closeModal('modal-invoice')">×</button></div>
+    <div class="modal-body">
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Invoice Number</label><input class="fi" value="BIG O-INV-0811" readonly style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Entity</label><select class="fi"><option>Bigo Direct</option><option>Phahamo Subcontract</option></select></div>
+        <div class="fg"><label class="fl">Client *</label><input class="fi" id="ni-client" placeholder="Policy holder name"></div>
+        <div class="fg"><label class="fl">Claim Reference *</label><input class="fi" id="ni-claim" placeholder="HLB/2026/XXXXXX" style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Invoice Date *</label><input class="fi" type="date" id="ni-date"></div>
+        <div class="fg"><label class="fl">Status</label><select class="fi"><option>Draft</option><option>Sent</option><option>Paid</option><option>Outstanding</option></select></div>
+        <div class="fg"><label class="fl">Amount Incl. VAT (R) *</label><input class="fi" type="number" id="ni-incl" placeholder="0.00" oninput="calcModalVAT()" style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Excl. VAT (auto)</label><input class="fi" id="ni-excl" readonly style="font-family:var(--mono);background:var(--bg)"></div>
+        <div class="fg full"><label class="fl">Notes</label><textarea class="fi" rows="2" placeholder="Description or notes..."></textarea></div>
+      </div>
+      <div style="margin-top:10px;background:var(--bg);border-radius:8px;padding:10px;font-size:11.5px;color:var(--muted)">✅ VAT auto-calculated @ 15% · Auto-sequential invoice numbering</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-invoice')">Cancel</button>
+      <button class="btn btn-navy" onclick="mockSave('modal-invoice','Invoice saved (mock)')">💾 Save Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Client Modal -->
+<div class="modal-ov" id="modal-client">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title">Add New Client</div><button class="modal-close" onclick="closeModal('modal-client')">×</button></div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div id="ct-sub" onclick="setClientType('Subcontractor')" style="border:2px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s">
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">🔨 Subcontractor</div>
+          <div style="font-size:11.5px;color:var(--muted)">Work, fuel, materials, daily field activity</div>
+        </div>
+        <div id="ct-sup" onclick="setClientType('Supplier')" style="border:2px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s">
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">🏪 Supplier</div>
+          <div style="font-size:11.5px;color:var(--muted)">Material purchases, expenses, input VAT</div>
+        </div>
+      </div>
+      <div class="fgrid">
+        <div class="fg full"><label class="fl">Company / Trade Name *</label><input class="fi" placeholder="Company or trading name"></div>
+        <div class="fg"><label class="fl">VAT Number</label><input class="fi" placeholder="SA VAT Reg No (10 digits)"></div>
+        <div class="fg"><label class="fl">Contact Person</label><input class="fi" placeholder="Full name"></div>
+        <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" placeholder="email@company.co.za"></div>
+        <div class="fg"><label class="fl">Mobile / WhatsApp</label><input class="fi" placeholder="0XX XXX XXXX"></div>
+        <div class="fg"><label class="fl">Status</label><select class="fi"><option>Active</option><option>Inactive</option></select></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-client')">Cancel</button>
+      <button class="btn btn-gold" onclick="mockSave('modal-client','Client added (mock)')">+ Add Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create Quote Modal -->
+<div class="modal-ov" id="modal-quote">
+  <div class="modal modal-lg">
+    <div class="modal-hdr"><div class="modal-title">Create New Quote</div><button class="modal-close" onclick="closeModal('modal-quote')">×</button></div>
+    <div class="modal-body">
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Quote Number</label><input class="fi" value="QTE-008" readonly style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Template</label><select class="fi"><option>— None —</option><option>Storm Damage</option><option>Hail Damage</option><option>Flood Damage</option><option>Burst Geyser</option></select></div>
+        <div class="fg"><label class="fl">Client *</label><input class="fi" placeholder="Policy holder name"></div>
+        <div class="fg"><label class="fl">Claim Reference</label><input class="fi" placeholder="HLB/2026/XXXXXX" style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Date</label><input class="fi" type="date"></div>
+        <div class="fg"><label class="fl">Valid Until</label><input class="fi" type="date"></div>
+        <div class="fg full"><label class="fl">Description</label><textarea class="fi" rows="3" placeholder="Scope of work..."></textarea></div>
+        <div class="fg"><label class="fl">Amount Excl. VAT</label><input class="fi" type="number" placeholder="0.00" style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">VAT @ 15%</label><input class="fi" placeholder="Auto" readonly style="background:var(--bg);font-family:var(--mono)"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-quote')">Cancel</button>
+      <button class="btn btn-navy" onclick="mockSave('modal-quote','Quote created (mock)')">💾 Save Quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- Record Payment Modal -->
+<div class="modal-ov" id="modal-payment">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Record Payment</div><button class="modal-close" onclick="closeModal('modal-payment')">×</button></div>
+    <div class="modal-body">
+      <div class="fgrid">
+        <div class="fg full"><label class="fl">Invoice *</label><select class="fi"><option>BIG O-INV-0810 — ZIPHOZIHLE WONCI — R 6,264.05 (Outstanding)</option><option>BIG O-INV-0809 — TERIZA O CONNELL</option></select></div>
+        <div class="fg"><label class="fl">Payment Date *</label><input class="fi" type="date"></div>
+        <div class="fg"><label class="fl">Amount Received (R) *</label><input class="fi" type="number" placeholder="0.00" style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Payment Method</label><select class="fi"><option>EFT / Bank Transfer</option><option>Cash</option><option>Credit Card</option></select></div>
+        <div class="fg"><label class="fl">Reference</label><input class="fi" placeholder="Bank reference or receipt no."></div>
+        <div class="fg"><label class="fl">Received By</label><input class="fi" value="Norman"></div>
+        <div class="fg full"><label class="fl">Notes</label><textarea class="fi" rows="2" placeholder="Payment notes..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-payment')">Cancel</button>
+      <button class="btn btn-green" onclick="mockSave('modal-payment','Payment recorded (mock)')">✅ Record Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Expense Modal -->
+<div class="modal-ov" id="modal-expense">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add Expense</div><button class="modal-close" onclick="closeModal('modal-expense')">×</button></div>
+    <div class="modal-body">
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Supplier *</label><input class="fi" placeholder="Supplier name"></div>
+        <div class="fg"><label class="fl">Date *</label><input class="fi" type="date"></div>
+        <div class="fg"><label class="fl">VAT Number</label><input class="fi" placeholder="SA VAT Reg No."></div>
+        <div class="fg"><label class="fl">Category</label><select class="fi"><option>Materials</option><option>Petrol (No Input VAT)</option><option>Labour</option><option>Equipment</option><option>Other</option></select></div>
+        <div class="fg full"><label class="fl">Description</label><input class="fi" placeholder="Expense description"></div>
+        <div class="fg"><label class="fl">Amount Incl. VAT (R) *</label><input class="fi" type="number" placeholder="0.00" style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Input VAT (auto)</label><input class="fi" placeholder="Auto-calculated" readonly style="background:var(--bg);font-family:var(--mono)"></div>
+        <div class="fg full"><label class="fl">Claim Reference</label><input class="fi" placeholder="HLB/2026/XXXXXX (optional)"></div>
+      </div>
+      <div style="margin-top:10px;background:var(--amber-p);border-radius:6px;padding:9px 12px;font-size:11.5px;border:1px solid rgba(217,119,6,.2)">
+        ⚠️ <strong>Petrol:</strong> Input VAT on petrol is NOT claimable per SARS rules.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-expense')">Cancel</button>
+      <button class="btn btn-navy" onclick="mockSave('modal-expense','Expense recorded (mock)')">+ Add Expense</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   CLAIMSYNC v3.0 — COMPLETE MOCKUP ENGINE
+   © 2026 Big O Projects (Pty) Ltd
+   Blueprint-aligned · Mobile-responsive
+═══════════════════════════════════════════ */
+
+/* ── USERS ── */
+const USERS = [
+  {email:'admin@bigoprojects.co.za', password:'BigO2026!', name:'Norman', role:'Administrator', initials:'N', type:'admin'},
+  {email:'field@bigoprojects.co.za', password:'Field123!', name:'Field User', role:'Team Leader', initials:'F', type:'field'},
+];
+let currentUser = null;
+
+/* ── DEVICE DETECTION ── */
+function detectDevice() {
+  const w = window.innerWidth;
+  const badge = document.getElementById('device-badge');
+  if (w <= 600) {
+    badge.style.display = 'block';
+    badge.textContent = '📱 Mobile View';
+  } else if (w <= 960) {
+    badge.style.display = 'block';
+    badge.textContent = '📱 Tablet View';
+    setTimeout(() => { badge.style.display = 'none'; }, 3000);
+  } else {
+    badge.style.display = 'none';
+  }
+}
+window.addEventListener('resize', detectDevice);
+
+/* ── AUTH ── */
+function quickLogin(type) {
+  const u = USERS.find(x => x.type === type);
+  document.getElementById('login-email').value = u.email;
+  document.getElementById('login-password').value = u.password;
+  doLogin();
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('login-password').value;
+  const user  = USERS.find(u => u.email === email && u.password === pass);
+  if (!user) { document.getElementById('login-err').classList.add('show'); return; }
+  document.getElementById('login-err').classList.remove('show');
+  currentUser = user;
+  document.getElementById('tb-av').textContent   = user.initials;
+  document.getElementById('tb-name').textContent = user.name;
+  document.getElementById('tb-role').textContent = user.role;
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').classList.add('on');
+  const h = new Date().getHours();
+  const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('dash-greet').textContent = `${g}, ${user.name} 👋`;
+  detectDevice();
+  initCharts();
+  renderDashRecent();
+  renderInvoiceTables();
+  renderClaimsTable();
+  showToast(`👋 Welcome back, ${user.name}!`, 'ok');
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('app').classList.remove('on');
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('user-dd').classList.remove('open');
+  closeSidebar();
+}
+
+/* ── USER DROPDOWN ── */
+function toggleDD() { document.getElementById('user-dd').classList.toggle('open'); }
+function closeDD() { document.getElementById('user-dd').classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tb-user')) closeDD();
+});
+
+/* ── SIDEBAR TOGGLE (mobile/tablet) ── */
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+/* ── PANEL NAVIGATION ── */
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mob-nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  const mnav = document.getElementById('mnav-' + id);
+  if (mnav) mnav.classList.add('active');
+  const mc = document.getElementById('main-content');
+  if (mc) mc.scrollTop = 0;
+  closeDD();
+  closeSidebar();
+  // scroll to top on mobile
+  if (window.innerWidth <= 600) window.scrollTo(0, 0);
+}
+
+/* ── TAB SWITCHING ── */
+function switchTab(el, show, hide) {
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const showEl = document.getElementById(show);
+  const hideEl = document.getElementById(hide);
+  if (showEl) showEl.style.display = '';
+  if (hideEl) hideEl.style.display = 'none';
+}
+
+function switchAccTab(el, show) {
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['acc-coa','acc-journals','acc-ledger','acc-trial'].forEach(id => {
+    const el2 = document.getElementById(id);
+    if (el2) el2.style.display = id === show ? '' : 'none';
+  });
+}
+
+function switchSettingsTab(el, show) {
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['set-company','set-integrations','set-users','set-billing'].forEach(id => {
+    const el2 = document.getElementById(id);
+    if (el2) el2.style.display = id === show ? '' : 'none';
+  });
+}
+
+/* ── MOCK DATA ── */
+const INVOICES_BIGO = [
+  {no:'INV-0810',client:'ZIPHOZIHLE WONCI',claim:'HLB/2026/466333',date:'17 Mar',incl:6264.05,status:'Outstanding'},
+  {no:'INV-0809',client:'TERIZA O CONNELL',claim:'HLB/2025/452875',date:'16 Mar',incl:966.00,status:'Paid'},
+  {no:'INV-0807',client:'MRS MTIMKULU',claim:'HLB/2025/459228',date:'13 Mar',incl:9665.80,status:'Paid'},
+  {no:'INV-0806',client:'MRS E KRIEL',claim:'HLB/2026/469552',date:'12 Mar',incl:826.85,status:'Paid'},
+  {no:'INV-0805',client:'AUGUST KROG',claim:'HLB/2026/468350',date:'12 Mar',incl:1082.15,status:'Paid'},
+  {no:'INV-0803',client:'STANLEY KHAN',claim:'HLB/2026/475093',date:'10 Mar',incl:1083.30,status:'Paid'},
+  {no:'INV-0801',client:'SONJA DE BRUIN',claim:'HLB/2026/471982',date:'08 Mar',incl:63510.00,status:'Paid'},
+  {no:'INV-0799',client:'UNKNOWN CLIENT',claim:'HLB/2025/456871',date:'28 Feb',incl:98429.00,status:'Paid'},
+  {no:'INV-0719',client:'NAZEER ADAM',claim:'HLB/2025/456871',date:'15 Jan',incl:118026.00,status:'Paid'},
+  {no:'INV-0729',client:'ADOLPHE BASEMENANE',claim:'HLB/2025/462340',date:'18 Jan',incl:82077.00,status:'Paid'},
+];
+
+const INVOICES_PHA = [
+  {no:'INV-0808',client:'MRS MTIMKULU',claim:'HLB/2025/459228',date:'13 Mar',incl:1249.90,status:'Paid'},
+  {no:'INV-0750',client:'KWAME ASANTE',claim:'HLB/2026/479001',date:'15 Mar',incl:18760.00,status:'Paid'},
+  {no:'INV-0749',client:'NTHABI MASHEGO',claim:'HLB/2026/478231',date:'12 Mar',incl:9870.00,status:'Paid'},
+  {no:'INV-0748',client:'GEORGE MAHLABA',claim:'HLB/2026/477543',date:'10 Mar',incl:15670.00,status:'Paid'},
+  {no:'INV-0747',client:'FELICITY DLAMINI',claim:'HLB/2026/476890',date:'08 Mar',incl:7890.00,status:'Paid'},
+  {no:'INV-0744',client:'JEAN-CLAUDE BADIBANGA',claim:'HLB/2026/474765',date:'28 Feb',incl:9870.00,status:'Paid'},
+  {no:'INV-0742',client:'SIPHAMANDLA DUBE',claim:'HLB/2026/473298',date:'22 Feb',incl:18760.00,status:'Paid'},
+  {no:'INV-0739',client:'MTHOKOZISI MKHIZE',claim:'HLB/2026/471234',date:'15 Feb',incl:15670.00,status:'Paid'},
+];
+
+const CLAIMS_DATA = [
+  {ref:'HLB/2026/466333',client:'ZIPHOZIHLE WONCI',address:'14 Palm St, Midrand',peril:'Storm',assessor:'Norman',entity:'BIGO',status:'Invoiced'},
+  {ref:'HLB/2026/468350',client:'AUGUST KROG',address:'8 Oak Ave, Kyalami',peril:'Hail',assessor:'Thabo Mkhize',entity:'BIGO',status:'In Progress'},
+  {ref:'HLB/2026/471982',client:'SONJA DE BRUIN',address:'5 Elm Close, Midrand',peril:'Flood',assessor:'Moses Nkosi',entity:'BIGO',status:'In Progress'},
+  {ref:'HLB/2026/472154',client:'JEAN FERREIRA',address:'3 Birch Str, Randburg',peril:'Storm',assessor:'Sipho Dlamini',entity:'BIGO',status:'Assigned'},
+  {ref:'HLB/2026/478652',client:'MRS S NAIDOO',address:'33 Pine Rd, Midrand',peril:'Storm',assessor:'Moses Nkosi',entity:'BIGO',status:'New'},
+  {ref:'HLB/2026/479001',client:'KWAME ASANTE',address:'27 Mango Way, Midrand',peril:'Storm',assessor:'—',entity:'PHAHAMO',status:'New'},
+  {ref:'HLB/2026/475093',client:'STANLEY KHAN',address:'11 Baobab Cr, Midrand',peril:'Hail',assessor:'Sipho Dlamini',entity:'BIGO',status:'Invoiced'},
+  {ref:'HLB/2026/476890',client:'FELICITY DLAMINI',address:'9 Cedar Lane, Midrand',peril:'Hail',assessor:'Thabo Mkhize',entity:'PHAHAMO',status:'Invoiced'},
+  {ref:'HLB/2026/480012',client:'NEW UNASSIGNED',address:'TBD',peril:'Storm',assessor:'—',entity:'BIGO',status:'New'},
+  {ref:'HLB/2026/464889',client:'NP NTSHUDISANE',address:'6 Fig Tree Rd, Midrand',peril:'Flood',assessor:'Moses Nkosi',entity:'BIGO',status:'Invoiced'},
+];
+
+function fmtR(n) { return 'R ' + Number(n).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function statusBadge(s) {
+  const m = {Paid:'b-paid',Outstanding:'b-outstanding',Draft:'b-draft',Sent:'b-sent',Void:'b-void','In Progress':'b-progress',Assigned:'b-medium',New:'b-new',Invoiced:'b-done',Completed:'b-done'};
+  return `<span class="badge ${m[s]||'b-draft'}">${s}</span>`;
+}
+
+function renderDashRecent() {
+  const tbody = document.getElementById('dash-recent');
+  if (!tbody) return;
+  const rows = [...INVOICES_BIGO.slice(0,5), ...INVOICES_PHA.slice(0,3)];
+  tbody.innerHTML = rows.map(inv => {
+    const isBigo = INVOICES_BIGO.some(x => x.no === inv.no);
+    return `<tr onclick="showPanel('invoices')">
+      <td class="mono td-bold">BIG O-${inv.no}</td>
+      <td>${inv.client}</td>
+      <td class="mono td-muted" style="font-size:11px">${inv.claim}</td>
+      <td>${inv.date}</td>
+      <td class="mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
+      <td>${statusBadge(inv.status)}</td>
+      <td><span class="badge ${isBigo?'b-navy':'b-purple'}">${isBigo?'Bigo':'Phahamo'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderInvoiceTables() {
+  const tbody1 = document.getElementById('inv-bigo-tbody');
+  const tbody2 = document.getElementById('inv-pha-tbody');
+  if (tbody1) tbody1.innerHTML = INVOICES_BIGO.map((inv,i) => `<tr>
+    <td>${i+1}</td><td class="mono td-bold">BIG O-${inv.no}</td><td>${inv.client}</td>
+    <td class="mono td-muted" style="font-size:11px">${inv.claim}</td><td>${inv.date}</td>
+    <td class="mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
+    <td>${statusBadge(inv.status)}</td>
+    <td><button class="btn btn-ghost btn-xs" onclick="mockAction('View ${inv.no}')">View</button></td>
+  </tr>`).join('');
+  if (tbody2) tbody2.innerHTML = INVOICES_PHA.map((inv,i) => `<tr>
+    <td>${i+1}</td><td class="mono td-bold">BIG O-${inv.no}</td><td>${inv.client}</td>
+    <td class="mono td-muted" style="font-size:11px">${inv.claim}</td><td>${inv.date}</td>
+    <td class="mono td-bold">${fmtR(inv.incl)}</td>
+    <td>${statusBadge(inv.status)}</td>
+    <td><button class="btn btn-ghost btn-xs" onclick="mockAction('View ${inv.no}')">View</button></td>
+  </tr>`).join('');
+}
+
+function renderClaimsTable() {
+  const tbody = document.getElementById('claims-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = CLAIMS_DATA.map((c,i) => `<tr>
+    <td>${i+1}</td>
+    <td class="mono td-bold" style="font-size:11px">${c.ref}</td>
+    <td>${c.client}</td>
+    <td style="font-size:11.5px;color:var(--muted)">${c.address}</td>
+    <td>${c.peril}</td><td>${c.assessor}</td>
+    <td><span class="badge ${c.entity==='BIGO'?'b-navy':'b-purple'}">${c.entity}</span></td>
+    <td>${statusBadge(c.status)}</td>
+    <td><div style="display:flex;gap:4px">
+      <button class="btn btn-ghost btn-xs" onclick="mockAction('View ${c.ref}')">View</button>
+      <button class="btn btn-ghost btn-xs" onclick="showPanel('invoices')">Invoice</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+/* ── CHARTS ── */
+let chartsInitialised = false;
+function initCharts() {
+  if (chartsInitialised) return;
+  chartsInitialised = true;
+  const rc = document.getElementById('chart-revenue');
+  if (rc) {
+    new Chart(rc, {
+      type: 'bar',
+      data: {
+        labels: ['Jan 2026', 'Feb 2026', 'Mar 2026'],
+        datasets: [
+          {label:'Bigo Direct',data:[612400,182000,55494],backgroundColor:'rgba(10,45,94,0.85)',borderRadius:6},
+          {label:'Phahamo',data:[226134,28438,60093],backgroundColor:'rgba(75,40,135,0.75)',borderRadius:6},
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>'R '+Number(v/1000).toFixed(0)+'k'}}}}
+    });
+  }
+  const ac = document.getElementById('chart-aged');
+  if (ac) {
+    new Chart(ac, {
+      type: 'doughnut',
+      data: {
+        labels: ['Current (0-30d)','31-60 days','61-90 days','90+ days'],
+        datasets:[{data:[1158295,6264,0,0],backgroundColor:['rgba(26,122,74,0.8)','rgba(192,57,43,0.8)','rgba(217,119,6,0.8)','rgba(107,114,128,0.5)'],borderWidth:0}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:10}}}}
+    });
+  }
+}
+
+/* ── MODALS ── */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-ov').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
+});
+
+function mockSave(modalId, msg) {
+  closeModal(modalId);
+  showToast('✅ ' + msg, 'ok');
+}
+
+function calcModalVAT() {
+  const incl = parseFloat(document.getElementById('ni-incl').value) || 0;
+  document.getElementById('ni-excl').value = incl ? 'R ' + (incl/1.15).toFixed(2) : '';
+}
+
+/* ── CLIENT TYPE SELECTOR ── */
+function setClientType(type) {
+  const sub = document.getElementById('ct-sub');
+  const sup = document.getElementById('ct-sup');
+  if (type === 'Subcontractor') {
+    sub.style.borderColor='var(--purple)'; sub.style.background='var(--purple-l)';
+    sup.style.borderColor='var(--border-md)'; sup.style.background='';
+  } else {
+    sup.style.borderColor='var(--teal)'; sup.style.background='var(--teal-l)';
+    sub.style.borderColor='var(--border-md)'; sub.style.background='';
+  }
+}
+
+/* ── TABLE FILTER ── */
+function filterTable(tblId, q) {
+  const tbl = document.getElementById(tblId);
+  if (!tbl) return;
+  const rows = tbl.querySelectorAll('tbody tr');
+  const lower = q.toLowerCase();
+  rows.forEach(r => { r.style.display = r.textContent.toLowerCase().includes(lower) ? '' : 'none'; });
+}
+
+/* ── MOCK ACTIONS ── */
+function mockAction(label) { showToast('⚡ ' + label + ' (mock)', 'inf'); }
+function mockOCR() { showToast('📷 OCR scanning receipt... AI extracted: Builders Warehouse · R 2,340.00 · VAT R 304.35', 'ok'); }
+function triggerSync() {
+  document.getElementById('sync-lbl').textContent = 'Syncing...';
+  setTimeout(() => { document.getElementById('sync-lbl').textContent = 'Online — Synced'; showToast('🔄 Zoho sync complete · 83 invoices reconciled', 'ok'); }, 1800);
+}
+
+/* ── TOAST ── */
+function showToast(msg, type='inf') {
+  const wrap = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(() => {
+    t.style.animation = 'toastOut .3s ease forwards';
+    setTimeout(() => { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, 4000);
+}
+
+/* ── KEYBOARD SHORTCUTS ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-ov.open').forEach(m => m.classList.remove('open'));
+    closeSidebar();
+    closeDD();
+  }
+});
+
+/* ── INIT ── */
+detectDevice();
+</script>
+</body>
+</html>
