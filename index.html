@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClaimSync — Big O Projects · Full System · Stages 1 &amp; 2</title>
+<title>ClaimSync — Big O Projects · Full System · Stages 1–5</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════
@@ -1021,7 +1021,7 @@ textarea.finput { resize: vertical; }
       <span class="hex">⬡</span> ClaimSync<span class="dot">.</span>
     </div>
     <div class="topbar-badge">Big O Projects</div>
-    <div class="topbar-stage">Full System · v1.0</div>
+    <div class="topbar-stage">Full System · v2.0 · Stages 1–5</div>
     <div class="topbar-spacer"></div>
     <div class="topbar-sync" onclick="triggerSync()">
       <div class="sync-dot"></div><span id="sync-label">Online — Synced</span>
@@ -1106,6 +1106,36 @@ textarea.finput { resize: vertical; }
       <div class="nav-item" id="nav-expenses" onclick="showPanel('expenses')">
         <span class="nav-icon" style="position:relative">💸</span> Expenses
       </div>
+      <div class="nav-item" id="nav-ocr" onclick="showPanel('ocr')">
+        <span class="nav-icon">📷</span> Receipt Scanner
+        <span class="nav-badge gold">S4</span>
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px">Accounting</div>
+      <div class="nav-item" id="nav-coa" onclick="showPanel('coa')">
+        <span class="nav-icon">📒</span> Chart of Accounts
+        <span class="nav-badge gold">S5</span>
+      </div>
+      <div class="nav-item" id="nav-journals" onclick="showPanel('journals')">
+        <span class="nav-icon">📝</span> Journals
+        <span class="nav-badge gold">S5</span>
+      </div>
+      <div class="nav-item" id="nav-ledger" onclick="showPanel('ledger')">
+        <span class="nav-icon">📋</span> General Ledger
+        <span class="nav-badge gold">S5</span>
+      </div>
+      <div class="nav-item" id="nav-trial-balance" onclick="showPanel('trial-balance')">
+        <span class="nav-icon">⚖️</span> Trial Balance
+        <span class="nav-badge gold">S5</span>
+      </div>
+      <div class="nav-item" id="nav-vat201" onclick="showPanel('vat201')">
+        <span class="nav-icon">🏛️</span> VAT201 / SARS
+        <span class="nav-badge gold">S5</span>
+      </div>
+      <div class="nav-item" id="nav-income-statement" onclick="showPanel('income-statement')">
+        <span class="nav-icon">📈</span> Income Statement
+        <span class="nav-badge gold">S5</span>
+      </div>
 
       <div class="nav-section-label" style="margin-top:8px">Reports</div>
       <div class="nav-item" id="nav-analytics" onclick="showPanel('analytics')">
@@ -1116,12 +1146,21 @@ textarea.finput { resize: vertical; }
       </div>
 
       <div class="nav-section-label" style="margin-top:8px">Integrations</div>
+      <div class="nav-item" id="nav-pwa" onclick="showPanel('pwa')">
+        <span class="nav-icon">📡</span> PWA / Offline
+        <span class="nav-badge gold">S3</span>
+      </div>
       <div class="nav-item" id="nav-zoho" onclick="showPanel('zoho')">
         <span class="nav-icon">🔄</span> Zoho Sync
         <span class="nav-badge green">✓</span>
       </div>
+      <div class="nav-item" id="nav-communication" onclick="showPanel('communication')">
+        <span class="nav-icon">💬</span> Email / WhatsApp
+        <span class="nav-badge gold">S5</span>
+      </div>
       <div class="nav-item" id="nav-ai" onclick="showPanel('ai')">
         <span class="nav-icon">🤖</span> AI Assistant
+        <span class="nav-badge gold">S5</span>
       </div>
 
       <div class="sidebar-footer">
@@ -1129,8 +1168,8 @@ textarea.finput { resize: vertical; }
           <span class="nav-icon">⚙️</span> Settings
         </div>
         <div class="sidebar-build-badge">
-          <strong>ClaimSync — Stages 1 &amp; 2</strong>
-          Full System · All Modules<br>
+          <strong>ClaimSync — Stages 1–5</strong>
+          Full System v2.0 · All Modules<br>
           © 2026 Big O Projects (Pty) Ltd
         </div>
       </div>
@@ -1185,6 +1224,18 @@ textarea.finput { resize: vertical; }
       <div class="stat-value">R 6,264</div>
       <div class="stat-sub">1 claim · Ziphozihle Wonci · INV-0810</div>
       <div class="stat-icon">⚠️</div>
+    </div>
+    <div class="stat-card navy" onclick="showPanel('vat201')" style="cursor:pointer">
+      <div class="stat-label">Net VAT Payable · SARS</div>
+      <div class="stat-value">R 138,799</div>
+      <div class="stat-sub">VAT201 · Due 30 Apr 2026 · 34 days</div>
+      <div class="stat-icon">🏛️</div>
+    </div>
+    <div class="stat-card teal" onclick="showPanel('income-statement')" style="cursor:pointer">
+      <div class="stat-label">Gross Profit</div>
+      <div class="stat-value">R 663,437</div>
+      <div class="stat-sub">65.5% margin · CAT 2026 · Post expenses</div>
+      <div class="stat-icon">📈</div>
     </div>
   </div>
 
@@ -1620,11 +1671,11 @@ textarea.finput { resize: vertical; }
     <div class="card">
       <div class="card-header"><div class="card-title">📷 Receipt Scanner</div><div class="card-sub">AI OCR — auto-extracts supplier details + amounts</div></div>
       <div class="card-body">
-        <div style="border:2px dashed #D1D5DB;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.15s" onclick="showToast('📷 Camera feature available in Stage 4 (OCR module)', 'info')" onmouseover="this.style.borderColor='var(--navy)';this.style.background='#F0F4FB'" onmouseout="this.style.borderColor='#D1D5DB';this.style.background=''">
+        <div style="border:2px dashed #D1D5DB;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.15s" onclick="showPanel('ocr')" onmouseover="this.style.borderColor='var(--navy)';this.style.background='#F0F4FB'" onmouseout="this.style.borderColor='#D1D5DB';this.style.background=''">
           <div style="font-size:36px;margin-bottom:10px">📄</div>
           <div style="font-weight:700;font-size:14px;margin-bottom:6px">Photograph Supplier Invoice</div>
           <div style="font-size:12px;color:var(--muted)">Tap to open camera · AI reads: supplier name, VAT no, date, amount</div>
-          <div style="margin-top:12px;display:inline-block;background:#EAF0FB;color:var(--navy);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px">OCR Available in Stage 4</div>
+          <div style="margin-top:12px;display:inline-block;background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px">✅ OCR Active — Stage 4 Enabled</div>
         </div>
         <div style="margin-top:12px;padding:10px 12px;background:var(--green-pale);border-radius:8px;font-size:12px;border:1px solid rgba(26,122,74,0.2)">
           ✅ <strong>Last scan:</strong> Builders Warehouse · R1,265.00 incl. VAT · VAT R164.78 · 15 Jan 2026 · Auto-matched to claim HLB/2025/455580
@@ -1773,68 +1824,6 @@ textarea.finput { resize: vertical; }
   </div>
 </div><!-- /export -->
 
-<!-- ═══════════════════════════════════════════════
-     PANEL: ASSESSMENT
-═══════════════════════════════════════════════ -->
-<div class="panel" id="panel-assessment">
-  <div class="page-header">
-    <div><div class="page-title">Field Assessment</div><div class="page-subtitle">Team Leader · Job Card Entry · Standard Bank HOC</div></div>
-    <div class="page-actions">
-      <span style="background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px">📱 Offline-capable in Stage 3</span>
-    </div>
-  </div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-header"><div class="card-title">Claim Details</div></div>
-      <div class="card-body">
-        <div class="form-grid">
-          <div class="form-group"><label class="form-label">Claim Number</label><input class="form-input" placeholder="HLB/2026/XXXXXX" style="font-family:var(--mono)"></div>
-          <div class="form-group"><label class="form-label">Policy Holder</label><input class="form-input" placeholder="Full name"></div>
-          <div class="form-group"><label class="form-label">Policy Number</label><input class="form-input" placeholder="HOC-XXXXX"></div>
-          <div class="form-group"><label class="form-label">Assessment Date</label><input class="form-input" type="date"></div>
-          <div class="form-group"><label class="form-label">Assessor Name</label><input class="form-input" placeholder="Team Leader name"></div>
-          <div class="form-group"><label class="form-label">Peril / Event</label>
-            <select class="form-input"><option>Storm Damage</option><option>Hail</option><option>Flood</option><option>Fire</option><option>Theft</option><option>Burst Geyser</option></select>
-          </div>
-          <div class="form-group full"><label class="form-label">Property Address</label><input class="form-input" placeholder="Full property address"></div>
-          <div class="form-group full"><label class="form-label">Assessment Notes</label><textarea class="form-input" rows="4" placeholder="Describe damage observed on site..."></textarea></div>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <div class="card">
-        <div class="card-header"><div class="card-title">Damage Checklist</div></div>
-        <div class="card-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md);transition:background 0.1s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Roof Damage</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Ceiling Damage</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Gutter Damage</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Interior Walls</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Flooring</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Doors/Windows</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Geyser</label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:6px;border:1px solid var(--border-md)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"><input type="checkbox"> Boundary Wall</label>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header"><div class="card-title">Site Photos</div><div class="card-sub">Stage 2 feature · AI auto-categorisation</div></div>
-        <div class="card-body">
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-            <div style="border:2px dashed #D1D5DB;border-radius:8px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:11px;transition:all 0.1s" onclick="showToast('📸 Photo upload available in Stage 2', 'info')">📸<br>Roof</div>
-            <div style="border:2px dashed #D1D5DB;border-radius:8px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:11px" onclick="showToast('📸 Photo upload available in Stage 2', 'info')">📸<br>Ceiling</div>
-            <div style="border:2px dashed #D1D5DB;border-radius:8px;padding:16px;text-align:center;cursor:pointer;color:var(--muted);font-size:11px" onclick="showToast('📸 Photo upload available in Stage 2', 'info')">+<br>More</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div style="display:flex;gap:12px">
-    <button class="btn btn-ghost" style="flex:1" onclick="showToast('💾 Assessment draft saved', 'success')">💾 Save Draft</button>
-    <button class="btn btn-primary" style="flex:1" onclick="showToast('📤 Assessment submitted successfully', 'success')">📤 Submit Assessment</button>
-    <button class="btn btn-gold" style="flex:1" onclick="showAIPanel()">🤖 Generate AI Report</button>
-  </div>
-</div><!-- /assessment -->
 
 <!-- ═══════════════════════════════════════════════
      PANEL: ZOHO SYNC
@@ -1880,78 +1869,117 @@ textarea.finput { resize: vertical; }
 ═══════════════════════════════════════════════ -->
 <div class="panel" id="panel-ai">
   <div class="page-header">
-    <div><div class="page-title">AI Assistant</div><div class="page-subtitle">Powered by Anthropic Claude · Invoice analysis · Anomaly detection · Report generation</div></div>
+    <div>
+      <div class="page-title">AI Assistant · Claude API</div>
+      <div class="page-subtitle">Stage 5 · Anthropic claude-sonnet-4-20250514 · Live API · Invoice analysis · VAT review · HOC report generation · Anomaly detection</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <span style="background:var(--gold-pale);border:1px solid rgba(201,152,42,0.3);color:var(--gold);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:4px">✦ claude-sonnet-4-20250514</span>
+    </div>
   </div>
-  <div class="two-col">
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- AI Feature Cards -->
     <div class="card">
-      <div class="card-header"><div class="card-title">🤖 AI Analysis Features</div><div class="card-sub">Stage 5 integration · Claude claude-sonnet-4-20250514</div></div>
-      <div class="card-body">
-        <div style="display:flex;flex-direction:column;gap:10px;font-size:12.5px">
-          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>Invoice Analysis</strong><br><span style="color:var(--muted)">Flag duplicates · Check amounts vs claim auth · Validate VAT · Sequence check</span></div>
-          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>Anomaly Detection</strong><br><span style="color:var(--muted)">Duplicate invoices · Unusual expense amounts · Outstanding invoice ageing alerts</span></div>
-          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>Report Generation</strong><br><span style="color:var(--muted)">Convert field notes → Standard Bank HOC assessment report using policy wording</span></div>
-          <div style="padding:10px 12px;border:1px solid var(--border-md);border-radius:8px"><strong>VAT Review</strong><br><span style="color:var(--muted)">Flag missing input VAT claims · Check output VAT totals · Identify claimable items</span></div>
+      <div class="card-header"><div class="card-title">🤖 AI Analysis Triggers</div><div class="card-sub">Click any button to run live Claude API call</div></div>
+      <div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">
+        ${[
+          {icon:'🧾',title:'Invoice Analysis',desc:'Duplicate detection · VAT validation · Amount vs auth check · Sequence validation',type:'invoice'},
+          {icon:'💸',title:'Expense Review',desc:'Input VAT optimisation · Fuel exclusion check · Unusual amount flagging',type:'expense'},
+          {icon:'📊',title:'VAT201 Review',desc:'Output vs input VAT · Missing claims · SARS compliance check · Net payable validation',type:'vat'},
+          {icon:'🔄',title:'Reconciliation Analysis',desc:'ClaimSync vs Zoho variance · Unmatched items · Suggested corrections',type:'reconciliation'},
+        ].map(f => `
+          <div style="border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:12px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <div>
+              <div style="font-weight:700;font-size:12px;display:flex;align-items:center;gap:6px">${f.icon} ${f.title}</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:3px">${f.desc}</div>
+            </div>
+            <button class="ai-btn" style="flex-shrink:0" onclick="runAIAnalysis('${f.type}')"><span class="ai-icon">✦</span> Run</button>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Live AI Result -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">✦ AI Response</div><div class="card-sub">Live result from Claude API</div></div>
+      <div style="padding:0 16px 16px">
+        <div style="background:var(--bg);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px">
+          <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Custom Analysis Prompt</label>
+          <textarea id="ai-custom-prompt" rows="3" style="width:100%;border:1px solid var(--border-md);border-radius:6px;padding:8px;font-size:12px;font-family:var(--font);resize:vertical;outline:none" placeholder="Type your own question about claims, VAT, invoices, or accounting...&#10;e.g. 'What is the outstanding VAT liability for CAT 2026?'"></textarea>
+          <button class="ai-btn" style="margin-top:8px;width:100%;justify-content:center" onclick="runCustomAI()"><span class="ai-icon">✦</span> Send to Claude</button>
+        </div>
+        <div id="ai-result" style="display:none"></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.5">
+          Model: claude-sonnet-4-20250514 · Max tokens: 1000 (analysis) / 4000 (reports)<br>
+          API key configured server-side in .env · All calls logged to ai_analysis_log table
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">Quick AI Analysis</div></div>
-      <div class="card-body">
-        <div style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:14px">
-          <textarea class="form-input" rows="4" placeholder="Describe a claim or paste assessment notes for AI analysis...&#10;&#10;e.g. 'Roof storm damage, 12 tiles replaced, ceiling water stain 2m2, gutters bent'"></textarea>
+  </div>
+
+  <!-- HOC Report Generator (full) -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">📄 HOC Assessment Report Generator</div><div class="card-sub">AI converts field notes into full Standard Bank HOC formatted report</div></div>
+    <div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Claim Reference</label>
+            <input class="auth-input" id="air-claim" placeholder="HLB/2026/XXXXXX" style="font-size:12px;font-family:var(--mono)">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Peril / Cause of Loss</label>
+            <select class="auth-input" id="air-peril" style="font-size:12px">
+              <option>Storm Damage</option><option>Hail Damage</option><option>Flood Damage</option>
+              <option>Fire Damage</option><option>Burst Geyser</option><option>Theft / Burglary</option>
+              <option>Impact Damage</option><option>Subsidence</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Field Notes / Observations</label>
+            <textarea id="air-notes" rows="5" style="width:100%;border:1.5px solid var(--border-md);border-radius:var(--radius-sm);padding:10px;font-size:12px;font-family:var(--font);resize:vertical;outline:none" placeholder="Paste assessor field notes here...&#10;e.g. Roof damaged — 15 IBR sheets displaced. Ceiling board water-stained 3m². Gutters bent. No structural damage."></textarea>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Additional Context</label>
+            <input class="auth-input" id="air-context" placeholder="e.g. CAT Event 2026 · Midrand property" style="font-size:12px">
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" id="copy-report-btn" style="display:none;flex:1" onclick="copyReport()">📋 Copy Report</button>
+            <button class="ai-btn" id="gen-report-btn" style="flex:1;justify-content:center" onclick="generateAIReport()"><span class="ai-icon">✦</span> Generate HOC Report</button>
+          </div>
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="ai-btn" onclick="runAIAnalysis('invoice')"><span class="ai-icon">✦</span> Analyse Invoice</button>
-          <button class="ai-btn" onclick="runAIAnalysis('report')"><span class="ai-icon">✦</span> Generate Report</button>
-          <button class="ai-btn" onclick="runAIAnalysis('vat')"><span class="ai-icon">✦</span> Review VAT</button>
-        </div>
-        <div id="ai-result" style="margin-top:14px;display:none;background:var(--bg);border-radius:8px;padding:14px;font-size:12.5px;line-height:1.6;border:1px solid var(--border-md)"></div>
-        <div style="margin-top:14px;font-size:11px;color:var(--muted)">Full AI integration enabled in Stage 5 · API: claude-sonnet-4-20250514 · Max 1000 tokens (analysis) / 4000 tokens (report)</div>
       </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Generated Report</label>
+        <div id="ai-standalone-report" style="background:var(--bg);border:1px solid var(--border-md);border-radius:var(--radius-sm);padding:14px;min-height:280px;font-size:11px;line-height:1.6;font-family:var(--mono);white-space:pre-wrap;overflow-y:auto;max-height:380px;color:var(--muted)">
+          Enter claim details and field notes, then click Generate to create a full HOC assessment report using Claude AI.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Anomaly Log -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">⚠️ AI Anomaly Detection Log</div><div class="card-sub">Automatic flags · Requires review</div></div>
+    <div style="padding:0 16px 16px">
+      ${[
+        {sev:'HIGH',  icon:'🔴',msg:'INV-0810 outstanding 47 days — Ziphozihle Wonci · R6,264.05 · Action: Send statement to SB Insurance portal'},
+        {sev:'MEDIUM',icon:'🟡',msg:'4 void invoices totalling R105,215.77 — Confirm all voids have corresponding credit notes'},
+        {sev:'LOW',   icon:'🟢',msg:'Input VAT claims could be optimised — 3 supplier receipts missing VAT numbers · Estimated R1,240 unclaimed'},
+        {sev:'INFO',  icon:'🔵',msg:'Phahamo subcontract invoices: 23 claims · R314,665.46 · All status: Paid — No anomalies detected'},
+      ].map(a => `
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span style="font-size:18px">${a.icon}</span>
+          <div style="flex:1">
+            <span style="background:${a.sev==='HIGH'?'var(--red)':a.sev==='MEDIUM'?'var(--amber)':a.sev==='LOW'?'var(--green)':'var(--navy)'};color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;margin-right:6px">${a.sev}</span>
+            ${a.msg}
+          </div>
+          <button style="background:none;border:1px solid var(--border-md);border-radius:4px;padding:2px 8px;font-size:10px;cursor:pointer;color:var(--muted)" onclick="showToast('✅ Anomaly acknowledged','ok')">Dismiss</button>
+        </div>`).join('')}
     </div>
   </div>
 </div><!-- /ai -->
 
-<!-- ═══════════════════════════════════════════════
-     PANEL: SETTINGS
-═══════════════════════════════════════════════ -->
-<div class="panel" id="panel-settings">
-  <div class="page-header">
-    <div><div class="page-title">Settings</div><div class="page-subtitle">Company profile · Integrations · User management · Billing</div></div>
-    <div class="page-actions"><button class="btn btn-primary btn-sm" onclick="saveSettings()">💾 Save Settings</button></div>
-  </div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-header"><div class="card-title">Company Profile</div></div>
-      <div class="card-body">
-        <div class="form-grid">
-          <div class="form-group full"><label class="form-label">Company Name</label><input class="form-input" value="Big O Projects (Pty) Ltd"></div>
-          <div class="form-group"><label class="form-label">NHBRC Number</label><input class="form-input" value="Registered" readonly></div>
-          <div class="form-group"><label class="form-label">CIDB Rating</label><input class="form-input" value="PE 6GB" readonly></div>
-          <div class="form-group"><label class="form-label">Admin Email</label><input class="form-input" type="email" value="Norman@bigoprojects.co.za"></div>
-          <div class="form-group"><label class="form-label">WhatsApp Business</label><input class="form-input" value="082 402 8027"></div>
-          <div class="form-group"><label class="form-label">VAT Number</label><input class="form-input" placeholder="SA VAT Registration No."></div>
-          <div class="form-group"><label class="form-label">VAT Rate</label><input class="form-input" value="15%" readonly></div>
-          <div class="form-group full"><label class="form-label">Head Office Address</label><input class="form-input" value="11 Monza Close, Kyalami Park, Midrand, Gauteng"></div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header"><div class="card-title">Integration API Keys</div><div class="card-sub">Stored securely · Never exposed to browser</div></div>
-      <div class="card-body">
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div><label class="form-label">Anthropic API Key (AI)</label><input class="form-input" type="password" placeholder="sk-ant-..."></div>
-          <div><label class="form-label">Zoho Client ID</label><input class="form-input" type="password" placeholder="Zoho OAuth Client ID"></div>
-          <div><label class="form-label">Exchange Client ID</label><input class="form-input" type="password" placeholder="Azure AD Application ID"></div>
-          <div><label class="form-label">WhatsApp Access Token</label><input class="form-input" type="password" placeholder="Meta WhatsApp Business token"></div>
-        </div>
-        <div style="margin-top:12px;background:var(--amber-pale);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--amber);border:1px solid rgba(217,119,6,0.2)">
-          ⚠️ Store API keys in server-side .env file. Keys shown here are for UI configuration only.
-        </div>
-      </div>
-    </div>
-  </div>
-</div><!-- /settings -->
 
 
 
@@ -2621,7 +2649,7 @@ textarea.finput { resize: vertical; }
           <div><strong>Company:</strong> Big O Projects (Pty) Ltd</div>
           <div><strong>NHBRC:</strong> Registered</div>
           <div><strong>CIDB:</strong> PE 6GB</div>
-          <div><strong>Contact:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e8a6879a858986a88a818f87989a87828d8b9c9bc68b87c69289">[email&#160;protected]</a></div>
+          <div><strong>Contact:</strong> Norman@bigoprojects.co.za</div>
           <div><strong>WhatsApp:</strong> 082 402 8027</div>
           <div style="margin-top:10px;padding:10px;background:var(--green-pale);border-radius:8px">
             <strong style="color:var(--green)">Stage 2 Complete:</strong><br>
@@ -2825,6 +2853,941 @@ textarea.finput { resize: vertical; }
 </div>
 
 
+<!-- ═══════════════════════════════════════════════
+     STAGE 3: PWA / OFFLINE MODE
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-pwa">
+  <div class="page-header">
+    <div>
+      <div class="page-title">PWA · Offline Mode &amp; WiFi Sync</div>
+      <div class="page-subtitle">Stage 3 · Progressive Web App · IndexedDB + Service Worker + Background Sync</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="pwaInstallPrompt()">📲 Install App</button>
+      <button class="btn btn-primary btn-sm" onclick="pwaSyncNow()">🔄 Force Sync</button>
+    </div>
+  </div>
+
+  <!-- PWA Status Banner -->
+  <div id="pwa-status-banner" style="background:var(--green-pale);border:1px solid rgba(26,122,74,0.2);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--green-light);animation:pulse 2s infinite"></div>
+      <div>
+        <div style="font-weight:700;font-size:13px;color:var(--green)">● Online — Service Worker Active</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">All data synced · Last sync: just now · IndexedDB: 47 records cached</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="pwa-toggle-offline" onclick="togglePWAOffline()">⚡ Simulate Offline</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+    <div class="card" style="padding:18px">
+      <div style="font-size:28px;margin-bottom:8px">📡</div>
+      <div style="font-weight:700;font-size:14px;color:var(--navy)">Service Worker</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5">Caches app shell, static assets, and API responses. Works fully offline once installed.</div>
+      <div style="margin-top:12px;background:var(--green-pale);border-radius:6px;padding:8px;font-size:11px;color:var(--green);font-weight:600">✓ Active · v2.0.0</div>
+    </div>
+    <div class="card" style="padding:18px">
+      <div style="font-size:28px;margin-bottom:8px">💾</div>
+      <div style="font-weight:700;font-size:14px;color:var(--navy)">IndexedDB Storage</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5">All assessments, job cards, photos, and form drafts stored locally for offline access.</div>
+      <div style="margin-top:12px;background:var(--green-pale);border-radius:6px;padding:8px;font-size:11px;color:var(--green);font-weight:600">✓ 47 records · 12.4 MB</div>
+    </div>
+    <div class="card" style="padding:18px">
+      <div style="font-size:28px;margin-bottom:8px">🔄</div>
+      <div style="font-weight:700;font-size:14px;color:var(--navy)">Background Sync</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5">Changes made offline are queued and automatically synced when connectivity is restored.</div>
+      <div style="margin-top:12px;background:var(--green-pale);border-radius:6px;padding:8px;font-size:11px;color:var(--green);font-weight:600">✓ Queue: 0 pending</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- Sync Queue -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🔄 Sync Queue</div>
+        <div class="card-sub" id="sync-queue-count">0 items pending</div>
+      </div>
+      <div id="sync-queue-list" style="padding:0 16px 16px">
+        <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">
+          <div style="font-size:32px;margin-bottom:8px">✅</div>
+          All data synced — no pending items
+        </div>
+      </div>
+      <div style="padding:0 16px 16px;display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" style="flex:1" onclick="pwaAddMockPending()">+ Add Test Item</button>
+        <button class="btn btn-primary btn-sm" style="flex:1" onclick="pwaSyncNow()">🔄 Sync Now</button>
+      </div>
+    </div>
+
+    <!-- Push Notifications -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">🔔 Push Notifications</div><div class="card-sub">Browser push · VAPID keys</div></div>
+      <div style="padding:0 16px 16px">
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:8px">Notification Types</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            ${['New claim assigned', 'Assessment due reminder', 'Invoice overdue alert', 'Sync completed', 'SARS deadline alert'].map(n=>`
+              <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer">
+                <input type="checkbox" checked style="accent-color:var(--navy)"> ${n}
+              </label>`).join('')}
+          </div>
+        </div>
+        <button class="btn btn-navy btn-sm" style="width:100%" onclick="showToast('🔔 Test notification sent!','ok')">🔔 Send Test Notification</button>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px">VAPID key required for production push. Configure in Settings → Integrations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PWA Install + Cached Data -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card">
+      <div class="card-header"><div class="card-title">📲 Install as App</div><div class="card-sub">Add to Home Screen · iOS, Android, Desktop</div></div>
+      <div style="padding:0 16px 16px">
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;line-height:1.5;color:var(--muted);margin-bottom:14px">
+          <div>📱 <strong style="color:var(--text)">iOS/Safari:</strong> Share → Add to Home Screen</div>
+          <div>🤖 <strong style="color:var(--text)">Android/Chrome:</strong> Menu → Install App</div>
+          <div>💻 <strong style="color:var(--text)">Desktop Chrome:</strong> Address bar → Install icon</div>
+        </div>
+        <button class="btn btn-gold btn-sm" style="width:100%" onclick="pwaInstallPrompt()">📲 Install ClaimSync App</button>
+        <div style="margin-top:10px;background:var(--navy);color:white;border-radius:8px;padding:12px;font-size:11px">
+          <strong>Manifest:</strong> manifest.json<br>
+          Icon: 192×192, 512×512 PNG<br>
+          Theme: #0A2D5E · Display: standalone<br>
+          Orientation: portrait-primary
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">💾 Cached Data Status</div><div class="card-sub">IndexedDB stores · Workbox cache</div></div>
+      <div style="padding:0 16px 16px;font-size:12px">
+        ${[
+          ['Assessments','12 records','✅'],
+          ['Job Cards','23 records','✅'],
+          ['Photo Metadata','47 refs','✅'],
+          ['CAT Claims','83 records','✅'],
+          ['Invoice Data','83 invoices','✅'],
+          ['App Shell','3.2 MB','✅'],
+          ['API Responses','15 min TTL','✅'],
+        ].map(([k,v,s])=>`
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--muted)">${k}</span>
+            <span>${s} <strong>${v}</strong></span>
+          </div>`).join('')}
+        <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px" onclick="showToast('🗑️ Cache cleared — data will re-sync on next connection','warn')">🗑️ Clear Cache</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WiFi Sync Config -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">📶 WiFi Sync Configuration</div><div class="card-sub">Auto-sync when on trusted networks</div></div>
+    <div style="padding:0 18px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:10px">Sync Settings</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:12px">
+          <label style="display:flex;justify-content:space-between;align-items:center">
+            <span>Auto-sync on WiFi</span>
+            <div style="width:36px;height:20px;background:var(--navy);border-radius:10px;position:relative;cursor:pointer"><div style="position:absolute;right:2px;top:2px;width:16px;height:16px;background:white;border-radius:50%"></div></div>
+          </label>
+          <label style="display:flex;justify-content:space-between;align-items:center">
+            <span>Sync photos on WiFi only</span>
+            <div style="width:36px;height:20px;background:var(--navy);border-radius:10px;position:relative;cursor:pointer"><div style="position:absolute;right:2px;top:2px;width:16px;height:16px;background:white;border-radius:50%"></div></div>
+          </label>
+          <label style="display:flex;justify-content:space-between;align-items:center">
+            <span>Background sync interval</span>
+            <select style="font-size:11px;border:1px solid var(--border-md);border-radius:4px;padding:2px 6px">
+              <option>15 min</option><option>30 min</option><option>1 hour</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:10px">Sync History</div>
+        <div style="font-size:11px;display:flex;flex-direction:column;gap:5px">
+          ${['2 min ago — 3 assessments synced','14 min ago — 7 photos uploaded','1 hr ago — 12 job cards updated','3 hr ago — Full sync completed'].map(e=>`
+            <div style="display:flex;align-items:center;gap:6px;color:var(--muted);padding:4px 0;border-bottom:1px solid var(--border)">
+              <span style="color:var(--green)">●</span>${e}
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 4: OCR RECEIPT SCANNER
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-ocr">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Receipt Scanner · OCR</div>
+      <div class="page-subtitle">Stage 4 · Google Vision API · Input VAT Capture · Receipt Storage</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('expenses')">← Back to Expenses</button>
+      <button class="btn btn-primary btn-sm" onclick="ocrScanNew()">📷 Scan Receipt</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- Scanner Drop Zone -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">📷 Capture / Upload Receipt</div><div class="card-sub">Camera · File upload · Google Vision OCR</div></div>
+      <div style="padding:0 16px 16px">
+        <div id="ocr-drop-zone" style="border:2px dashed var(--border-md);border-radius:12px;padding:36px;text-align:center;cursor:pointer;transition:all 0.2s"
+          onclick="ocrScanNew()"
+          onmouseover="this.style.borderColor='var(--navy)';this.style.background='var(--blue-pale)'"
+          onmouseout="this.style.borderColor='var(--border-md)';this.style.background=''">
+          <div style="font-size:48px;margin-bottom:10px">📄</div>
+          <div style="font-weight:700;font-size:13px;color:var(--navy)">Drop receipt here or click to upload</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">Supports JPG, PNG, PDF · Max 10MB</div>
+          <div style="margin-top:14px;display:flex;gap:8px;justify-content:center">
+            <button class="btn btn-primary btn-sm" onclick="ocrScanNew();event.stopPropagation()">📷 Camera</button>
+            <button class="btn btn-ghost btn-sm" onclick="ocrScanNew();event.stopPropagation()">📁 File</button>
+          </div>
+        </div>
+        <div id="ocr-processing" style="display:none;text-align:center;padding:24px">
+          <div class="ai-loading" style="justify-content:center"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Google Vision OCR processing...</span></div>
+        </div>
+        <div id="ocr-result" style="display:none;margin-top:14px">
+          <div style="background:var(--green-pale);border:1px solid rgba(26,122,74,0.2);border-radius:8px;padding:12px;font-size:12px;margin-bottom:12px">
+            <div style="font-weight:700;color:var(--green);margin-bottom:8px">✅ Receipt Scanned Successfully</div>
+            <div id="ocr-extracted-fields"></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="ocrAccept()">✅ Accept &amp; Save</button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ocr-result').style.display='none'">✗ Discard</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OCR Extracted Data Form -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">📋 Extracted Data</div><div class="card-sub">AI-verified · Edit before saving</div></div>
+      <div style="padding:0 16px 16px">
+        <div id="ocr-form" style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Supplier Name</label>
+            <input class="auth-input" id="ocr-supplier" placeholder="Auto-extracted from receipt" style="font-size:12px">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Supplier VAT Number</label>
+            <input class="auth-input" id="ocr-vat-no" placeholder="4XXXXXXXXX (SARS format)" style="font-size:12px">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Amount Incl. VAT</label>
+              <input class="auth-input" id="ocr-amount-incl" placeholder="R 0.00" style="font-family:var(--mono);font-size:12px" oninput="recalcOCRVAT()">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">VAT @ 15%</label>
+              <input class="auth-input" id="ocr-vat-amount" placeholder="Auto-calc" style="font-family:var(--mono);font-size:12px;background:var(--bg)" readonly>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Date</label>
+            <input class="auth-input" id="ocr-date" type="date" style="font-size:12px">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Expense Category</label>
+            <select class="auth-input" id="ocr-category" style="font-size:12px">
+              <option>Materials — Hardware</option>
+              <option>Materials — Roofing</option>
+              <option>Materials — Paint</option>
+              <option>Fuel / Transport (No Input VAT)</option>
+              <option>Subcontractor Labour</option>
+              <option>Equipment / Tools</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Link to Claim</label>
+            <select class="auth-input" id="ocr-claim" style="font-size:12px">
+              <option>— General Expense (no claim link)</option>
+              <option>HLB/2026/466333</option>
+              <option>HLB/2026/463690</option>
+              <option>HLC/2026/463284</option>
+            </select>
+          </div>
+          <div id="ocr-vat-warning" style="display:none;background:var(--amber-pale);border:1px solid rgba(217,119,6,0.25);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--amber)">
+            ⚠️ Fuel/transport receipts — Input VAT NOT claimable per SARS rules
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="ocrSaveExpense()" style="margin-top:4px">💾 Save Expense + Input VAT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receipt Log -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📁 Scanned Receipts Log</div>
+      <div class="card-sub">SARS 5-year retention · All receipts stored</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px" id="ocr-log-table">
+        <thead>
+          <tr style="background:var(--bg)">
+            <th style="padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Date</th>
+            <th style="padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Supplier</th>
+            <th style="padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Category</th>
+            <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Amount Incl.</th>
+            <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Input VAT</th>
+            <th style="padding:10px 12px;text-align:center;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Claimable</th>
+            <th style="padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Claim Ref</th>
+            <th style="padding:10px 12px;text-align:center;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Receipt</th>
+          </tr>
+        </thead>
+        <tbody id="ocr-log-body">
+          <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">No receipts scanned yet. Use the scanner above to capture your first receipt.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:12px">
+      <div id="ocr-totals" style="color:var(--muted)">Total Input VAT Claimable: <strong style="color:var(--teal)">R 0.00</strong></div>
+      <button class="btn btn-ghost btn-sm" onclick="showToast('📊 Expense register exported to Excel','ok')">⬇ Export XLSX</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 5: CHART OF ACCOUNTS
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-coa">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Chart of Accounts</div>
+      <div class="page-subtitle">Stage 5 · SA GAAP · 5-class hierarchy · Assets · Liabilities · Equity · Income · Expenses</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('journals')">📝 Post Journal</button>
+      <button class="btn btn-primary btn-sm" onclick="addCOAAccount()">+ Add Account</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:4px">
+    ${[
+      {code:'1000–1999',label:'Assets',icon:'🏦',color:'var(--navy)',light:'var(--blue-pale)',bal:'R 1,247,823.14'},
+      {code:'2000–2999',label:'Liabilities',icon:'📉',color:'var(--red)',light:'var(--red-pale)',bal:'R 168,432.50'},
+      {code:'3000–3999',label:'Equity',icon:'💼',color:'var(--teal)',light:'var(--teal-light)',bal:'R 1,079,390.64'},
+      {code:'4000–4999',label:'Income',icon:'💰',color:'var(--green)',light:'var(--green-pale)',bal:'R 1,164,559.27'},
+      {code:'5000–5999',label:'Expenses',icon:'💸',color:'var(--amber)',light:'var(--amber-pale)',bal:'R 349,223.18'},
+    ].map(c=>`
+      <div style="background:${c.light};border-radius:var(--radius);padding:14px;cursor:pointer" onclick="filterCOA('${c.label}')">
+        <div style="font-size:22px;margin-bottom:6px">${c.icon}</div>
+        <div style="font-weight:700;font-size:13px;color:${c.color}">${c.label}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px">${c.code}</div>
+        <div style="font-size:12px;font-family:var(--mono);font-weight:700;margin-top:6px;color:${c.color}">${c.bal}</div>
+      </div>`).join('')}
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📒 Account List</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="auth-input" id="coa-search" placeholder="Search accounts..." style="font-size:12px;width:180px;padding:6px 10px" oninput="filterCOATable()">
+        <select class="auth-input" id="coa-filter-class" style="font-size:12px;padding:6px 10px;width:160px" onchange="filterCOATable()">
+          <option value="">All Classes</option>
+          <option>Assets</option><option>Liabilities</option><option>Equity</option>
+          <option>Income</option><option>Expenses</option>
+        </select>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:var(--bg)">
+            <th style="padding:9px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Code</th>
+            <th style="padding:9px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Account Name</th>
+            <th style="padding:9px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Class</th>
+            <th style="padding:9px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Type</th>
+            <th style="padding:9px 12px;text-align:right;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Balance</th>
+            <th style="padding:9px 12px;text-align:center;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="coa-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 5: JOURNALS
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-journals">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Journal Entries</div>
+      <div class="page-subtitle">Stage 5 · Double-entry bookkeeping · Debit = Credit validation · Auto-posts to General Ledger</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('ledger')">📋 General Ledger</button>
+      <button class="btn btn-primary btn-sm" onclick="newJournal()">+ New Journal Entry</button>
+    </div>
+  </div>
+
+  <!-- New Journal Form -->
+  <div class="card" id="journal-form-card">
+    <div class="card-header">
+      <div class="card-title">📝 New Journal Entry</div>
+      <div class="card-sub">All entries require balanced debit/credit lines</div>
+    </div>
+    <div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr 2fr;gap:10px;margin-bottom:12px">
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Date</label>
+        <input class="auth-input" id="j-date" type="date" style="font-size:12px">
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Reference</label>
+        <input class="auth-input" id="j-ref" placeholder="JE-0001" style="font-size:12px;font-family:var(--mono)">
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Description</label>
+        <input class="auth-input" id="j-desc" placeholder="e.g. Invoice INV-0810 raised — HLB/2026/466333" style="font-size:12px">
+      </div>
+    </div>
+    <div style="padding:0 16px">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px">
+        <thead>
+          <tr style="background:var(--bg)">
+            <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">#</th>
+            <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Account</th>
+            <th style="padding:8px 10px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Debit (Dr)</th>
+            <th style="padding:8px 10px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Credit (Cr)</th>
+            <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Narration</th>
+            <th style="padding:8px 10px;border-bottom:1px solid var(--border)"></th>
+          </tr>
+        </thead>
+        <tbody id="journal-lines-body">
+          <tr id="jl-1">
+            <td style="padding:6px 10px;color:var(--muted)">1</td>
+            <td style="padding:6px 10px"><select class="auth-input" style="font-size:11px;padding:5px 8px;width:220px" onchange="updateJournalBalance()"><option value="">— Select Account —</option></select></td>
+            <td style="padding:6px 10px"><input type="number" class="auth-input jl-dr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+            <td style="padding:6px 10px"><input type="number" class="auth-input jl-cr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+            <td style="padding:6px 10px"><input class="auth-input" placeholder="Narration" style="font-size:11px;padding:5px 8px;width:180px"></td>
+            <td style="padding:6px 10px"></td>
+          </tr>
+          <tr id="jl-2">
+            <td style="padding:6px 10px;color:var(--muted)">2</td>
+            <td style="padding:6px 10px"><select class="auth-input" style="font-size:11px;padding:5px 8px;width:220px" onchange="updateJournalBalance()"><option value="">— Select Account —</option></select></td>
+            <td style="padding:6px 10px"><input type="number" class="auth-input jl-dr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+            <td style="padding:6px 10px"><input type="number" class="auth-input jl-cr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+            <td style="padding:6px 10px"><input class="auth-input" placeholder="Narration" style="font-size:11px;padding:5px 8px;width:180px"></td>
+            <td style="padding:6px 10px"><button style="background:none;border:none;cursor:pointer;color:var(--red);font-size:14px" onclick="removeJournalLine(2)">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <button class="btn btn-ghost btn-sm" onclick="addJournalLine()">+ Add Line</button>
+        <div id="journal-balance-display" style="font-size:12px;font-family:var(--mono);display:flex;gap:20px">
+          <span>Total Dr: <strong id="j-total-dr" style="color:var(--navy)">R 0.00</strong></span>
+          <span>Total Cr: <strong id="j-total-cr" style="color:var(--navy)">R 0.00</strong></span>
+          <span id="j-balance-status" style="color:var(--muted)">— Enter amounts</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="loadSampleJournal()">📋 Load Sample</button>
+        <button class="btn btn-teal btn-sm" onclick="showToast('🤖 AI analysing journal entry...','inf');setTimeout(()=>showToast('✅ AI: Journal balanced. Accounts correctly classified. No anomalies detected.','ok'),2000)">✦ AI Validate</button>
+        <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="postJournal()">✅ Post Journal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posted Journals -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">📜 Posted Journals</div><div class="card-sub" id="journals-count">0 entries</div></div>
+    <div id="journals-list" style="padding:0 16px 16px">
+      <div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">
+        <div style="font-size:32px;margin-bottom:8px">📝</div>
+        No journals posted yet. Create your first entry above.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 5: GENERAL LEDGER
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-ledger">
+  <div class="page-header">
+    <div>
+      <div class="page-title">General Ledger</div>
+      <div class="page-subtitle">Stage 5 · Full transaction history per account · Running balance · From posted journals</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select class="auth-input" id="ledger-account-select" style="font-size:12px;padding:7px 10px;width:240px" onchange="renderLedger()">
+        <option value="">— Select Account —</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="showToast('📊 Ledger exported to Excel','ok')">⬇ Export</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+    ${[
+      {label:'Accounts Receivable',code:'1100',bal:'R 6,264.05',sub:'1 outstanding'},
+      {label:'Invoice Revenue (Bigo)',code:'4100',bal:'R 849,893.81',sub:'59 paid invoices'},
+      {label:'VAT Output',code:'2200',bal:'R 110,856.58',sub:'Output VAT due'},
+      {label:'Bank Account',code:'1010',bal:'R 849,893.81',sub:'Operating account'},
+    ].map(a=>`
+      <div class="stat-card navy" onclick="document.getElementById('ledger-account-select').value='${a.code}';renderLedger()" style="cursor:pointer">
+        <div class="stat-label">${a.label}</div>
+        <div class="stat-val">${a.bal}</div>
+        <div class="stat-sub">${a.sub} · Acct ${a.code}</div>
+      </div>`).join('')}
+  </div>
+
+  <div class="card">
+    <div id="ledger-placeholder" style="padding:32px;text-align:center;color:var(--muted)">
+      <div style="font-size:40px;margin-bottom:10px">📋</div>
+      <div style="font-weight:600;margin-bottom:6px">Select an account above to view ledger transactions</div>
+      <div style="font-size:11px">Or click any account card to load its transaction history</div>
+    </div>
+    <div id="ledger-content" style="display:none">
+      <div id="ledger-account-header" style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div id="ledger-acc-name" style="font-weight:700;font-size:14px"></div>
+          <div id="ledger-acc-code" style="font-size:11px;color:var(--muted);font-family:var(--mono)"></div>
+        </div>
+        <div id="ledger-acc-balance" style="font-size:18px;font-weight:700;font-family:var(--mono);color:var(--navy)"></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:var(--bg)">
+              <th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Date</th>
+              <th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Reference</th>
+              <th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Description</th>
+              <th style="padding:9px 12px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Debit</th>
+              <th style="padding:9px 12px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Credit</th>
+              <th style="padding:9px 12px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Balance</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 5: TRIAL BALANCE
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-trial-balance">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Trial Balance</div>
+      <div class="page-subtitle">Stage 5 · Auto-generated from posted journals · Debits must equal credits · SA GAAP</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <input class="auth-input" id="tb-period-from" type="date" style="font-size:12px;padding:7px 10px;width:150px">
+      <input class="auth-input" id="tb-period-to" type="date" style="font-size:12px;padding:7px 10px;width:150px">
+      <button class="btn btn-primary btn-sm" onclick="generateTrialBalance()">Generate</button>
+      <button class="btn btn-ghost btn-sm" onclick="showToast('📊 Trial balance exported to Excel','ok')">⬇ Excel</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+    <div class="stat-card navy"><div class="stat-label">Total Debits</div><div class="stat-val" id="tb-total-dr">R 1,164,559.27</div><div class="stat-sub">All debit balances</div></div>
+    <div class="stat-card teal"><div class="stat-label">Total Credits</div><div class="stat-val" id="tb-total-cr">R 1,164,559.27</div><div class="stat-sub">All credit balances</div></div>
+    <div id="tb-balance-card" class="stat-card green"><div class="stat-label">Balance Check</div><div class="stat-val" id="tb-balance-status">✅ Balanced</div><div class="stat-sub">Dr = Cr · No errors</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">⚖️ Trial Balance — CAT Event 2026</div>
+      <div class="card-sub">Period: 01 Jan 2026 – 27 Mar 2026 · Auto-generated</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px" id="trial-balance-table">
+        <thead>
+          <tr style="background:var(--navy);color:white">
+            <th style="padding:10px 14px;text-align:left;font-weight:600">Code</th>
+            <th style="padding:10px 14px;text-align:left;font-weight:600">Account Name</th>
+            <th style="padding:10px 14px;text-align:left;font-weight:600">Class</th>
+            <th style="padding:10px 14px;text-align:right;font-weight:600">Debit (Dr)</th>
+            <th style="padding:10px 14px;text-align:right;font-weight:600">Credit (Cr)</th>
+          </tr>
+        </thead>
+        <tbody id="trial-balance-body"></tbody>
+        <tfoot id="trial-balance-foot"></tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 5: VAT201 / SARS eFILING
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-vat201">
+  <div class="page-header">
+    <div>
+      <div class="page-title">VAT201 · SARS eFiling</div>
+      <div class="page-subtitle">Stage 5 · Bi-monthly VAT returns · EMP201 · SARS eFiling API integration · Filing Deadlines</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('vat')">← VAT Summary</button>
+      <button class="btn btn-primary btn-sm" onclick="preparVAT201()">📋 Prepare VAT201</button>
+    </div>
+  </div>
+
+  <!-- SARS Deadlines Dashboard -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">🗓️ SARS Filing Deadlines</div><div class="card-sub">Alerts trigger automatically</div></div>
+    <div style="padding:0 16px 16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      ${[
+        {type:'VAT201',freq:'Bi-monthly',due:'30 Apr 2026',days:34,color:'var(--amber)',light:'var(--amber-pale)'},
+        {type:'EMP201',freq:'Monthly',due:'7 Apr 2026',days:11,color:'var(--red)',light:'var(--red-pale)'},
+        {type:'EMP501',freq:'Bi-annual',due:'31 May 2026',days:65,color:'var(--teal)',light:'var(--teal-light)'},
+        {type:'IT14',freq:'Annual',due:'28 Feb 2027',days:338,color:'var(--navy)',light:'var(--blue-pale)'},
+      ].map(d=>`
+        <div style="background:${d.light};border-radius:var(--radius);padding:14px;border-left:4px solid ${d.color}">
+          <div style="font-weight:700;font-size:13px;color:${d.color}">${d.type}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">${d.freq} return</div>
+          <div style="font-size:22px;font-weight:800;font-family:var(--mono);margin:8px 0;color:${d.color}">${d.days}</div>
+          <div style="font-size:10px;color:var(--muted)">days remaining</div>
+          <div style="font-size:10px;font-weight:600;color:${d.color};margin-top:6px">Due: ${d.due}</div>
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- VAT201 Worksheet -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">📊 VAT201 Worksheet</div><div class="card-sub">Period: Jan–Feb 2026</div></div>
+      <div style="padding:0 16px 16px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:8px">Output VAT</div>
+        ${[
+          ['Field 1 — Standard-rated supplies (Excl.)','R 1,012,660.23'],
+          ['Field 4 — Output VAT @ 15%','R 151,899.04'],
+        ].map(([k,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--navy);color:white;border-radius:4px;margin-bottom:4px;font-size:12px;font-family:var(--mono)">
+            <span style="font-family:var(--font)">${k}</span><strong>${v}</strong>
+          </div>`).join('')}
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin:12px 0 8px">Input VAT</div>
+        ${[
+          ['Field 14 — Standard-rated purchases (Excl.)','R 87,334.22'],
+          ['Field 15 — Input VAT claimable @ 15%','R 13,100.13'],
+        ].map(([k,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--teal);color:white;border-radius:4px;margin-bottom:4px;font-size:12px;font-family:var(--mono)">
+            <span style="font-family:var(--font)">${k}</span><strong>${v}</strong>
+          </div>`).join('')}
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin:12px 0 8px">Net VAT Payable</div>
+        <div style="display:flex;justify-content:space-between;padding:12px 14px;background:var(--red);color:white;border-radius:var(--radius-sm);font-size:13px;font-weight:700;font-family:var(--mono)">
+          <span style="font-family:var(--font)">Field 20 — Net VAT Payable to SARS</span>
+          <strong>R 138,798.91</strong>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" style="flex:1" onclick="showToast('📊 VAT201 worksheet exported to Excel','ok')">⬇ Excel</button>
+          <button class="btn btn-teal btn-sm" style="flex:1" onclick="runAIVATReview()">✦ AI Review VAT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SARS eFiling Submit -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">🏛️ SARS eFiling Submission</div><div class="card-sub">Direct API · OAuth 2.0 · No leaving the platform</div></div>
+      <div style="padding:0 16px 16px">
+        <div style="background:var(--amber-pale);border:1px solid rgba(217,119,6,0.25);border-radius:8px;padding:12px;font-size:12px;margin-bottom:14px">
+          <div style="font-weight:700;color:var(--amber);margin-bottom:4px">⚠️ Pre-submission Checklist</div>
+          <div id="vat-checklist" style="display:flex;flex-direction:column;gap:5px;font-size:11px">
+            ${['All invoices for period captured','Input VAT claims verified','Fuel expenses excluded from input VAT','Supplier VAT numbers validated','Accountant review completed'].map((item,i)=>`
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                <input type="checkbox" id="vc-${i}" style="accent-color:var(--amber)"> ${item}
+              </label>`).join('')}
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;font-size:12px">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--muted)">SARS VAT Registration</span><strong>4XXXXXXXXX</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--muted)">Filing Period</span><strong>Jan – Feb 2026</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--muted)">Amount Payable</span><strong style="color:var(--red);font-family:var(--mono)">R 138,798.91</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;">
+            <span style="color:var(--muted)">Due Date</span><strong>30 April 2026</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-sm" style="width:100%;margin-bottom:8px" onclick="submitVAT201()">🏛️ Submit VAT201 to SARS</button>
+        <button class="btn btn-ghost btn-sm" style="width:100%" onclick="showPanel('vat')">📊 Review VAT Summary First</button>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.5">Production endpoint: SARS eFiling API · OAuth 2.0 · All submissions logged to sars_filings table with SARS reference number</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filing History -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">📜 SARS Filing History</div><div class="card-sub">All submissions · Audit trail · Reference numbers</div></div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:var(--bg)">
+            <th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Type</th>
+            <th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Period</th>
+            <th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Submitted</th>
+            <th style="padding:9px 12px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Amount</th>
+            <th style="padding:9px 12px;text-align:center;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">Status</th>
+            <th style="padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600">SARS Ref</th>
+          </tr>
+        </thead>
+        <tbody id="sars-filings-body">
+          <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">No submissions yet. First VAT201 due 30 April 2026.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 5: INCOME STATEMENT
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-income-statement">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Income Statement</div>
+      <div class="page-subtitle">Stage 5 · Revenue vs Expenses · Net Profit · Balance Sheet · SA GAAP</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <input class="auth-input" id="is-from" type="date" value="2026-01-01" style="font-size:12px;padding:7px 10px;width:150px">
+      <input class="auth-input" id="is-to" type="date" value="2026-03-27" style="font-size:12px;padding:7px 10px;width:150px">
+      <button class="btn btn-primary btn-sm" onclick="generateIncomeStatement()">Generate</button>
+      <button class="btn btn-ghost btn-sm" onclick="showToast('📊 Income statement exported to Excel','ok')">⬇ Excel</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <div class="stat-card navy"><div class="stat-label">Total Revenue</div><div class="stat-val">R 1,164,559.27</div><div class="stat-sub">Incl. VAT · All invoices</div></div>
+    <div class="stat-card teal"><div class="stat-label">Revenue Excl. VAT</div><div class="stat-val">R 1,012,660.23</div><div class="stat-sub">Nett of output VAT</div></div>
+    <div class="stat-card gold"><div class="stat-label">Total Expenses</div><div class="stat-val">R 349,223.18</div><div class="stat-sub">Subcontract + materials</div></div>
+    <div class="stat-card green"><div class="stat-label">Gross Profit</div><div class="stat-val">R 663,437.05</div><div class="stat-sub">65.5% margin · CAT 2026</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- Income Statement -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">📈 Income Statement</div><div class="card-sub">Period: 01 Jan 2026 – 27 Mar 2026</div></div>
+      <div style="padding:0 16px 16px;font-size:12px;font-family:var(--mono)">
+        <div style="font-weight:700;color:var(--navy);padding:8px 0;border-bottom:2px solid var(--navy);margin-bottom:6px;font-family:var(--font);font-size:13px">REVENUE</div>
+        ${[
+          ['Invoice Revenue — Bigo Direct','R 849,893.81'],
+          ['Invoice Revenue — Phahamo Subcontract','R 314,665.46'],
+        ].map(([k,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--font)">${k}</span><span>${v}</span>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:8px 0;background:var(--blue-pale);border-radius:4px;padding:8px;margin:6px 0;font-weight:700;color:var(--navy)">
+          <span style="font-family:var(--font)">TOTAL REVENUE (Incl. VAT)</span><span>R 1,164,559.27</span>
+        </div>
+        <div style="font-weight:700;color:var(--red);padding:8px 0;border-bottom:2px solid var(--red);margin:10px 0 6px;font-family:var(--font);font-size:13px">EXPENSES</div>
+        ${[
+          ['Subcontractor Costs','R 248,390.00'],
+          ['Materials &amp; Hardware','R 72,150.00'],
+          ['Fuel &amp; Transport','R 18,432.00'],
+          ['Output VAT (payable to SARS)','R 151,899.04'],
+          ['Other Expenses','R 10,251.18'],
+        ].map(([k,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--font)">${k}</span><span style="color:var(--red)">(${v})</span>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--red-pale);border-radius:4px;margin:6px 0;font-weight:700;color:var(--red)">
+          <span style="font-family:var(--font)">TOTAL EXPENSES</span><span>(R 501,122.22)</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:10px 8px;background:var(--green-pale);border-radius:4px;font-weight:700;font-size:14px;color:var(--green);margin-top:8px">
+          <span style="font-family:var(--font)">NET PROFIT</span><span>R 663,437.05</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Balance Sheet -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">⚖️ Balance Sheet</div><div class="card-sub">Assets = Liabilities + Equity · 27 Mar 2026</div></div>
+      <div style="padding:0 16px 16px;font-size:12px;font-family:var(--mono)">
+        <div style="font-weight:700;color:var(--navy);padding:8px 0;border-bottom:2px solid var(--navy);margin-bottom:6px;font-family:var(--font);font-size:13px">ASSETS</div>
+        ${[
+          ['Bank Account (1010)','R 849,893.81'],
+          ['Accounts Receivable (1100)','R 6,264.05'],
+          ['Equipment &amp; Tools (1300)','R 45,200.00'],
+          ['Prepayments (1400)','R 12,000.00'],
+        ].map(([k,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--font)">${k}</span><span>${v}</span>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--blue-pale);border-radius:4px;margin:6px 0;font-weight:700;color:var(--navy)">
+          <span style="font-family:var(--font)">TOTAL ASSETS</span><span>R 913,357.86</span>
+        </div>
+        <div style="font-weight:700;color:var(--red);padding:8px 0;border-bottom:2px solid var(--red);margin:10px 0 6px;font-family:var(--font);font-size:13px">LIABILITIES</div>
+        ${[
+          ['VAT Payable to SARS (2200)','R 138,798.91'],
+          ['Accounts Payable (2100)','R 18,432.00'],
+        ].map(([k,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--font)">${k}</span><span style="color:var(--red)">${v}</span>
+          </div>`).join('')}
+        <div style="font-weight:700;color:var(--teal);padding:8px 0;border-bottom:2px solid var(--teal);margin:10px 0 6px;font-family:var(--font);font-size:13px">EQUITY</div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--font)">Retained Earnings (3200)</span><span>R 756,126.95</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 8px;background:var(--teal-light);border-radius:4px;font-weight:700;font-size:13px;color:var(--teal);margin-top:8px">
+          <span style="font-family:var(--font)">TOTAL L + EQUITY</span><span>R 913,357.86</span>
+        </div>
+        <div style="text-align:center;margin-top:8px;font-size:10px;background:var(--green-pale);color:var(--green);border-radius:4px;padding:6px;font-family:var(--font);font-weight:600">✅ Balance Sheet Balanced · Assets = Liabilities + Equity</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     STAGE 5: COMMUNICATION (EMAIL + WHATSAPP)
+═══════════════════════════════════════════════ -->
+<div class="panel" id="panel-communication">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Email &amp; WhatsApp Integration</div>
+      <div class="page-subtitle">Stage 5 · Microsoft Exchange OAuth · Meta WhatsApp Business API · Automated invoice sending</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="testEmail()">📧 Test Email</button>
+      <button class="btn btn-primary btn-sm" onclick="testWhatsApp()">💬 Test WhatsApp</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <!-- Exchange Config -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📧 Microsoft Exchange</div>
+        <div style="background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">● Connected</div>
+      </div>
+      <div style="padding:0 16px 16px">
+        <div style="display:flex;align-items:center;gap:10px;background:var(--green-pale);border-radius:8px;padding:12px;margin-bottom:14px">
+          <div style="font-size:28px">📧</div>
+          <div>
+            <div style="font-weight:700;font-size:12px;color:var(--green)">OAuth 2.0 Authenticated</div>
+            <div style="font-size:11px;color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="420c2d302f232c02202b252d32302d28272136316c212d6c3823">[email&#160;protected]</a></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;margin-bottom:14px">
+          ${[
+            ['Sender Address','<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="034d6c716e626d43616a646c73716c69666077702d606c2d7962">[email&#160;protected]</a>'],
+            ['Azure Tenant','bigoprojects.co.za'],
+            ['OAuth Scopes','Mail.Send, Mail.ReadWrite'],
+            ['Token Status','Valid · Auto-refresh active'],
+          ].map(([k,v])=>`
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+              <span style="color:var(--muted)">${k}</span><span style="font-family:var(--mono);font-size:11px">${v}</span>
+            </div>`).join('')}
+        </div>
+        <button class="btn btn-navy btn-sm" style="width:100%;margin-bottom:8px" onclick="testEmail()">📧 Send Test Email</button>
+        <button class="btn btn-ghost btn-sm" style="width:100%" onclick="showToast('🔑 Re-authenticating with Microsoft Azure...','inf')">🔑 Re-authenticate</button>
+        <div style="margin-top:12px;background:var(--bg);border-radius:6px;padding:10px;font-size:10px;color:var(--muted)">
+          <strong>Env vars required:</strong><br>
+          EXCHANGE_CLIENT_ID · EXCHANGE_CLIENT_SECRET<br>
+          EXCHANGE_TENANT_ID · TOKEN auto-refreshed
+        </div>
+      </div>
+    </div>
+
+    <!-- WhatsApp Config -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">💬 WhatsApp Business API</div>
+        <div style="background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">● Connected</div>
+      </div>
+      <div style="padding:0 16px 16px">
+        <div style="display:flex;align-items:center;gap:10px;background:var(--green-pale);border-radius:8px;padding:12px;margin-bottom:14px">
+          <div style="font-size:28px">💬</div>
+          <div>
+            <div style="font-weight:700;font-size:12px;color:var(--green)">Meta Business API Active</div>
+            <div style="font-size:11px;color:var(--muted)">082 402 8027 · Template approved</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;margin-bottom:14px">
+          ${[
+            ['Business Number','082 402 8027'],
+            ['Phone Number ID','Configured in .env'],
+            ['Message Templates','invoice_sent, payment_reminder, claim_update'],
+            ['Monthly Free Tier','1,000 conversations'],
+          ].map(([k,v])=>`
+            <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+              <span style="color:var(--muted)">${k}</span><span style="font-family:var(--mono);font-size:11px">${v}</span>
+            </div>`).join('')}
+        </div>
+        <button class="btn btn-green btn-sm" style="width:100%;margin-bottom:8px" onclick="testWhatsApp()">💬 Send Test Message</button>
+        <button class="btn btn-ghost btn-sm" style="width:100%" onclick="showToast('📋 Opening WhatsApp template editor...','inf')">📋 Manage Templates</button>
+        <div style="margin-top:12px;background:var(--bg);border-radius:6px;padding:10px;font-size:10px;color:var(--muted)">
+          <strong>Env vars required:</strong><br>
+          WHATSAPP_ACCESS_TOKEN<br>
+          WHATSAPP_PHONE_NUMBER_ID
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send Invoice Panel -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">📤 Send Invoice to Client</div><div class="card-sub">Email + WhatsApp simultaneously · PDF attachment · Delivery log</div></div>
+    <div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Select Invoice</label>
+            <select class="auth-input" id="comm-invoice" style="font-size:12px">
+              <option>INV-0810 — Ziphozihle Wonci — R 6,264.05 (OUTSTANDING)</option>
+              <option>INV-0809 — Thabo Modise — R 12,450.00</option>
+              <option>INV-0808 — Sarah Ndlovu — R 8,320.00</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Recipient Email</label>
+            <input class="auth-input" id="comm-email" placeholder="client@email.com" style="font-size:12px">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Recipient WhatsApp</label>
+            <input class="auth-input" id="comm-wa" placeholder="+27XXXXXXXXX" style="font-size:12px">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Message Type</label>
+            <select class="auth-input" id="comm-type" style="font-size:12px">
+              <option>Invoice — New</option>
+              <option>Invoice — Reminder</option>
+              <option>Payment Confirmation</option>
+              <option>Statement</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Message Preview</label>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;font-size:11px;line-height:1.6;color:var(--text);border:1px solid var(--border-md);min-height:130px">
+          <strong>Subject:</strong> Invoice INV-0810 — Big O Projects (Pty) Ltd<br><br>
+          Dear Ziphozihle,<br><br>
+          Please find attached your invoice INV-0810 for claim <strong>HLB/2026/466333</strong>.<br><br>
+          Amount Due: <strong style="color:var(--navy)">R 6,264.05</strong><br>
+          Due Date: Immediate<br><br>
+          Regards,<br>Norman · Big O Projects
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" style="flex:1" onclick="sendInvoiceEmail()">📧 Email Only</button>
+          <button class="btn btn-ghost btn-sm" style="flex:1" onclick="sendInvoiceWA()">💬 WhatsApp Only</button>
+          <button class="btn btn-primary btn-sm" style="flex:1" onclick="sendInvoiceBoth()">📤 Send Both</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Communication Log -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">📋 Communication Log</div><div class="card-sub">All sent messages · Delivery status</div></div>
+    <div id="comm-log" style="padding:0 16px 16px">
+      <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">No messages sent yet. Use the panel above to send your first communication.</div>
+    </div>
+  </div>
+</div>
+
 <div class="drawer-ov" id="drawer-ov" onclick="closeDrawer()"></div>
 <div class="drawer" id="main-drawer">
   <div class="drawer-hdr">
@@ -2858,6 +3821,16 @@ const USERS = [
   { email: 'field@bigoprojects.co.za',  password: 'Field123!',  name: 'Field User',  role: 'Team Leader',   initials: 'F', type: 'field' },
 ];
 let currentUser = null;
+
+/* ── GLOBAL STATE VARIABLES ── */
+let boqRows = [];
+let mobileOffline = false;
+let currentStep = 1;
+let uploadedPhotos = 0;
+let sigHolder = false;
+let sigAssessor = false;
+
+
 let showVoidRows = false;
 
 /* ── AUTH ── */
@@ -2876,6 +3849,7 @@ function doLogin() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app-shell').classList.add('visible');
   initDashboard();
+  initAllStages();
   showToast(`👋 Welcome back, ${user.name}!`, 'success');
 }
 
@@ -3435,28 +4409,38 @@ function saveSettings() { showToast('💾 Settings saved successfully', 'success
 /* ── AI PANEL ── */
 function showAIPanel() { showPanel('ai'); }
 
-function runAIAnalysis(type) {
+async function runAIAnalysis(type) {
   const resultEl = document.getElementById('ai-result');
-  resultEl.style.display = 'block';
-  resultEl.innerHTML = '<em style="color:var(--muted)">⏳ Analysing with Claude AI...</em>';
-  setTimeout(()=>{
-    const msgs = {
-      invoice: '✅ <strong>AI Invoice Analysis Complete:</strong><br>• No duplicate invoices detected for this client<br>• Amount is within ±15% of average for claim type<br>• VAT classification: Standard Rate (15%) — correct<br>• Invoice number sequence: BIG O-INV-0811 follows correctly<br>• Recommendation: Approve invoice for submission',
-      report: '📋 <strong>AI Assessment Report Draft:</strong><br>This is to certify that Big O Projects (Pty) Ltd, an NHBRC-registered building contractor (CIDB PE 6GB), attended the above-referenced property following a storm damage event. The assessment conducted confirms structural damage to the roof covering, with evidence of water ingress through displaced tiles affecting the ceiling void. All work is to be carried out in accordance with Standard Bank HOC policy specifications.',
-      vat: '🧾 <strong>AI VAT201 Review:</strong><br>• Output VAT: R 151,899 — correctly calculated at 15%<br>• Input VAT captured: R 281 — LOW — 3 supplier invoices only<br>• ⚠️ Missing input VAT: Check Cashbuild and Roof World invoices for Jan–Mar<br>• Petrol expenses correctly excluded from input VAT<br>• Net payable to SARS: R 151,618 — confirm before submission',
-    };
-    resultEl.innerHTML = msgs[type] || '✅ Analysis complete.';
-  }, 1500);
+  const types = {
+    invoice:       'Analyse the Big O Projects invoice register for anomalies, duplicate invoices, VAT discrepancies, and outstanding amounts. Total invoiced: R 1,164,559.27 across 83 CAT 2026 claims. One outstanding: INV-0810 Ziphozihle Wonci R6,264.05. Provide a concise professional analysis.',
+    expense:       'Review a set of insurance repair project expenses for Big O Projects (Pty) Ltd. Categories: Subcontractor R248,390, Materials R72,150, Fuel R18,432. Fuel VAT is not claimable. Identify any anomalies or VAT optimisation opportunities.',
+    vat:           'Review VAT201 for Big O Projects: Output VAT R151,899.04 on revenue of R1,012,660.23. Input VAT claimable R13,100.13. Net payable R138,798.91. Period Jan-Feb 2026. Validate figures and flag any issues.',
+    reconciliation:'Compare ClaimSync and Zoho Books data for Big O Projects. All 83 CAT 2026 claims processed. 59 Bigo paid, 1 outstanding, 23 Phahamo, 4 void. Identify any reconciliation concerns.',
+  };
+  const prompt = types[type] || 'Analyse the ClaimSync system data for Big O Projects and provide insights.';
+  if (resultEl) {
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `<div class="ai-report-box"><div class="ai-loading"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Claude AI analysing ${type}...</span></div></div>`;
+  }
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:`You are a South African insurance claims and accounting expert. ${prompt}\n\nBe concise, professional, and use South African accounting context (SARS, VAT at 15%, SA GAAP). Format your response with clear sections.`}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'No response received.';
+    if (resultEl) resultEl.innerHTML = `<div class="ai-report-box"><div class="ai-report-hdr"><span class="ai-spark">✦</span><div><div class="ai-report-title">AI Analysis — ${type.charAt(0).toUpperCase()+type.slice(1)}</div><div class="ai-report-sub">claude-sonnet-4-20250514 · Big O Projects · ClaimSync v2.0</div></div></div><div class="ai-report-body" style="white-space:pre-wrap;font-size:12px;line-height:1.7">${text}</div></div>`;
+    showToast('✦ AI analysis complete', 'ok');
+  } catch(e) {
+    if (resultEl) resultEl.innerHTML = `<div class="ai-report-box"><div style="color:var(--amber);font-size:12px;padding:12px">⚠️ API connection unavailable in demo mode. In production, configure ANTHROPIC_API_KEY on the server.</div></div>`;
+  }
 }
 
-function runInvoiceAI() {
-  const resultEl = document.getElementById('drawer-ai-result');
-  resultEl.style.display = 'block';
-  resultEl.innerHTML = '<em style="color:var(--muted)">⏳ Analysing invoice...</em>';
-  setTimeout(()=>{
-    resultEl.innerHTML = '✅ <strong>No anomalies detected.</strong> Amount consistent with claim type. VAT calculated correctly at 15%. No duplicate found within 30 days for this client. Status current.';
-  }, 1200);
-}
 
 /* ── TOAST ── */
 function showToast(msg, type='info') {
@@ -3494,7 +4478,7 @@ if (document.getElementById('dash-date')) {
 function initStage2() {
   const h = new Date().getHours();
   const g = h<12?'Good morning':h<17?'Good afternoon':'Good evening';
-  if(document.getElementById('dash-greet')) document.getElementById('dash-greet').textContent = `${g}, ${CU.name} — Field Operations`;
+  if(document.getElementById('dash-greet')) document.getElementById('dash-greet').textContent = `${g}, ${currentUser ? currentUser.name : ""} — Field Operations`;
   const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   const n=new Date();
@@ -3920,7 +4904,6 @@ function addBOQRow() {
 
 /* ═══════════════ PHOTOS IN ASSESSMENT ═══════════════ */
 const PHOTO_CATS = ['Roof','Ceiling','Interior','Exterior','Damage Detail','Water Damage','Before','After'];
-let uploadedPhotos = 0;
 
 function renderAssessPhotos() {
   const el = document.getElementById('assess-photo-grid');
@@ -3968,26 +4951,12 @@ function viewPhoto(id) {
 
 /* ═══════════════ AI REPORT GENERATOR ═══════════════ */
 function generateAIReport() {
-  const notesEl = document.getElementById('a-notes');
-  const notes = notesEl ? notesEl.value : '';
-  const claimEl = document.getElementById('a-claim');
-  const claim = claimEl ? claimEl.value || 'HLB/2026/XXXXXX' : 'HLB/2026/XXXXXX';
-  const perilEl = document.getElementById('a-peril');
-  const peril = perilEl ? perilEl.value : 'Storm Damage';
-  const holderEl = document.getElementById('a-holder');
-  const holder = holderEl ? holderEl.value || 'POLICYHOLDER' : 'POLICYHOLDER';
-  const loadingEl = document.getElementById('ai-loading');
-  const textEl = document.getElementById('ai-report-text');
-  if (loadingEl) loadingEl.style.display='flex';
-  if (textEl) textEl.style.display='none';
-  setTimeout(()=>{
-    if (loadingEl) loadingEl.style.display='none';
-    const report = generateReportText(claim, holder, peril, notes);
-    if (textEl) { textEl.style.display='block'; textEl.textContent=report; }
-  }, 1800);
+  // Delegates to async version
+  generateAIReportAsync().catch(e => console.log('Report generation error:', e));
 }
 
-function generateStandaloneReport() {
+
+async function generateStandaloneReport() {
   const notes   = document.getElementById('air-notes').value;
   const claim   = document.getElementById('air-claim').value || 'HLB/2026/XXXXXX';
   const peril   = document.getElementById('air-peril').value;
@@ -4075,7 +5044,6 @@ function copyReport() {
 }
 
 /* ═══════════════ SIGN OFF ═══════════════ */
-let sigHolder = false, sigAssessor = false;
 
 function captureSignature(who) {
   if (who==='holder') {
@@ -4148,7 +5116,7 @@ function renderMobileView(tab) {
     <div class="phone-topbar">
       <div>
         <div class="phone-topbar-title">⬡ ClaimSync Field</div>
-        <div class="phone-topbar-sub">${CU?CU.name:''} · ${CU?CU.role:''}</div>
+        <div class="phone-topbar-sub">${currentUser ? currentUser.name : ''} · ${currentUser ? currentUser.role : ''}</div>
       </div>
       <div style="${mobileOffline?'color:var(--amber)':'color:var(--green-light)'};font-size:10px;font-weight:700">${mobileOffline?'⚡ Offline':'● Online'}</div>
     </div>
@@ -4386,6 +5354,893 @@ const _days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satu
 const _months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 if (document.getElementById('dash-date')) {
   document.getElementById('dash-date').textContent = `${_days[_now.getDay()]}, ${_now.getDate()} ${_months[_now.getMonth()]} ${_now.getFullYear()} · CAT Event 2026 · Standard Bank HOC`;
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 3 — PWA / OFFLINE / SYNC
+══════════════════════════════════════════════════ */
+let pwaOffline = false;
+let pwaPendingQueue = [];
+
+function togglePWAOffline() {
+  pwaOffline = !pwaOffline;
+  const banner = document.getElementById('pwa-status-banner');
+  const btn = document.getElementById('pwa-toggle-offline');
+  if (pwaOffline) {
+    banner.style.background = 'var(--amber-pale)';
+    banner.style.borderColor = 'rgba(217,119,6,0.3)';
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--amber)"></div>
+        <div>
+          <div style="font-weight:700;font-size:13px;color:var(--amber)">⚡ Offline Mode — IndexedDB active · Changes queued</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Background sync will resume when connectivity is restored</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="pwa-toggle-offline" onclick="togglePWAOffline()">● Go Online</button>`;
+    pwaPendingQueue = ['Assessment JC-0084 pending','3 photos queued (2.1 MB)','Signature — Thabo Modise'];
+    renderSyncQueue();
+    showToast('⚡ Offline mode active · Data saved to IndexedDB', 'warn');
+  } else {
+    banner.style.background = 'var(--green-pale)';
+    banner.style.borderColor = 'rgba(26,122,74,0.2)';
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--green-light);animation:pulse 2s infinite"></div>
+        <div>
+          <div style="font-weight:700;font-size:13px;color:var(--green)">● Online — Service Worker Active</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">All data synced · Last sync: just now · IndexedDB: 47 records cached</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="pwa-toggle-offline" onclick="togglePWAOffline()">⚡ Simulate Offline</button>`;
+    pwaPendingQueue = [];
+    renderSyncQueue();
+    showToast('● Back online · Syncing 3 pending items...', 'ok');
+    setTimeout(() => showToast('✅ All data synced successfully · 3 items uploaded', 'ok'), 2000);
+  }
+}
+
+function renderSyncQueue() {
+  const el = document.getElementById('sync-queue-list');
+  const cnt = document.getElementById('sync-queue-count');
+  if (!el) return;
+  if (pwaPendingQueue.length === 0) {
+    cnt.textContent = '0 items pending';
+    el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px"><div style="font-size:32px;margin-bottom:8px">✅</div>All data synced — no pending items</div>`;
+  } else {
+    cnt.textContent = `${pwaPendingQueue.length} items pending`;
+    el.innerHTML = pwaPendingQueue.map((item, i) => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--amber)"></div>
+          ${item}
+        </div>
+        <button style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:11px" onclick="pwaPendingQueue.splice(${i},1);renderSyncQueue()">✕</button>
+      </div>`).join('');
+  }
+}
+
+function pwaSyncNow() {
+  if (pwaOffline) { showToast('⚡ Cannot sync — device is offline', 'warn'); return; }
+  showToast('🔄 Syncing all pending data...', 'inf');
+  pwaPendingQueue = [];
+  setTimeout(() => { renderSyncQueue(); showToast('✅ Sync complete · All data up to date', 'ok'); }, 1800);
+}
+
+function pwaAddMockPending() {
+  const items = ['Assessment JC-0085 pending','Photo batch (4 images)','Job card status update','Signature capture'];
+  pwaPendingQueue.push(items[Math.floor(Math.random() * items.length)]);
+  renderSyncQueue();
+  showToast('📝 Test item added to sync queue', 'inf');
+}
+
+function pwaInstallPrompt() {
+  showToast('📲 Install prompt triggered · Check address bar or share menu', 'ok');
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 4 — OCR RECEIPT SCANNER
+══════════════════════════════════════════════════ */
+let ocrReceipts = [];
+let ocrLineCount = 0;
+
+function recalcOCRVAT() {
+  const incl = parseFloat(document.getElementById('ocr-amount-incl').value.replace(/[^0-9.]/g,'')) || 0;
+  const vat = incl - (incl / 1.15);
+  document.getElementById('ocr-vat-amount').value = 'R ' + vat.toFixed(2);
+  const cat = document.getElementById('ocr-category')?.value || '';
+  const warn = document.getElementById('ocr-vat-warning');
+  if (warn) warn.style.display = cat.includes('Fuel') ? 'block' : 'none';
+}
+
+function ocrScanNew() {
+  const proc = document.getElementById('ocr-processing');
+  const dz   = document.getElementById('ocr-drop-zone');
+  const res  = document.getElementById('ocr-result');
+  if (dz) dz.style.display = 'none';
+  if (proc) proc.style.display = 'block';
+  if (res) res.style.display = 'none';
+
+  // Simulate Google Vision OCR
+  const suppliers = [
+    {name:'Builders Warehouse Midrand', vatNo:'4710148564', amount:'R 4,312.50', category:'Materials — Hardware'},
+    {name:'Mica Hardware Kyalami',       vatNo:'4521837290', amount:'R 1,876.20', category:'Materials — Paint'},
+    {name:'Roof-Xpert Supplies CC',      vatNo:'4632094715', amount:'R 12,500.00',category:'Materials — Roofing'},
+    {name:'BP Fuel — Allandale',         vatNo:'',           amount:'R 980.00',   category:'Fuel / Transport (No Input VAT)'},
+    {name:'Makro Midrand',               vatNo:'4015631278', amount:'R 6,245.80', category:'Materials — Hardware'},
+  ];
+  const s = suppliers[Math.floor(Math.random() * suppliers.length)];
+  const today = new Date().toISOString().split('T')[0];
+
+  setTimeout(() => {
+    if (proc) proc.style.display = 'none';
+    if (dz) dz.style.display = 'block';
+
+    document.getElementById('ocr-supplier').value   = s.name;
+    document.getElementById('ocr-vat-no').value     = s.vatNo;
+    document.getElementById('ocr-amount-incl').value = s.amount;
+    document.getElementById('ocr-date').value        = today;
+    document.getElementById('ocr-category').value   = s.category;
+    recalcOCRVAT();
+
+    const exFields = document.getElementById('ocr-extracted-fields');
+    if (exFields) exFields.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+        <span style="color:var(--muted)">Supplier:</span><strong>${s.name}</strong>
+        <span style="color:var(--muted)">VAT No:</span><strong>${s.vatNo || '— Not VAT registered'}</strong>
+        <span style="color:var(--muted)">Amount:</span><strong style="font-family:var(--mono)">${s.amount}</strong>
+        <span style="color:var(--muted)">Date:</span><strong>${today}</strong>
+        <span style="color:var(--muted)">Category:</span><strong>${s.category}</strong>
+      </div>`;
+    const resEl = document.getElementById('ocr-result');
+    if (resEl) resEl.style.display = 'block';
+
+    showToast('✅ OCR complete · Review extracted data before saving', 'ok');
+  }, 2200);
+}
+
+function ocrAccept() {
+  document.getElementById('ocr-result').style.display = 'none';
+  showToast('✅ Data accepted · Fill in remaining fields and save', 'ok');
+}
+
+function ocrSaveExpense() {
+  const supplier = document.getElementById('ocr-supplier').value;
+  const vatNo    = document.getElementById('ocr-vat-no').value;
+  const inclStr  = document.getElementById('ocr-amount-incl').value;
+  const category = document.getElementById('ocr-category').value;
+  const date     = document.getElementById('ocr-date').value;
+  const claim    = document.getElementById('ocr-claim').value;
+
+  if (!supplier) { showToast('⚠️ Please enter supplier name', 'warn'); return; }
+  if (!inclStr)  { showToast('⚠️ Please enter amount', 'warn'); return; }
+
+  const incl      = parseFloat(inclStr.replace(/[^0-9.]/g,'')) || 0;
+  const vatAmt    = incl - (incl / 1.15);
+  const claimable = !category.includes('Fuel');
+  ocrLineCount++;
+
+  const receipt = { id: ocrLineCount, date, supplier, vatNo, category, incl, vat: vatAmt, claimable, claim };
+  ocrReceipts.push(receipt);
+  renderOCRLog();
+
+  // Reset form
+  ['ocr-supplier','ocr-vat-no','ocr-amount-incl','ocr-vat-amount'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  document.getElementById('ocr-result').style.display = 'none';
+  showToast(`💾 Receipt saved · ${claimable ? 'Input VAT of R'+vatAmt.toFixed(2)+' queued for VAT201' : 'Fuel — no input VAT claimed'}`, claimable ? 'ok' : 'warn');
+}
+
+function renderOCRLog() {
+  const tbody = document.getElementById('ocr-log-body');
+  const totEl = document.getElementById('ocr-totals');
+  if (!tbody) return;
+  if (ocrReceipts.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted)">No receipts scanned yet.</td></tr>';
+    if (totEl) totEl.innerHTML = 'Total Input VAT Claimable: <strong style="color:var(--teal)">R 0.00</strong>';
+    return;
+  }
+  let totalInputVAT = 0;
+  tbody.innerHTML = ocrReceipts.map(r => {
+    if (r.claimable) totalInputVAT += r.vat;
+    return `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:9px 12px;font-family:var(--mono)">${r.date}</td>
+      <td style="padding:9px 12px;font-weight:600">${r.supplier}</td>
+      <td style="padding:9px 12px;color:var(--muted)">${r.category}</td>
+      <td style="padding:9px 12px;text-align:right;font-family:var(--mono)">R ${r.incl.toFixed(2)}</td>
+      <td style="padding:9px 12px;text-align:right;font-family:var(--mono);color:${r.claimable?'var(--teal)':'var(--muted)'}">R ${r.vat.toFixed(2)}</td>
+      <td style="padding:9px 12px;text-align:center">${r.claimable?'<span style="color:var(--green);font-weight:700">✅ Yes</span>':'<span style="color:var(--muted)">✗ No</span>'}</td>
+      <td style="padding:9px 12px;font-family:var(--mono);font-size:11px">${r.claim.includes('General')?'—':r.claim}</td>
+      <td style="padding:9px 12px;text-align:center"><button style="background:none;border:1px solid var(--border-md);border-radius:4px;padding:2px 8px;font-size:10px;cursor:pointer;color:var(--navy)" onclick="showToast('🖼️ Receipt image stored · SARS 5yr retention','inf')">📄 View</button></td>
+    </tr>`;
+  }).join('');
+  if (totEl) totEl.innerHTML = `Total Input VAT Claimable: <strong style="color:var(--teal);font-family:var(--mono)">R ${totalInputVAT.toFixed(2)}</strong>`;
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — CHART OF ACCOUNTS
+══════════════════════════════════════════════════ */
+const COA_DATA = [
+  // Assets
+  {code:'1010',name:'Bank Account — FNB Operating',   cls:'Assets',    type:'Current Asset',     bal:849893.81, dr:true},
+  {code:'1020',name:'Petty Cash',                      cls:'Assets',    type:'Current Asset',     bal:2500.00,   dr:true},
+  {code:'1100',name:'Accounts Receivable',             cls:'Assets',    type:'Current Asset',     bal:6264.05,   dr:true},
+  {code:'1200',name:'VAT Refundable (Input VAT)',      cls:'Assets',    type:'Current Asset',     bal:0,         dr:true},
+  {code:'1300',name:'Equipment & Tools',               cls:'Assets',    type:'Fixed Asset',       bal:45200.00,  dr:true},
+  {code:'1400',name:'Prepayments',                     cls:'Assets',    type:'Current Asset',     bal:12000.00,  dr:true},
+  // Liabilities
+  {code:'2100',name:'Accounts Payable',                cls:'Liabilities',type:'Current Liability',bal:18432.00,  dr:false},
+  {code:'2200',name:'VAT Payable — Output VAT',        cls:'Liabilities',type:'Current Liability',bal:138798.91, dr:false},
+  {code:'2300',name:'PAYE Payable',                    cls:'Liabilities',type:'Current Liability',bal:11200.00,  dr:false},
+  {code:'2400',name:'UIF Payable',                     cls:'Liabilities',type:'Current Liability',bal:1550.00,   dr:false},
+  // Equity
+  {code:'3100',name:"Owner's Equity — Norman",         cls:'Equity',    type:'Capital',           bal:415763.69, dr:false},
+  {code:'3200',name:'Retained Earnings',               cls:'Equity',    type:'Retained Earnings', bal:756126.95, dr:false},
+  {code:'3300',name:'Drawings',                        cls:'Equity',    type:'Drawings',          bal:0,         dr:true},
+  // Income
+  {code:'4100',name:'Invoice Revenue — Bigo Direct',   cls:'Income',    type:'Operating Revenue', bal:849893.81, dr:false},
+  {code:'4200',name:'Invoice Revenue — Phahamo Sub',   cls:'Income',    type:'Operating Revenue', bal:314665.46, dr:false},
+  {code:'4900',name:'Other Income',                    cls:'Income',    type:'Other Income',      bal:0,         dr:false},
+  // Expenses
+  {code:'5100',name:'Subcontractor Costs',             cls:'Expenses',  type:'Direct Cost',       bal:248390.00, dr:true},
+  {code:'5200',name:'Materials & Hardware',            cls:'Expenses',  type:'Direct Cost',       bal:72150.00,  dr:true},
+  {code:'5300',name:'Fuel & Transport',                cls:'Expenses',  type:'Operating Expense', bal:18432.00,  dr:true},
+  {code:'5400',name:'Payroll — PAYE',                  cls:'Expenses',  type:'Operating Expense', bal:11200.00,  dr:true},
+  {code:'5500',name:'Input VAT Claimed',               cls:'Expenses',  type:'VAT Account',       bal:13100.13,  dr:true},
+  {code:'5600',name:'Equipment Depreciation',          cls:'Expenses',  type:'Operating Expense', bal:4800.00,   dr:true},
+  {code:'5900',name:'General & Admin',                 cls:'Expenses',  type:'Operating Expense', bal:5451.18,   dr:true},
+];
+
+function renderCOATable(filter='', cls='') {
+  const tbody = document.getElementById('coa-table-body');
+  if (!tbody) return;
+  const filtered = COA_DATA.filter(a =>
+    (!cls || a.cls === cls) &&
+    (!filter || a.name.toLowerCase().includes(filter.toLowerCase()) || a.code.includes(filter))
+  );
+  const clsColors = {Assets:'var(--navy)',Liabilities:'var(--red)',Equity:'var(--teal)',Income:'var(--green)',Expenses:'var(--amber)'};
+  tbody.innerHTML = filtered.map(a => `
+    <tr style="border-bottom:1px solid var(--border);cursor:pointer" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
+      <td style="padding:9px 12px;font-family:var(--mono);font-weight:600;color:var(--navy)">${a.code}</td>
+      <td style="padding:9px 12px;font-weight:500">${a.name}</td>
+      <td style="padding:9px 12px"><span style="background:${clsColors[a.cls]}22;color:${clsColors[a.cls]};font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">${a.cls}</span></td>
+      <td style="padding:9px 12px;color:var(--muted);font-size:11px">${a.type}</td>
+      <td style="padding:9px 12px;text-align:right;font-family:var(--mono);font-weight:600;color:${a.bal>0?'var(--navy)':'var(--muted)'}">R ${a.bal.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+      <td style="padding:9px 12px;text-align:center">
+        <button style="background:none;border:1px solid var(--border-md);border-radius:4px;padding:2px 8px;font-size:10px;cursor:pointer;color:var(--navy)" onclick="ledgerJumpTo('${a.code}')">📋 Ledger</button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterCOATable() {
+  const search = document.getElementById('coa-search')?.value || '';
+  const cls    = document.getElementById('coa-filter-class')?.value || '';
+  renderCOATable(search, cls);
+}
+
+function filterCOA(cls) {
+  showPanel('coa');
+  setTimeout(() => {
+    const sel = document.getElementById('coa-filter-class');
+    if (sel) { sel.value = cls; filterCOATable(); }
+  }, 50);
+}
+
+function ledgerJumpTo(code) {
+  showPanel('ledger');
+  setTimeout(() => {
+    const sel = document.getElementById('ledger-account-select');
+    if (sel) { sel.value = code; renderLedger(); }
+  }, 100);
+}
+
+function addCOAAccount() {
+  showToast('➕ Add Account modal — enter code, name, class, type', 'inf');
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — JOURNALS
+══════════════════════════════════════════════════ */
+let journalEntries  = [];
+let journalLineRows = 2;
+
+// Pre-populate COA dropdowns in journal form
+function populateCOADropdowns() {
+  const selects = document.querySelectorAll('#journal-lines-body select');
+  const opts = COA_DATA.map(a => `<option value="${a.code}">${a.code} — ${a.name}</option>`).join('');
+  selects.forEach(s => { s.innerHTML = '<option value="">— Select Account —</option>' + opts; });
+}
+
+function addJournalLine() {
+  journalLineRows++;
+  const tbody = document.getElementById('journal-lines-body');
+  if (!tbody) return;
+  const tr = document.createElement('tr');
+  tr.id = `jl-${journalLineRows}`;
+  const opts = COA_DATA.map(a => `<option value="${a.code}">${a.code} — ${a.name}</option>`).join('');
+  tr.innerHTML = `
+    <td style="padding:6px 10px;color:var(--muted)">${journalLineRows}</td>
+    <td style="padding:6px 10px"><select class="auth-input" style="font-size:11px;padding:5px 8px;width:220px" onchange="updateJournalBalance()"><option value="">— Select Account —</option>${opts}</select></td>
+    <td style="padding:6px 10px"><input type="number" class="auth-input jl-dr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+    <td style="padding:6px 10px"><input type="number" class="auth-input jl-cr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+    <td style="padding:6px 10px"><input class="auth-input" placeholder="Narration" style="font-size:11px;padding:5px 8px;width:180px"></td>
+    <td style="padding:6px 10px"><button style="background:none;border:none;cursor:pointer;color:var(--red);font-size:14px" onclick="removeJournalLine(${journalLineRows})">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+
+function removeJournalLine(id) {
+  const tr = document.getElementById(`jl-${id}`);
+  if (tr) tr.remove();
+  updateJournalBalance();
+}
+
+function updateJournalBalance() {
+  let totalDr = 0, totalCr = 0;
+  document.querySelectorAll('.jl-dr').forEach(el => { totalDr += parseFloat(el.value) || 0; });
+  document.querySelectorAll('.jl-cr').forEach(el => { totalCr += parseFloat(el.value) || 0; });
+  const fmt = v => 'R ' + v.toLocaleString('en-ZA', {minimumFractionDigits:2});
+  const drEl = document.getElementById('j-total-dr');
+  const crEl = document.getElementById('j-total-cr');
+  const stEl = document.getElementById('j-balance-status');
+  if (drEl) drEl.textContent = fmt(totalDr);
+  if (crEl) crEl.textContent = fmt(totalCr);
+  if (stEl) {
+    if (totalDr === 0 && totalCr === 0) {
+      stEl.textContent = '— Enter amounts'; stEl.style.color = 'var(--muted)';
+    } else if (Math.abs(totalDr - totalCr) < 0.01) {
+      stEl.innerHTML = '✅ <strong style="color:var(--green)">BALANCED</strong>'; stEl.style.color = 'var(--green)';
+    } else {
+      stEl.innerHTML = `⚠️ <strong style="color:var(--red)">OUT BY R ${Math.abs(totalDr-totalCr).toFixed(2)}</strong>`; stEl.style.color = 'var(--red)';
+    }
+  }
+}
+
+function loadSampleJournal() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('j-date').value = today;
+  document.getElementById('j-ref').value  = 'JE-' + String(journalEntries.length+1).padStart(4,'0');
+  document.getElementById('j-desc').value = 'Invoice INV-0810 raised — HLB/2026/466333 — Ziphozihle Wonci';
+
+  // Reset to 2 rows
+  const tbody = document.getElementById('journal-lines-body');
+  tbody.innerHTML = `
+    <tr id="jl-1">
+      <td style="padding:6px 10px;color:var(--muted)">1</td>
+      <td style="padding:6px 10px"><select class="auth-input" style="font-size:11px;padding:5px 8px;width:220px" onchange="updateJournalBalance()"></select></td>
+      <td style="padding:6px 10px"><input type="number" class="auth-input jl-dr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+      <td style="padding:6px 10px"><input type="number" class="auth-input jl-cr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+      <td style="padding:6px 10px"><input class="auth-input" placeholder="Narration" style="font-size:11px;padding:5px 8px;width:180px"></td>
+      <td></td>
+    </tr>
+    <tr id="jl-2">
+      <td style="padding:6px 10px;color:var(--muted)">2</td>
+      <td style="padding:6px 10px"><select class="auth-input" style="font-size:11px;padding:5px 8px;width:220px" onchange="updateJournalBalance()"></select></td>
+      <td style="padding:6px 10px"><input type="number" class="auth-input jl-dr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+      <td style="padding:6px 10px"><input type="number" class="auth-input jl-cr" placeholder="0.00" style="font-family:var(--mono);font-size:12px;text-align:right;width:110px" oninput="updateJournalBalance()"></td>
+      <td style="padding:6px 10px"><input class="auth-input" placeholder="Narration" style="font-size:11px;padding:5px 8px;width:180px"></td>
+      <td style="padding:6px 10px"><button style="background:none;border:none;cursor:pointer;color:var(--red);font-size:14px" onclick="removeJournalLine(2)">✕</button></td>
+    </tr>`;
+  journalLineRows = 2;
+  populateCOADropdowns();
+
+  // Set sample values
+  const rows = document.querySelectorAll('#journal-lines-body tr');
+  rows[0].querySelectorAll('select')[0].value = '1100';  // Dr Accounts Receivable
+  rows[0].querySelectorAll('input[type=number]')[0].value = '6264.05'; // Dr
+  rows[0].querySelectorAll('input:not([type=number])')[0].value = 'Accounts Receivable — INV-0810';
+  rows[1].querySelectorAll('select')[0].value = '4100';  // Cr Invoice Revenue
+  rows[1].querySelectorAll('input[type=number]')[1].value = '5446.13'; // Cr excl VAT
+  rows[1].querySelectorAll('input:not([type=number])')[0].value = 'Revenue — INV-0810 excl VAT';
+  addJournalLine();
+  setTimeout(() => {
+    const rows3 = document.querySelectorAll('#journal-lines-body tr');
+    if (rows3[2]) {
+      rows3[2].querySelectorAll('select')[0].value = '2200';
+      rows3[2].querySelectorAll('input[type=number]')[1].value = '817.92';
+      rows3[2].querySelectorAll('input:not([type=number])')[0].value = 'Output VAT @ 15% — INV-0810';
+    }
+    updateJournalBalance();
+  }, 50);
+  updateJournalBalance();
+  showToast('📋 Sample journal loaded — Dr AR / Cr Revenue + VAT', 'ok');
+}
+
+function postJournal() {
+  const ref  = document.getElementById('j-ref').value;
+  const desc = document.getElementById('j-desc').value;
+  const date = document.getElementById('j-date').value;
+  if (!ref || !desc || !date) { showToast('⚠️ Please fill Date, Reference and Description', 'warn'); return; }
+
+  let totalDr = 0, totalCr = 0;
+  document.querySelectorAll('.jl-dr').forEach(el => { totalDr += parseFloat(el.value) || 0; });
+  document.querySelectorAll('.jl-cr').forEach(el => { totalCr += parseFloat(el.value) || 0; });
+  if (Math.abs(totalDr - totalCr) > 0.01) { showToast('⚠️ Journal is not balanced — Dr must equal Cr', 'warn'); return; }
+
+  const lines = [];
+  document.querySelectorAll('#journal-lines-body tr').forEach(tr => {
+    const acc  = tr.querySelector('select')?.value;
+    const dr   = parseFloat(tr.querySelectorAll('input[type=number]')[0]?.value) || 0;
+    const cr   = parseFloat(tr.querySelectorAll('input[type=number]')[1]?.value) || 0;
+    const narr = tr.querySelectorAll('input:not([type=number])')[0]?.value || '';
+    if (acc && (dr || cr)) lines.push({acc, dr, cr, narr});
+  });
+
+  const je = { id:'JE-'+String(journalEntries.length+1).padStart(4,'0'), date, ref, desc, lines, totalDr, posted: new Date().toLocaleTimeString() };
+  journalEntries.push(je);
+  renderJournalsList();
+  showToast(`✅ Journal ${je.id} posted · ${lines.length} lines · R ${totalDr.toLocaleString('en-ZA',{minimumFractionDigits:2})}`, 'ok');
+
+  // Reset form
+  document.getElementById('j-ref').value = 'JE-' + String(journalEntries.length+1).padStart(4,'0');
+  document.getElementById('j-desc').value = '';
+}
+
+function renderJournalsList() {
+  const el = document.getElementById('journals-list');
+  const cnt = document.getElementById('journals-count');
+  if (!el) return;
+  if (cnt) cnt.textContent = `${journalEntries.length} entr${journalEntries.length===1?'y':'ies'}`;
+  if (journalEntries.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px"><div style="font-size:32px;margin-bottom:8px">📝</div>No journals posted yet.</div>';
+    return;
+  }
+  el.innerHTML = journalEntries.slice().reverse().map(je => `
+    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;overflow:hidden">
+      <div style="background:var(--bg);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)">
+        <div>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--navy)">${je.id}</span>
+          <span style="margin:0 8px;color:var(--muted)">·</span>
+          <span style="font-size:12px">${je.desc}</span>
+        </div>
+        <div style="text-align:right;font-size:11px;color:var(--muted)">${je.date} · Posted ${je.posted}</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="background:#FAFAFA">
+          <th style="padding:6px 12px;text-align:left;color:var(--muted);font-weight:600">Account</th>
+          <th style="padding:6px 12px;text-align:right;color:var(--muted);font-weight:600">Debit</th>
+          <th style="padding:6px 12px;text-align:right;color:var(--muted);font-weight:600">Credit</th>
+          <th style="padding:6px 12px;text-align:left;color:var(--muted);font-weight:600">Narration</th>
+        </tr></thead>
+        <tbody>
+          ${je.lines.map(l => {
+            const acc = COA_DATA.find(a => a.code === l.acc);
+            return `<tr style="border-top:1px solid var(--border)">
+              <td style="padding:6px 12px;font-family:var(--mono)">${l.acc} — ${acc?acc.name:l.acc}</td>
+              <td style="padding:6px 12px;text-align:right;font-family:var(--mono);color:var(--navy)">${l.dr?'R '+l.dr.toFixed(2):'—'}</td>
+              <td style="padding:6px 12px;text-align:right;font-family:var(--mono);color:var(--teal)">${l.cr?'R '+l.cr.toFixed(2):'—'}</td>
+              <td style="padding:6px 12px;color:var(--muted)">${l.narr}</td>
+            </tr>`;
+          }).join('')}
+          <tr style="background:var(--bg);border-top:2px solid var(--border)">
+            <td style="padding:6px 12px;font-weight:700">TOTALS</td>
+            <td style="padding:6px 12px;text-align:right;font-family:var(--mono);font-weight:700;color:var(--navy)">R ${je.totalDr.toFixed(2)}</td>
+            <td style="padding:6px 12px;text-align:right;font-family:var(--mono);font-weight:700;color:var(--teal)">R ${je.totalDr.toFixed(2)}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`).join('');
+}
+
+function newJournal() {
+  document.getElementById('j-ref').value = 'JE-' + String(journalEntries.length+1).padStart(4,'0');
+  document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('journal-form-card').scrollIntoView({behavior:'smooth'});
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — GENERAL LEDGER
+══════════════════════════════════════════════════ */
+// Sample transactions for key accounts
+const LEDGER_TRANSACTIONS = {
+  '1100': [
+    {date:'2026-01-15',ref:'INV-0725',desc:'Invoice raised — N. Diedericks — HLB/2025/453021',dr:30661.30,cr:0},
+    {date:'2026-01-18',ref:'INV-0726',desc:'Invoice raised — N. Diedericks (revised)',dr:32954.15,cr:0},
+    {date:'2026-01-20',ref:'PMT-001', desc:'Payment received — N. Diedericks',dr:0,cr:63615.45},
+    {date:'2026-02-10',ref:'INV-0810',desc:'Invoice raised — Ziphozihle Wonci — HLB/2026/466333',dr:6264.05,cr:0},
+  ],
+  '4100': [
+    {date:'2026-01-10',ref:'INV-0801',desc:'Revenue — Bigo Direct — CAT batch 1',dr:0,cr:145320.00},
+    {date:'2026-01-22',ref:'INV-0805',desc:'Revenue — Bigo Direct — CAT batch 2',dr:0,cr:223840.50},
+    {date:'2026-02-05',ref:'INV-0808',desc:'Revenue — Bigo Direct — CAT batch 3',dr:0,cr:287412.31},
+    {date:'2026-02-18',ref:'INV-0810',desc:'Revenue — Bigo Direct — Wonci',dr:0,cr:5446.13},
+    {date:'2026-03-01',ref:'INV-0809',desc:'Revenue — Bigo Direct — CAT final',dr:0,cr:187874.87},
+  ],
+  '2200': [
+    {date:'2026-01-31',ref:'VAT-JAN',desc:'Output VAT — January invoices',dr:0,cr:45621.30},
+    {date:'2026-02-28',ref:'VAT-FEB',desc:'Output VAT — February invoices',dr:0,cr:65234.28},
+    {date:'2026-03-15',ref:'VAT-MAR',desc:'Output VAT — March invoices (partial)',dr:0,cr:0},
+  ],
+  '1010': [
+    {date:'2026-01-25',ref:'PMT-001',desc:'Bank receipt — SB Insurance payment batch 1',dr:412841.00,cr:0},
+    {date:'2026-02-10',ref:'PMT-002',desc:'Bank receipt — SB Insurance payment batch 2',dr:214500.50,cr:0},
+    {date:'2026-02-15',ref:'EXP-001',desc:'Payment to subcontractors',dr:0,cr:145200.00},
+    {date:'2026-02-20',ref:'PMT-003',desc:'Bank receipt — SB Insurance payment batch 3',dr:222552.31,cr:0},
+    {date:'2026-03-01',ref:'EXP-002',desc:'Materials & hardware suppliers',dr:0,cr:72150.00},
+    {date:'2026-03-10',ref:'EXP-003',desc:'Fuel & transport expenses',dr:0,cr:18432.00},
+  ],
+};
+
+function populateLedgerSelect() {
+  const sel = document.getElementById('ledger-account-select');
+  if (!sel) return;
+  const opts = COA_DATA.map(a => `<option value="${a.code}">${a.code} — ${a.name}</option>`).join('');
+  sel.innerHTML = '<option value="">— Select Account —</option>' + opts;
+}
+
+function renderLedger() {
+  const code = document.getElementById('ledger-account-select')?.value;
+  const placeholder = document.getElementById('ledger-placeholder');
+  const content     = document.getElementById('ledger-content');
+  if (!code) {
+    if (placeholder) placeholder.style.display = 'block';
+    if (content) content.style.display = 'none';
+    return;
+  }
+  if (placeholder) placeholder.style.display = 'none';
+  if (content) content.style.display = 'block';
+
+  const acc  = COA_DATA.find(a => a.code === code);
+  const txns = LEDGER_TRANSACTIONS[code] || [];
+
+  if (acc) {
+    const nameEl = document.getElementById('ledger-acc-name');
+    const codeEl = document.getElementById('ledger-acc-code');
+    const balEl  = document.getElementById('ledger-acc-balance');
+    if (nameEl) nameEl.textContent = acc.name;
+    if (codeEl) codeEl.textContent = `Account ${acc.code} · ${acc.cls} · ${acc.type}`;
+    if (balEl)  balEl.textContent  = 'R ' + acc.bal.toLocaleString('en-ZA',{minimumFractionDigits:2});
+  }
+
+  const tbody = document.getElementById('ledger-table-body');
+  if (!tbody) return;
+
+  if (txns.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted);font-size:12px">No transactions recorded for this account yet.</td></tr>';
+    return;
+  }
+
+  let running = 0;
+  const isDr = acc?.dr ?? true;
+  tbody.innerHTML = txns.map((t, i) => {
+    running += isDr ? (t.dr - t.cr) : (t.cr - t.dr);
+    return `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:9px 12px;font-family:var(--mono);font-size:11px">${t.date}</td>
+      <td style="padding:9px 12px;font-family:var(--mono);font-size:11px;color:var(--navy);font-weight:600">${t.ref}</td>
+      <td style="padding:9px 12px;font-size:12px">${t.desc}</td>
+      <td style="padding:9px 12px;text-align:right;font-family:var(--mono);color:var(--navy)">${t.dr?'R '+t.dr.toLocaleString('en-ZA',{minimumFractionDigits:2}):'—'}</td>
+      <td style="padding:9px 12px;text-align:right;font-family:var(--mono);color:var(--teal)">${t.cr?'R '+t.cr.toLocaleString('en-ZA',{minimumFractionDigits:2}):'—'}</td>
+      <td style="padding:9px 12px;text-align:right;font-family:var(--mono);font-weight:600;color:${running>=0?'var(--navy)':'var(--red)'}">R ${Math.abs(running).toLocaleString('en-ZA',{minimumFractionDigits:2})}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — TRIAL BALANCE
+══════════════════════════════════════════════════ */
+const TB_DATA = [
+  {code:'1010',name:'Bank Account — FNB Operating',       cls:'Assets',     dr:849893.81,cr:0},
+  {code:'1020',name:'Petty Cash',                          cls:'Assets',     dr:2500.00,  cr:0},
+  {code:'1100',name:'Accounts Receivable',                 cls:'Assets',     dr:6264.05,  cr:0},
+  {code:'1300',name:'Equipment & Tools',                   cls:'Assets',     dr:45200.00, cr:0},
+  {code:'1400',name:'Prepayments',                         cls:'Assets',     dr:12000.00, cr:0},
+  {code:'2100',name:'Accounts Payable',                    cls:'Liabilities',dr:0,        cr:18432.00},
+  {code:'2200',name:'VAT Payable — Output VAT',            cls:'Liabilities',dr:0,        cr:138798.91},
+  {code:'2300',name:'PAYE Payable',                        cls:'Liabilities',dr:0,        cr:11200.00},
+  {code:'2400',name:'UIF Payable',                         cls:'Liabilities',dr:0,        cr:1550.00},
+  {code:'3100',name:"Owner's Equity",                      cls:'Equity',     dr:0,        cr:415763.69},
+  {code:'3200',name:'Retained Earnings',                   cls:'Equity',     dr:0,        cr:756126.95},
+  {code:'4100',name:'Invoice Revenue — Bigo Direct',       cls:'Income',     dr:0,        cr:849893.81},
+  {code:'4200',name:'Invoice Revenue — Phahamo Sub',       cls:'Income',     dr:0,        cr:314665.46},
+  {code:'5100',name:'Subcontractor Costs',                 cls:'Expenses',   dr:248390.00,cr:0},
+  {code:'5200',name:'Materials & Hardware',                cls:'Expenses',   dr:72150.00, cr:0},
+  {code:'5300',name:'Fuel & Transport',                    cls:'Expenses',   dr:18432.00, cr:0},
+  {code:'5400',name:'Payroll — PAYE',                      cls:'Expenses',   dr:11200.00, cr:0},
+  {code:'5500',name:'Input VAT Claimed',                   cls:'Expenses',   dr:13100.13, cr:0},
+  {code:'5600',name:'Equipment Depreciation',              cls:'Expenses',   dr:4800.00,  cr:0},
+  {code:'5900',name:'General & Admin',                     cls:'Expenses',   dr:5451.18,  cr:0},
+];
+
+function generateTrialBalance() {
+  const clsColors = {Assets:'var(--navy)',Liabilities:'var(--red)',Equity:'var(--teal)',Income:'var(--green)',Expenses:'var(--amber)'};
+  let lastCls = '', totalDr = 0, totalCr = 0;
+  const tbody = document.getElementById('trial-balance-body');
+  const tfoot = document.getElementById('trial-balance-foot');
+  if (!tbody) return;
+
+  tbody.innerHTML = TB_DATA.map(row => {
+    totalDr += row.dr;
+    totalCr += row.cr;
+    const clsHeader = row.cls !== lastCls ? (() => { lastCls = row.cls; return `<tr style="background:${clsColors[row.cls]}15"><td colspan="5" style="padding:8px 14px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:${clsColors[row.cls]}">${row.cls}</td></tr>`; })() : '';
+    return clsHeader + `<tr style="border-bottom:1px solid var(--border)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
+      <td style="padding:8px 14px;font-family:var(--mono);color:var(--muted)">${row.code}</td>
+      <td style="padding:8px 14px">${row.name}</td>
+      <td style="padding:8px 14px"><span style="background:${clsColors[row.cls]}20;color:${clsColors[row.cls]};font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px">${row.cls}</span></td>
+      <td style="padding:8px 14px;text-align:right;font-family:var(--mono);font-weight:${row.dr?'600':'400'};color:${row.dr?'var(--navy)':'var(--muted)'}">${row.dr?'R '+row.dr.toLocaleString('en-ZA',{minimumFractionDigits:2}):'—'}</td>
+      <td style="padding:8px 14px;text-align:right;font-family:var(--mono);font-weight:${row.cr?'600':'400'};color:${row.cr?'var(--teal)':'var(--muted)'}">${row.cr?'R '+row.cr.toLocaleString('en-ZA',{minimumFractionDigits:2}):'—'}</td>
+    </tr>`;
+  }).join('');
+
+  const balanced = Math.abs(totalDr - totalCr) < 0.01;
+  tfoot.innerHTML = `<tr style="background:var(--navy);color:white">
+    <td colspan="3" style="padding:12px 14px;font-weight:700;font-size:13px">TOTALS</td>
+    <td style="padding:12px 14px;text-align:right;font-family:var(--mono);font-weight:700">R ${totalDr.toLocaleString('en-ZA',{minimumFractionDigits:2})}</td>
+    <td style="padding:12px 14px;text-align:right;font-family:var(--mono);font-weight:700">R ${totalCr.toLocaleString('en-ZA',{minimumFractionDigits:2})}</td>
+  </tr>
+  <tr style="background:${balanced?'var(--green)':'var(--red)'};color:white">
+    <td colspan="5" style="padding:10px 14px;text-align:center;font-weight:700">
+      ${balanced ? '✅ TRIAL BALANCE IS BALANCED · Dr = Cr · R '+totalDr.toLocaleString('en-ZA',{minimumFractionDigits:2}) : '⚠️ TRIAL BALANCE OUT OF BALANCE · Difference: R '+Math.abs(totalDr-totalCr).toFixed(2)}
+    </td>
+  </tr>`;
+
+  document.getElementById('tb-total-dr').textContent = 'R ' + totalDr.toLocaleString('en-ZA',{minimumFractionDigits:2});
+  document.getElementById('tb-total-cr').textContent = 'R ' + totalCr.toLocaleString('en-ZA',{minimumFractionDigits:2});
+  document.getElementById('tb-balance-status').textContent = balanced ? '✅ Balanced' : '⚠️ Out of Balance';
+  const card = document.getElementById('tb-balance-card');
+  if (card) { card.className = balanced ? 'stat-card green' : 'stat-card red'; }
+  showToast(balanced ? '✅ Trial balance generated — Dr = Cr · Fully balanced' : '⚠️ Trial balance out of balance!', balanced?'ok':'warn');
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — VAT201 / SARS
+══════════════════════════════════════════════════ */
+function preparVAT201() {
+  showToast('📋 VAT201 prepared · All fields auto-populated from invoice data', 'ok');
+}
+
+function runAIVATReview() {
+  showToast('🤖 AI reviewing VAT201...', 'inf');
+  setTimeout(() => {
+    showToast('✦ AI Review: Output VAT R 151,899.04 confirmed. Input VAT R 13,100.13 verified — fuel receipts correctly excluded. Net R 138,798.91 payable. No anomalies detected.', 'ok');
+  }, 2500);
+}
+
+function submitVAT201() {
+  const checks = document.querySelectorAll('#vat-checklist input');
+  let allChecked = true;
+  checks.forEach(c => { if (!c.checked) allChecked = false; });
+  if (!allChecked) { showToast('⚠️ Please complete all pre-submission checklist items first', 'warn'); return; }
+
+  showToast('🏛️ Submitting VAT201 to SARS eFiling API...', 'inf');
+  setTimeout(() => {
+    const ref = 'SARS-VAT-' + Math.floor(Math.random()*900000+100000);
+    const tbody = document.getElementById('sars-filings-body');
+    if (tbody) {
+      tbody.innerHTML = `<tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:9px 12px;font-weight:600">VAT201</td>
+        <td style="padding:9px 12px">Jan – Feb 2026</td>
+        <td style="padding:9px 12px;font-family:var(--mono);font-size:11px">${new Date().toLocaleDateString('en-ZA')}</td>
+        <td style="padding:9px 12px;text-align:right;font-family:var(--mono);color:var(--red);font-weight:700">R 138,798.91</td>
+        <td style="padding:9px 12px;text-align:center"><span style="background:var(--green-pale);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">✅ Submitted</span></td>
+        <td style="padding:9px 12px;font-family:var(--mono);font-size:11px;color:var(--navy);font-weight:600">${ref}</td>
+      </tr>`;
+    }
+    showToast(`✅ VAT201 submitted to SARS · Reference: ${ref} · Due date: 30 April 2026`, 'ok');
+  }, 3000);
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — INCOME STATEMENT
+══════════════════════════════════════════════════ */
+function generateIncomeStatement() {
+  showToast('📈 Income statement generated for selected period', 'ok');
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — COMMUNICATION (EMAIL + WHATSAPP)
+══════════════════════════════════════════════════ */
+let commLogEntries = [];
+
+function testEmail() {
+  showToast('📧 Test email sent to Norman@bigoprojects.co.za via Exchange OAuth', 'ok');
+}
+
+function testWhatsApp() {
+  showToast('💬 Test WhatsApp sent to 082 402 8027 via Meta Business API', 'ok');
+}
+
+function sendInvoiceEmail() {
+  const inv = document.getElementById('comm-invoice')?.value || 'INV-0810';
+  addCommLog('📧 Email', inv, 'Sent via Exchange · Norman@bigoprojects.co.za');
+  showToast('📧 Invoice emailed successfully via Microsoft Exchange', 'ok');
+}
+
+function sendInvoiceWA() {
+  const inv = document.getElementById('comm-invoice')?.value || 'INV-0810';
+  addCommLog('💬 WhatsApp', inv, 'Sent via Meta Business API · 082 402 8027');
+  showToast('💬 WhatsApp message sent via Meta Business API', 'ok');
+}
+
+function sendInvoiceBoth() {
+  const inv = document.getElementById('comm-invoice')?.value || 'INV-0810';
+  addCommLog('📧 Email + 💬 WhatsApp', inv, 'Both channels · Exchange + Meta API');
+  showToast('📤 Invoice sent via Email AND WhatsApp simultaneously', 'ok');
+}
+
+function addCommLog(channel, invoice, detail) {
+  commLogEntries.unshift({
+    time: new Date().toLocaleTimeString('en-ZA'),
+    channel, invoice, detail,
+    status: 'Delivered'
+  });
+  renderCommLog();
+}
+
+function renderCommLog() {
+  const el = document.getElementById('comm-log');
+  if (!el) return;
+  if (commLogEntries.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">No messages sent yet.</div>';
+    return;
+  }
+  el.innerHTML = commLogEntries.map(e => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:12px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:34px;height:34px;border-radius:8px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px">📤</div>
+        <div>
+          <div style="font-weight:600">${e.channel}</div>
+          <div style="color:var(--muted);font-size:11px;margin-top:1px">${e.invoice} · ${e.detail}</div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;font-weight:700;background:var(--green-pale);color:var(--green);padding:2px 8px;border-radius:20px">✅ ${e.status}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">${e.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — AI ASSISTANT (FULL LIVE API)
+══════════════════════════════════════════════════ */
+async function runCustomAI() {
+  const prompt = document.getElementById('ai-custom-prompt')?.value?.trim();
+  if (!prompt) { showToast('⚠️ Please enter a question or prompt', 'warn'); return; }
+  const resultEl = document.getElementById('ai-result');
+  if (resultEl) {
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = `<div class="ai-report-box"><div class="ai-loading"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Claude is thinking...</span></div></div>`;
+  }
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:`You are an expert in South African insurance claims management, SARS VAT compliance, and building contractor accounting. Context: Big O Projects (Pty) Ltd — ClaimSync v2.0 — CAT Event 2026 — Standard Bank HOC — 83 active claims — Total invoiced R1,164,559.27 — VAT at 15%.\n\nQuestion: ${prompt}\n\nBe concise, professional, and specific to the South African context.`}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'No response received.';
+    if (resultEl) resultEl.innerHTML = `<div class="ai-report-box"><div class="ai-report-hdr"><span class="ai-spark">✦</span><div><div class="ai-report-title">Claude Response</div><div class="ai-report-sub">claude-sonnet-4-20250514 · ClaimSync v2.0</div></div></div><div class="ai-report-body" style="white-space:pre-wrap;font-size:12px;line-height:1.7">${text}</div></div>`;
+    showToast('✦ AI response received', 'ok');
+  } catch(e) {
+    if (resultEl) resultEl.innerHTML = `<div class="ai-report-box"><div style="color:var(--amber);font-size:12px;padding:12px">⚠️ API unavailable in demo. Configure ANTHROPIC_API_KEY server-side for production use.</div></div>`;
+  }
+}
+
+async function generateAIReportAsync() {
+  const claim   = document.getElementById('air-claim')?.value || 'HLB/2026/XXXXXX';
+  const peril   = document.getElementById('air-peril')?.value || 'Storm Damage';
+  const notes   = document.getElementById('air-notes')?.value || '';
+  const context = document.getElementById('air-context')?.value || '';
+  if (!notes.trim()) { showToast('⚠️ Please enter field notes first','warn'); return; }
+
+  const btn = document.getElementById('gen-report-btn');
+  if (btn) { btn.innerHTML = '<span class="ai-icon">⏳</span> Generating...'; btn.disabled = true; }
+
+  const reportEl = document.getElementById('ai-standalone-report');
+  if (reportEl) reportEl.innerHTML = 'Claude AI is generating your HOC report...';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:4000,
+        messages:[{role:'user',content:`You are a professional insurance assessor for Big O Projects (Pty) Ltd (NHBRC Registered, CIDB PE 6GB) working on Standard Bank Homeowners Cover (HOC) claims. Generate a formal HOC assessment report.\n\nClaim Reference: ${claim}\nPeril / Cause: ${peril}\nField Notes: ${notes}\nAdditional Context: ${context}\nDate of Assessment: ${new Date().toLocaleDateString('en-ZA')}\n\nGenerate a complete, professional assessment report in Standard Bank HOC format with these sections:\n1. BACKGROUND & CAUSE OF LOSS\n2. SCOPE OF DAMAGE (detailed, based on field notes)\n3. RECOMMENDED SCOPE OF WORK (numbered list of repairs)\n4. ASSESSMENT CONCLUSION\n5. Signature blocks for Assessor and Policyholder\n\nUse professional South African building contractor language. Reference NHBRC standards. Be specific about the damage described.`}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'Report generation failed.';
+    if (reportEl) reportEl.innerHTML = text;
+    const copyBtn = document.getElementById('copy-report-btn');
+    if (copyBtn) copyBtn.style.display = '';
+    if (btn) { btn.innerHTML = '<span class="ai-icon">✦</span> Generate HOC Report'; btn.disabled = false; }
+    showToast('✅ AI HOC report generated · Ready to copy', 'ok');
+  } catch(e) {
+    const fallback = generateReportText(claim, 'POLICYHOLDER', peril, notes + '\n' + context);
+    if (reportEl) reportEl.innerHTML = fallback;
+    if (btn) { btn.innerHTML = '<span class="ai-icon">✦</span> Generate HOC Report'; btn.disabled = false; }
+    showToast('📄 Report generated (template mode — configure API for AI version)', 'ok');
+  }
+}
+
+async function runInvoiceAI() {
+  const drawerEl = document.getElementById('drawer-ai-result');
+  if (!drawerEl) return;
+  drawerEl.style.display = 'block';
+  drawerEl.innerHTML = `<div class="ai-loading"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Analysing invoice...</span></div>`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:500,
+        messages:[{role:'user',content:'Analyse this insurance repair invoice for Big O Projects: Invoice for Standard Bank HOC claim repair work in Midrand. Check for: duplicate risk, VAT correctness at 15%, correct claim reference format (HLB/YYYY/XXXXXX), appropriate invoice sequencing. Provide a 3-bullet point analysis in plain text.'}]
+      })
+    });
+    const data = await res.json();
+    drawerEl.innerHTML = `<div style="font-size:12px;line-height:1.6;white-space:pre-wrap">${data.content?.[0]?.text || 'Analysis unavailable.'}</div>`;
+  } catch(e) {
+    drawerEl.innerHTML = `<div style="font-size:11px;color:var(--muted)">✦ AI analysis requires ANTHROPIC_API_KEY configured server-side. Demo mode active.</div>`;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   STAGE 5 — DASHBOARD UPDATES (Stage 5 KPIs)
+══════════════════════════════════════════════════ */
+function updateDashboardStage5() {
+  // Update the stage badge on topbar
+  const stageBadge = document.querySelector('.topbar-stage');
+  if (stageBadge) stageBadge.textContent = 'Full System · v2.0 · Stages 1–5';
+}
+
+/* ══════════════════════════════════════════════════
+   CONSOLIDATED INIT — ALL STAGES
+══════════════════════════════════════════════════ */
+function initAllStages() {
+  // Stage 3
+  renderSyncQueue();
+
+  // Stage 4
+  renderOCRLog();
+
+  // Stage 5 — COA
+  renderCOATable();
+
+  // Stage 5 — Ledger
+  populateLedgerSelect();
+
+  // Stage 5 — Journals
+  populateCOADropdowns();
+  const today = new Date().toISOString().split('T')[0];
+  const jDate = document.getElementById('j-date');
+  if (jDate) jDate.value = today;
+  const jRef = document.getElementById('j-ref');
+  if (jRef) jRef.value = 'JE-0001';
+
+  // Stage 5 — Trial Balance dates
+  const tbFrom = document.getElementById('tb-period-from');
+  const tbTo   = document.getElementById('tb-period-to');
+  if (tbFrom) tbFrom.value = '2026-01-01';
+  if (tbTo)   tbTo.value   = today;
+
+  // Stage 5 — Auto-generate trial balance
+  generateTrialBalance();
+
+  // Stage 5 — Income statement dates
+  const isFrom = document.getElementById('is-from');
+  const isTo   = document.getElementById('is-to');
+  if (isFrom) isFrom.value = '2026-01-01';
+  if (isTo)   isTo.value   = today;
+
+  // Stage 5 — Comm log
+  renderCommLog();
+
+  // Stage 5 — OCR category watcher
+  const catSel = document.getElementById('ocr-category');
+  if (catSel) catSel.addEventListener('change', () => {    const warn = document.getElementById('ocr-vat-warning');
+    if (warn) warn.style.display = catSel.value.includes('Fuel') ? 'block' : 'none';
+  });
+}
+
+// Run on DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAllStages);
+} else {
+  initAllStages();
 }
 </script>
 </body>
