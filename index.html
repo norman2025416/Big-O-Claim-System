@@ -10,6 +10,7 @@
 /* ═══════════════════════════════════════════
    CLAIMSYNC v4.0 — CSS DESIGN SYSTEM
    © 2026 Imagelink Technologies (Pty) Ltd
+   All rights reserved. Proprietary software.
 ═══════════════════════════════════════════ */
 :root{
   --navy:#0A2D5E;--navy-l:#1A4A8A;--navy-d:#071D3E;
@@ -243,250 +244,6 @@ textarea.fi{resize:vertical}
 .modal-body{padding:22px;overflow-y:auto;flex:1}
 .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;flex-wrap:wrap}
 
-/* ── TERMS & CONDITIONS ── */
-function showTerms() {
-  document.getElementById('terms-screen').style.display = 'flex';
-}
-function termsCheckChanged() {
-  const cb = document.getElementById('terms-cb');
-  document.getElementById('terms-accept-btn').disabled = !cb.checked;
-}
-function termsAccept() {
-  if (!document.getElementById('terms-cb').checked) return;
-  localStorage.setItem('cs_terms_v4', '1');
-  document.getElementById('terms-screen').style.display = 'none';
-  showToast('✅ Terms accepted. Welcome to ClaimSync v4.', 'ok');
-}
-function termsDecline() {
-  document.getElementById('terms-screen').style.display = 'none';
-  showToast('❌ Terms declined. Some features may be restricted.', 'warn');
-}
-function checkTermsOnLogin() {
-  if (!localStorage.getItem('cs_terms_v4')) {
-    setTimeout(() => { document.getElementById('terms-screen').style.display = 'flex'; }, 600);
-  }
-}
-
-/* ── VAT TABS ── */
-function switchVatTab(tab, targetId) {
-  document.querySelectorAll('.vat-tab-content').forEach(t => t.classList.remove('active'));
-  document.getElementById('panel-vatsars').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(targetId).classList.add('active');
-  tab.classList.add('active');
-  if (targetId === 'vat-ai' && !window.vatChartDone) initVatChart();
-}
-function initVatChart() {
-  window.vatChartDone = true;
-  const ctx = document.getElementById('chart-vat-trend');
-  if (!ctx) return;
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026'],
-      datasets: [
-        {label: 'Output VAT', data: [22400, 22810, 88234, 63665], backgroundColor: 'rgba(192,57,43,0.8)', borderRadius: 5},
-        {label: 'Input VAT', data: [2100, 2220, 8400, 4700], backgroundColor: 'rgba(15,95,90,0.8)', borderRadius: 5}
-      ]
-    },
-    options: {responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:10}}}, scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>'R '+Number(v/1000).toFixed(0)+'k'}}}}
-  });
-}
-
-/* ── COMMUNICATE ── */
-function openCommunicate(type, ref, client) {
-  document.getElementById('comm-context-label').textContent = type === 'invoice' ? 'Invoice: ' + ref + ' — ' + client : 'Claim: ' + ref + ' — ' + client;
-  document.getElementById('comm-to').value = '';
-  document.getElementById('comm-subject').value = '';
-  document.getElementById('comm-body').value = '';
-  switchCommChannel('email');
-  openModal('modal-communicate');
-}
-function switchCommChannel(ch) {
-  ['email','whatsapp','sms'].forEach(c => {
-    document.getElementById('ch-'+c).classList.remove('active');
-    document.getElementById('comm-'+c).classList.remove('active');
-  });
-  document.getElementById('ch-'+ch).classList.add('active');
-  document.getElementById('comm-'+ch).classList.add('active');
-}
-function loadCommTemplate(type) {
-  const templates = {
-    invoice: {subject: 'Invoice — Big O Projects — Claim Ref', body: 'Dear [Client Name],
-
-Please find attached your invoice for the repairs completed at your property.
-
-The total amount due is [Amount].
-
-Kindly contact us if you have any queries.
-
-Regards,
-Norman
-Big O Projects (Pty) Ltd
-082 402 8027'},
-    excess: {subject: 'Excess Payment Required — Claim Ref', body: 'Dear [Client Name],
-
-Your insurance policy requires an excess payment for your claim.
-
-Excess Amount: [Amount]
-
-Please make payment to:
-Big O Projects (Pty) Ltd
-FNB Account: [Account Details]
-
-Regards,
-Norman'},
-    assessment: {subject: 'New Assessment Required — Claim Ref', body: 'Hi [Assessor],
-
-A new assessment has been assigned to you.
-
-Claim: [ClaimRef]
-Client: [Client Name]
-Address: [Address]
-Peril: [Peril Type]
-
-Please confirm receipt and schedule site visit.
-
-Norman'},
-    reminder: {subject: 'Payment Reminder — Invoice Outstanding', body: 'Dear [Client Name],
-
-This is a reminder that your invoice remains outstanding.
-
-Invoice: [InvoiceNo]
-Amount: [Amount]
-
-Please arrange payment at your earliest convenience.
-
-Regards,
-Norman
-Big O Projects (Pty) Ltd'}
-  };
-  const t = templates[type];
-  if (t) {
-    document.getElementById('comm-subject').value = t.subject;
-    document.getElementById('comm-body').value = t.body;
-  }
-}
-
-/* ── INVOICE ITEM TABLE ── */
-function addInvRow() {
-  const tbody = document.getElementById('inv-items-body');
-  const row = document.createElement('tr');
-  row.innerHTML = '<td><input class="fi-sm" placeholder="Item description"></td><td><input class="fi-sm" type="number" value="1" oninput="recalcInvItems()"></td><td><input class="fi-sm" type="number" placeholder="0.00" oninput="recalcInvItems()" style="font-family:var(--mono)"></td><td><select class="fi-sm" onchange="recalcInvItems()"><option value="15">15%</option><option value="0">0%</option></select></td><td class="mono" style="font-weight:700;text-align:right">R 0.00</td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none" onclick="removeInvRow(this)">✕</button></td>';
-  tbody.appendChild(row);
-}
-function addExcessRow() {
-  const tbody = document.getElementById('inv-items-body');
-  const row = document.createElement('tr');
-  row.innerHTML = '<td><input class="fi-sm" value="Excess — Policyholder Contribution"></td><td><input class="fi-sm" type="number" value="1" oninput="recalcInvItems()"></td><td><input class="fi-sm" type="number" placeholder="0.00" oninput="recalcInvItems()" style="font-family:var(--mono);background:var(--amber-p)"></td><td><select class="fi-sm" onchange="recalcInvItems()"><option value="15">15%</option><option value="0">0%</option></select></td><td class="mono" style="font-weight:700;text-align:right;color:var(--amber)">R 0.00</td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none" onclick="removeInvRow(this)">✕</button></td>';
-  tbody.appendChild(row);
-  showToast('💳 Excess line added — enter amount payable by policyholder', 'inf');
-}
-function removeInvRow(btn) { btn.closest('tr').remove(); recalcInvItems(); }
-function recalcInvItems() {
-  const rows = document.querySelectorAll('#inv-items-body tr');
-  let sub = 0, vat = 0;
-  rows.forEach(row => {
-    const inputs = row.querySelectorAll('input[type=number]');
-    const vatSel = row.querySelector('select');
-    if (inputs.length < 2) return;
-    const qty = parseFloat(inputs[0].value) || 0;
-    const rate = parseFloat(inputs[1].value) || 0;
-    const vatPct = vatSel ? parseFloat(vatSel.value)/100 : 0.15;
-    const lineExcl = qty * rate;
-    const lineVat = lineExcl * vatPct;
-    sub += lineExcl; vat += lineVat;
-    const amtCell = row.querySelectorAll('td')[4];
-    if (amtCell) amtCell.textContent = 'R ' + (lineExcl + lineVat).toFixed(2);
-  });
-  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = 'R ' + v.toFixed(2); };
-  set('inv-subtotal', sub); set('inv-vat-total', vat); set('inv-grand-total', sub + vat);
-}
-
-/* ── QUOTE ITEM TABLE ── */
-function addQteRow() {
-  const tbody = document.getElementById('qte-items-body');
-  const row = document.createElement('tr');
-  row.innerHTML = '<td><input class="fi-sm" placeholder="Item description"></td><td><input class="fi-sm" type="number" value="1" oninput="recalcQteItems()"></td><td><input class="fi-sm" type="number" placeholder="0.00" oninput="recalcQteItems()" style="font-family:var(--mono)"></td><td><select class="fi-sm" onchange="recalcQteItems()"><option value="15">15%</option><option value="0">0%</option></select></td><td class="mono" style="font-weight:700;text-align:right">R 0.00</td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none" onclick="removeInvRow(this)">✕</button></td>';
-  tbody.appendChild(row);
-}
-function recalcQteItems() {
-  const rows = document.querySelectorAll('#qte-items-body tr');
-  let sub = 0, vat = 0;
-  rows.forEach(row => {
-    const inputs = row.querySelectorAll('input[type=number]');
-    const vatSel = row.querySelector('select');
-    if (inputs.length < 2) return;
-    const qty = parseFloat(inputs[0].value) || 0;
-    const rate = parseFloat(inputs[1].value) || 0;
-    const vatPct = vatSel ? parseFloat(vatSel.value)/100 : 0.15;
-    const lineExcl = qty * rate;
-    const lineVat = lineExcl * vatPct;
-    sub += lineExcl; vat += lineVat;
-    const amtCell = row.querySelectorAll('td')[4];
-    if (amtCell) amtCell.textContent = 'R ' + (lineExcl + lineVat).toFixed(2);
-  });
-  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = 'R ' + v.toFixed(2); };
-  set('qte-subtotal', sub); set('qte-vat-total', vat); set('qte-grand-total', sub + vat);
-}
-function loadQuoteTemplate(name) {
-  if (!name) return;
-  const templates = {
-    'Storm Damage': [['Roof repair — storm damage',1,45000],['Replace damaged ceiling boards',1,12000],['Labour & scaffolding',1,8000]],
-    'Hail Damage': [['Hail damaged roof sheeting',1,22000],['Gutters & downpipes replacement',1,4500]],
-    'Flood Damage': [['Flood damage — screed & waterproofing',1,18000],['Replace flooring',1,9500],['Wall replaster & paint',1,6200]],
-    'Burst Geyser': [['Geyser replacement 150L',1,7500],['Ceiling repair & paint',1,3200],['Plumbing labour',1,1800]],
-  };
-  const lines = templates[name];
-  if (!lines) return;
-  const tbody = document.getElementById('qte-items-body');
-  tbody.innerHTML = '';
-  lines.forEach(([desc,qty,rate]) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `<td><input class="fi-sm" value="${desc}"></td><td><input class="fi-sm" type="number" value="${qty}" oninput="recalcQteItems()"></td><td><input class="fi-sm" type="number" value="${rate}" oninput="recalcQteItems()" style="font-family:var(--mono)"></td><td><select class="fi-sm" onchange="recalcQteItems()"><option value="15">15%</option><option value="0">0%</option></select></td><td class="mono" style="font-weight:700;text-align:right">R 0.00</td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none" onclick="removeInvRow(this)">✕</button></td>`;
-    tbody.appendChild(row);
-  });
-  recalcQteItems();
-  showToast('📋 Template loaded: ' + name, 'ok');
-}
-
-/* ── EXPENSE BULK GRID ── */
-function addExpRow() {
-  const tbody = document.getElementById('exp-bulk-body');
-  const row = document.createElement('tr');
-  row.innerHTML = '<td><input class="fi-xs" type="date"></td><td><select class="fi-xs"><option>Materials</option><option>Fuel &amp; Transport</option><option>Labour</option><option>Equipment</option><option>Office Expenses</option><option>Other</option></select></td><td><input class="fi-xs" type="number" placeholder="0.00" oninput="calcExpVAT(this)" style="font-family:var(--mono)"></td><td><select class="fi-xs"><option>FNB Operating</option><option>Cash</option><option>Credit Card</option></select></td><td><input class="fi-xs" placeholder="Supplier name"></td><td><input class="fi-xs" placeholder="City / Site"></td><td><select class="fi-xs" onchange="calcExpVAT(this.closest('tr').querySelector('[type=number]'))"><option value="std">Standard Rated (15%)</option><option value="none">Non-VATable (0%)</option><option value="exempt">VAT Exempt</option></select></td><td><select class="fi-xs"><option>Direct Cost</option><option>Overhead</option><option>Capital</option></select></td><td><input class="fi-xs" placeholder="Auto" readonly style="background:var(--bg);font-family:var(--mono)"></td><td><input class="fi-xs" placeholder="HLB/2026/XXXXXX"></td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none;white-space:nowrap" onclick="this.closest('tr').remove()">✕</button></td>';
-  tbody.appendChild(row);
-}
-function calcExpVAT(amtInput) {
-  if (!amtInput) return;
-  const row = amtInput.closest('tr');
-  if (!row) return;
-  const vatSel = row.querySelectorAll('select')[1];
-  const vatField = row.querySelectorAll('input')[7];
-  if (!vatSel || !vatField) return;
-  const amt = parseFloat(amtInput.value) || 0;
-  const type = vatSel ? vatSel.value : 'std';
-  const isFuel = row.querySelectorAll('select')[0] && row.querySelectorAll('select')[0].value === 'Fuel & Transport';
-  if (type === 'none' || type === 'exempt' || isFuel) {
-    vatField.value = 'R 0.00 (N/A)';
-  } else {
-    vatField.value = 'R ' + (amt / 1.15 * 0.15).toFixed(2);
-  }
-}
-
-/* ── SETTINGS TABS (extended) ── */
-function switchSettingsTab(tab, targetId) {
-  const panel = document.getElementById('panel-settings');
-  panel.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  ['set-company','set-integrations','set-users','set-roles','set-templates','set-billing'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
-  const target = document.getElementById(targetId);
-  if (target) target.style.display = '';
-  tab.classList.add('active');
-}
-
-
 /* ── TOAST ── */
 .toast-wrap{position:fixed;bottom:24px;right:24px;z-index:9990;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:#1F2937;color:white;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;max-width:340px;pointer-events:auto}
@@ -524,9 +281,51 @@ function switchSettingsTab(tab, targetId) {
 .coming-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
 .coming-body{font-size:12.5px;color:var(--muted);max-width:360px;margin:0 auto 16px}
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE — TABLET (≤ 960px)
-═══════════════════════════════════════════ */
+/* TC full-screen CSS removed - now uses inline checkbox on login */
+
+/* ── ITEM LINE TABLE (Quotes/Invoices) ── */
+.item-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.item-tbl th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);background:#F4F5F9;border-bottom:2px solid var(--border-md)}
+.item-tbl td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.item-tbl .fi-sm{border:1.5px solid var(--border-md);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font);width:100%;background:white;outline:none}
+.item-tbl .fi-sm:focus{border-color:var(--navy)}
+.item-tbl .fi-sm.mono{font-family:var(--mono)}
+.item-tbl tfoot td{padding:8px 10px;background:#F8F9FC;font-size:12px}
+.item-tbl tfoot .total-row{background:var(--navy);color:white;font-weight:700;font-family:var(--mono)}
+.item-add-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;background:none;border:1.5px dashed var(--border-md);border-radius:6px;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;margin-top:8px}
+.item-add-btn:hover{border-color:var(--navy);color:var(--navy)}
+
+/* ── BULK EXPENSE GRID ── */
+.bulk-grid{width:100%;border-collapse:collapse;font-size:11.5px}
+.bulk-grid th{padding:7px 8px;text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);background:#F4F5F9;border-bottom:2px solid var(--border-md);white-space:nowrap}
+.bulk-grid td{padding:4px 5px;border-bottom:1px solid var(--border)}
+.bulk-grid .fi-xs{border:1.5px solid transparent;border-radius:4px;padding:4px 6px;font-size:11.5px;font-family:var(--font);width:100%;background:transparent;outline:none;transition:border-color .1s}
+.bulk-grid .fi-xs:focus{border-color:var(--navy);background:white}
+.bulk-grid select.fi-xs{cursor:pointer}
+.bulk-grid tr:hover td{background:rgba(10,45,94,.025)}
+
+/* ── COMMUNICATE MODAL ── */
+.comm-channel{border:2px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px}
+.comm-channel:hover{border-color:var(--navy);background:#F8F9FF}
+.comm-channel.active{border-color:var(--navy);background:#EAF0FB}
+.comm-channel .ch-icon{font-size:28px;flex-shrink:0}
+.comm-channel .ch-label{font-weight:700;font-size:13px}
+.comm-channel .ch-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.comm-channel.coming{opacity:.55;cursor:not-allowed}
+.comm-channel.coming:hover{border-color:var(--border-md);background:none}
+
+/* ── QR CODE MOCKUP ── */
+.qr-box{background:white;border-radius:12px;padding:20px;text-align:center;border:2px solid var(--border-md)}
+.qr-img{width:160px;height:160px;margin:0 auto 12px;border:8px solid white;box-shadow:0 4px 16px rgba(0,0,0,.12);background:#000;display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,.5);font-family:var(--mono);border-radius:4px;position:relative;overflow:hidden}
+.qr-pattern{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0px,rgba(255,255,255,.08) 2px,transparent 2px,transparent 6px),repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0px,rgba(255,255,255,.08) 2px,transparent 2px,transparent 6px);background-color:#111}
+
+/* ── VAT AI CHART ── */
+.vat-ai-chart{height:180px;position:relative}
+
+/* ── ROLE BADGE ── */
+.role-admin{background:rgba(10,45,94,.12);color:var(--navy);font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
+.role-assessor{background:var(--teal-l);color:var(--teal);font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
+
 @media(max-width:960px){
   :root{--sidebar-w:280px}
   .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);z-index:201}
@@ -590,137 +389,13 @@ function switchSettingsTab(tab, targetId) {
 ═══════════════════════════════════════════ */
 .device-badge{display:none;position:fixed;top:60px;right:12px;background:rgba(10,45,94,.9);color:rgba(255,255,255,.7);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:20px;z-index:99;text-transform:uppercase}
 @media(max-width:600px){.device-badge{display:block}}
-
-/* ── TERMS SCREEN ── */
-#terms-screen{position:fixed;inset:0;z-index:10000;background:var(--navy);display:flex;align-items:center;justify-content:center;overflow:auto;padding:16px}
-.terms-card{position:relative;z-index:2;background:white;border-radius:20px;width:600px;max-width:100%;max-height:calc(100vh - 32px);box-shadow:0 40px 80px rgba(0,0,0,.35);overflow:hidden;display:flex;flex-direction:column;animation:authUp .4s cubic-bezier(.22,1,.36,1)}
-.terms-hdr{background:var(--navy);padding:24px 28px;text-align:center;flex-shrink:0}
-.terms-logo{font-size:20px;font-weight:700;color:white;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px}
-.terms-logo .hex{color:var(--gold)}
-.terms-tagline{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase}
-.terms-body{padding:24px 28px;overflow-y:auto;flex:1}
-.terms-title{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px}
-.terms-sub{font-size:11px;color:var(--muted);margin-bottom:16px}
-.terms-scroll{border:1.5px solid var(--border-md);border-radius:10px;max-height:260px;overflow-y:auto;padding:16px;font-size:12px;line-height:1.7;color:var(--text);background:#FAFBFD;margin-bottom:16px}
-.terms-scroll h4{font-size:12px;font-weight:700;color:var(--navy);margin:12px 0 4px}
-.terms-scroll h4:first-child{margin-top:0}
-.terms-scroll p{margin-bottom:8px}
-.terms-check{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--blue-p);border:1.5px solid rgba(29,78,216,.2);border-radius:8px;cursor:pointer;margin-bottom:14px;transition:background .15s}
-.terms-check:hover{background:#DBEAFE}
-.terms-check input[type=checkbox]{width:16px;height:16px;margin-top:1px;flex-shrink:0;cursor:pointer;accent-color:var(--navy)}
-.terms-check-label{font-size:12.5px;color:var(--text);line-height:1.5;cursor:pointer}
-.terms-check-label strong{color:var(--navy)}
-.terms-foot{padding:16px 28px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:10px;justify-content:flex-end}
-.terms-btn{padding:11px 24px;background:var(--navy);color:white;border:none;border-radius:var(--radius-sm);font-size:13.5px;font-weight:700;cursor:pointer;transition:all .15s;font-family:var(--font)}
-.terms-btn:hover:not(:disabled){background:var(--navy-l);transform:translateY(-1px)}
-.terms-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-
-/* ── COMMUNICATE MODAL STYLES ── */
-.comm-channels{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.comm-ch{flex:1;min-width:100px;border:2px solid var(--border-md);border-radius:10px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .15s;position:relative}
-.comm-ch:hover{border-color:var(--navy);background:var(--bg)}
-.comm-ch.active{border-color:var(--navy);background:#EAF0FB}
-.comm-ch.coming{opacity:.55;cursor:default}
-.comm-ch-icon{font-size:24px;margin-bottom:5px}
-.comm-ch-label{font-size:11.5px;font-weight:700;color:var(--navy)}
-.comm-ch-sub{font-size:9.5px;color:var(--muted);margin-top:2px}
-.comm-ch .cs-tag{position:absolute;top:6px;right:6px;font-size:8px;background:var(--amber-p);color:var(--amber);border:1px solid rgba(217,119,6,.3);border-radius:10px;padding:1px 5px;font-weight:700}
-.comm-panel{display:none}.comm-panel.active{display:block}
-.qr-container{text-align:center;padding:20px;background:var(--bg);border-radius:10px;border:1px solid var(--border-md)}
-.qr-box{width:180px;height:180px;margin:0 auto 12px;background:white;border:2px solid var(--border-md);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);position:relative;overflow:hidden}
-.qr-box canvas{width:100%;height:100%}
-
-/* ── ZOHO-STYLE ITEM TABLE ── */
-.item-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
-.item-tbl thead tr{background:var(--navy)}
-.item-tbl th{padding:8px 10px;color:white;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;text-align:left}
-.item-tbl td{padding:6px 8px;border-bottom:1px solid var(--border-md);vertical-align:middle}
-.item-tbl tfoot tr{background:#F4F5F9}
-.item-tbl tfoot td{padding:8px 10px;font-weight:700;font-size:12px}
-.item-tbl .fi-sm{padding:5px 8px;border:1.5px solid var(--border-md);border-radius:6px;font-size:12px;font-family:var(--font);width:100%;outline:none}
-.item-tbl .fi-sm:focus{border-color:var(--navy)}
-.item-add-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border-md)}
-
-/* ── BULK EXPENSE GRID ── */
-.exp-grid{width:100%;border-collapse:collapse;font-size:11.5px}
-.exp-grid thead tr{background:var(--navy)}
-.exp-grid th{padding:7px 8px;color:white;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-.exp-grid td{padding:4px 6px;border-bottom:1px solid var(--border-md);vertical-align:middle}
-.exp-grid .fi-xs{padding:4px 7px;border:1.5px solid var(--border-md);border-radius:5px;font-size:11.5px;font-family:var(--font);width:100%;outline:none;min-width:80px}
-.exp-grid .fi-xs:focus{border-color:var(--navy)}
-.exp-grid .fi-xs[type=date]{min-width:115px}
-
-/* ── VAT 4-TAB ── */
-.vat-tab-content{display:none}.vat-tab-content.active{display:block}
-
-/* ── ROLE BADGE ── */
-.role-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px}
-.role-admin{background:var(--navy);color:white}
-.role-assessor{background:var(--teal-l);color:var(--teal)}
-.role-perm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-.perm-card{border:1px solid var(--border-md);border-radius:10px;overflow:hidden}
-.perm-card-hdr{padding:10px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px}
-.perm-card-hdr.admin{background:var(--navy);color:white}
-.perm-card-hdr.assessor{background:var(--teal-l);color:var(--teal)}
-.perm-row{padding:7px 14px;display:flex;align-items:center;gap:8px;font-size:12px;border-bottom:1px solid var(--border)}
-.perm-row:last-child{border-bottom:none}
-.perm-yes{color:var(--green);font-weight:700}
-.perm-no{color:var(--muted)}
-
 </style>
 </head>
 <body>
 
-
-<!-- TERMS & CONDITIONS SCREEN -->
-<div id="terms-screen" style="display:none">
-  <div class="auth-bg-hex" style="top:-80px;left:-100px">⬡</div>
-  <div class="auth-bg-hex" style="bottom:-100px;right:-80px;font-size:250px">⬡</div>
-  <div class="terms-card">
-    <div class="terms-hdr">
-      <div class="terms-logo"><span class="hex">⬡</span> ClaimSync<span style="color:var(--gold)">.</span></div>
-      <div class="terms-tagline">Insurance Field Management Platform</div>
-    </div>
-    <div class="terms-body">
-      <div class="terms-title">Software Licence &amp; Terms of Use</div>
-      <div class="terms-sub">Please read and accept before accessing ClaimSync</div>
-      <div class="terms-scroll">
-        <h4>1. COPYRIGHT &amp; INTELLECTUAL PROPERTY</h4>
-        <p>ClaimSync™ is a proprietary software platform developed exclusively by <strong>Imagelink Technologies (Pty) Ltd</strong> (Registration No. to be confirmed), hereinafter referred to as "the Developer". All source code, design elements, algorithms, databases, user interfaces, documentation, trade marks, and associated intellectual property embodied in this software are the sole and exclusive property of Imagelink Technologies (Pty) Ltd. Copyright © 2026 Imagelink Technologies (Pty) Ltd. All rights reserved.</p>
-        <h4>2. LICENCE GRANT</h4>
-        <p>Subject to your acceptance of these Terms, Imagelink Technologies (Pty) Ltd grants you a non-exclusive, non-transferable, revocable licence to access and use ClaimSync™ solely for your internal business operations. This licence does not confer any ownership rights whatsoever.</p>
-        <h4>3. RESTRICTIONS</h4>
-        <p>You may NOT, under any circumstances: (a) copy, reproduce, duplicate, replicate or redistribute this software or any portion thereof; (b) reverse-engineer, decompile, disassemble or attempt to derive the source code; (c) sublicence, sell, resell, transfer, assign or commercially exploit this software; (d) modify, adapt, translate or create derivative works based on this software; (e) remove or alter any copyright, trade mark or proprietary notices; (f) use the software for any unlawful purpose or in violation of any applicable law or regulation including the Electronic Communications and Transactions Act 25 of 2002 and the Protection of Personal Information Act 4 of 2013 (POPIA).</p>
-        <h4>4. CONFIDENTIALITY</h4>
-        <p>This software and its underlying technology constitute confidential information of Imagelink Technologies (Pty) Ltd. You agree to maintain strict confidentiality and not to disclose any proprietary information to any third party without prior written consent.</p>
-        <h4>5. DATA PROTECTION &amp; POPIA COMPLIANCE</h4>
-        <p>Imagelink Technologies (Pty) Ltd processes personal information in accordance with POPIA. By using this software, you consent to the processing of business and personal data as described in our Privacy Policy. All data is hosted within the Republic of South Africa and is subject to South African law.</p>
-        <h4>6. DISCLAIMER OF WARRANTIES</h4>
-        <p>This software is provided "as is" without warranty of any kind, express or implied. Imagelink Technologies (Pty) Ltd does not warrant that the software will be error-free, uninterrupted, or fit for any particular purpose.</p>
-        <h4>7. LIMITATION OF LIABILITY</h4>
-        <p>To the maximum extent permitted by South African law, Imagelink Technologies (Pty) Ltd shall not be liable for any indirect, incidental, special, consequential or punitive damages arising from your use of or inability to use the software.</p>
-        <h4>8. TERMINATION</h4>
-        <p>Imagelink Technologies (Pty) Ltd reserves the right to terminate your licence immediately and without notice if you breach any provision of these Terms. Upon termination, you must cease all use of the software.</p>
-        <h4>9. GOVERNING LAW</h4>
-        <p>These Terms are governed by the laws of the Republic of South Africa. Any dispute shall be subject to the exclusive jurisdiction of the courts of Gauteng, South Africa.</p>
-        <h4>10. ENTIRE AGREEMENT</h4>
-        <p>These Terms constitute the entire agreement between you and Imagelink Technologies (Pty) Ltd with respect to the subject matter hereof and supersede all prior agreements, representations and understandings.</p>
-      </div>
-      <label class="terms-check" id="terms-check-wrap">
-        <input type="checkbox" id="terms-cb" onchange="termsCheckChanged()">
-        <span class="terms-check-label">I have read, understood and agree to the <strong>ClaimSync™ Software Licence &amp; Terms of Use</strong>. I acknowledge that this software is the exclusive intellectual property of <strong>Imagelink Technologies (Pty) Ltd</strong> and I accept all terms and conditions stated above.</span>
-      </label>
-      <div style="font-size:11px;color:var(--muted);text-align:center">By proceeding you confirm you are authorised to bind your organisation to these terms.</div>
-    </div>
-    <div class="terms-foot">
-      <button class="terms-btn" id="terms-decline-btn" onclick="termsDecline()" style="background:white;color:var(--text);border:1.5px solid var(--border-md)">Decline</button>
-      <button class="terms-btn" id="terms-accept-btn" onclick="termsAccept()" disabled>Accept &amp; Continue →</button>
-    </div>
-  </div>
-</div>
-
 <!-- DEVICE BADGE -->
 <div class="device-badge" id="device-badge">📱 Mobile View</div>
+
 
 <!-- AUTH -->
 <div id="auth-screen">
@@ -752,8 +427,15 @@ function switchSettingsTab(tab, targetId) {
         <input class="auth-input" type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" autocomplete="current-password">
       </div>
       <div class="auth-err" id="login-err">Invalid email or password. Please try again.</div>
+      <!-- T&C Checkbox -->
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;padding:10px 12px;background:#F8F9FC;border-radius:8px;border:1px solid var(--border-md)">
+        <input type="checkbox" id="tc-checkbox" style="width:18px;height:18px;accent-color:var(--navy);flex-shrink:0;margin-top:1px;cursor:pointer">
+        <label for="tc-checkbox" style="font-size:11.5px;color:var(--text);line-height:1.55;cursor:pointer">
+          I agree to the <a href="javascript:void(0)" onclick="openTCModal()" style="color:var(--navy);font-weight:700;text-decoration:underline">Terms &amp; Conditions</a> and <a href="javascript:void(0)" onclick="openTCModal()" style="color:var(--navy);font-weight:700;text-decoration:underline">Privacy Policy</a> of ClaimSync by Imagelink Technologies (Pty) Ltd.
+        </label>
+      </div>
+      <div class="auth-err" id="tc-err" style="display:none;background:var(--amber-p);border-color:rgba(217,119,6,.3);color:var(--amber)">Please tick the box to agree to the Terms &amp; Conditions before signing in.</div>
       <button class="auth-btn" onclick="doLogin()">Sign In to ClaimSync →</button>
-      <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center">By signing in you confirm acceptance of the <a href="#" onclick="showTerms();return false;" style="color:var(--navy);font-weight:600;text-decoration:underline">Terms &amp; Conditions</a></div>
       <div class="auth-trust">
         <span>🔒 SSL Encrypted</span>
         <span>🇿🇦 SA Hosted</span>
@@ -1278,10 +960,11 @@ function switchSettingsTab(tab, targetId) {
 ════════════════════════════════════════ -->
 <div class="panel" id="panel-expenses">
   <div class="ph">
-    <div><div class="ph-title">Expenses</div><div class="ph-sub">Supplier invoices · Materials · Petrol · Input VAT tracking</div></div>
+    <div><div class="ph-title">Expenses</div><div class="ph-sub">Bulk entry · Supplier invoices · Materials · Petrol · Input VAT tracking</div></div>
     <div class="ph-actions">
       <button class="btn btn-ghost btn-sm" onclick="mockAction('Export expenses')">⬇ Export</button>
-      <button class="btn btn-gold btn-sm" onclick="openModal('modal-expense')">+ Add Expense</button>
+      <button class="btn btn-ghost btn-sm" onclick="mockOCR()">📷 Scan Receipt</button>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Save bulk expenses')">💾 Save All</button>
     </div>
   </div>
   <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
@@ -1290,45 +973,104 @@ function switchSettingsTab(tab, targetId) {
     <div class="stat s-amber"><div class="sl">Fuel (No VAT)</div><div class="sv">R 18,432</div><div class="ss">SARS exclusion</div></div>
     <div class="stat s-red"><div class="sl">Receipts Missing</div><div class="sv">3</div><div class="ss">Action required</div></div>
   </div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-hdr"><div class="card-title">📷 OCR Receipt Scanner</div><div class="card-sub">AI extracts supplier details + amounts</div></div>
-      <div class="card-body">
-        <div style="border:2px dashed var(--border-md);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .15s" onclick="mockAction('Scan receipt')" onmouseover="this.style.borderColor='var(--navy)';this.style.background='#F0F4FB'" onmouseout="this.style.borderColor='var(--border-md)';this.style.background=''">
-          <div style="font-size:36px;margin-bottom:10px">📄</div>
-          <div style="font-weight:700;font-size:14px;margin-bottom:6px">Photograph Supplier Invoice</div>
-          <div style="font-size:12px;color:var(--muted)">AI reads: supplier name, VAT no., date, amount</div>
-          <div style="margin-top:12px"><button class="btn btn-navy btn-sm" onclick="event.stopPropagation();mockOCR()">📷 Scan Now (Mock)</button></div>
-        </div>
-        <div style="margin-top:12px;padding:10px 12px;background:var(--green-p);border-radius:8px;font-size:12px;border:1px solid rgba(26,122,74,.2)">
-          ✅ <strong>Last scan:</strong> Builders Warehouse · R 1,265.00 · VAT R 164.78 · 15 Jan 2026
-        </div>
+
+  <!-- VAT Position card -->
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">VAT201 Position</div><div class="card-sub">Expenses contribution to Input VAT</div></div>
+    <div class="card-body" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+      <div style="flex:1;min-width:200px;border:1px solid var(--border-md);border-radius:var(--radius-sm);overflow:hidden">
+        <div class="vat-row"><span style="color:var(--muted)">Output VAT (invoiced)</span><span class="mono" style="color:var(--red)">+ R 151,899</span></div>
+        <div class="vat-row"><span style="color:var(--muted)">Input VAT (expenses)</span><span class="mono" style="color:var(--green)">- R 13,100</span></div>
+        <div class="vat-row total"><span>Net VAT Payable</span><span class="mono" style="color:var(--red)">R 138,799</span></div>
       </div>
-    </div>
-    <div class="card">
-      <div class="card-hdr"><div class="card-title">VAT201 Position</div></div>
-      <div class="card-body">
-        <div style="border:1px solid var(--border-md);border-radius:var(--radius-sm);overflow:hidden">
-          <div class="vat-row"><span style="color:var(--muted)">Output VAT (invoiced)</span><span class="mono" style="color:var(--red)">+ R 151,899</span></div>
-          <div class="vat-row"><span style="color:var(--muted)">Input VAT (expenses)</span><span class="mono" style="color:var(--green)">- R 13,100</span></div>
-          <div class="vat-row total"><span>Net VAT Payable</span><span class="mono" style="color:var(--red)">R 138,799</span></div>
-        </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--muted);padding:8px;background:var(--amber-p);border-radius:6px;border:1px solid rgba(217,119,6,.2)">
-          ⚠️ <strong>Petrol/Fuel:</strong> Input VAT on petrol NOT claimable per SARS rules.
-        </div>
+      <div style="background:var(--amber-p);border-radius:6px;padding:10px 14px;font-size:11.5px;border:1px solid rgba(217,119,6,.2);flex:1;min-width:200px">
+        ⚠️ <strong>Petrol/Fuel:</strong> Input VAT on petrol NOT claimable per SARS rules.<br>
+        <span style="color:var(--muted)">Last OCR scan: Builders Warehouse · R 1,265.00 · VAT R 164.78 · 15 Jan 2026</span>
       </div>
     </div>
   </div>
+
+  <!-- BULK ENTRY GRID -->
   <div class="card">
-    <div class="card-hdr"><div class="card-title">Expense Register</div></div>
-    <div class="tbl-wrap">
-      <table class="tbl"><thead><tr><th>#</th><th>Date</th><th>Supplier</th><th>Category</th><th>Claim Ref</th><th>Incl. VAT</th><th>Input VAT</th><th>Claimable</th><th>Receipt</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>15 Jan</td><td class="td-bold">BUILDERS WAREHOUSE</td><td><span class="badge b-navy">Materials</span></td><td class="mono td-muted" style="font-size:11px">HLB/2025/455580</td><td class="mono">R 1,265.00</td><td class="mono" style="color:var(--green)">R 164.78</td><td><span class="badge b-active">Yes</span></td><td>📎</td></tr>
-        <tr><td>2</td><td>20 Jan</td><td class="td-bold">CASHBUILD</td><td><span class="badge b-navy">Materials</span></td><td class="mono td-muted" style="font-size:11px">HLB/2025/462781</td><td class="mono">R 890.50</td><td class="mono" style="color:var(--green)">R 116.02</td><td><span class="badge b-active">Yes</span></td><td>📎</td></tr>
-        <tr><td>3</td><td>10 Feb</td><td class="td-bold">ENGEN PETROLEUM</td><td><span class="badge" style="background:var(--amber-p);color:var(--amber)">Petrol</span></td><td class="mono td-muted" style="font-size:11px">HLB/2025/453462</td><td class="mono">R 650.00</td><td class="mono td-muted">R 0 (N/A)</td><td><span class="badge b-void">No</span></td><td>📎</td></tr>
-        <tr><td>4</td><td>15 Feb</td><td class="td-bold">ROOF WORLD</td><td><span class="badge b-navy">Materials</span></td><td class="mono td-muted" style="font-size:11px">HLB/2026/471982</td><td class="mono">R 4,312.50</td><td class="mono" style="color:var(--green)">R 562.07</td><td><span class="badge b-active">Yes</span></td><td>📎</td></tr>
-      </tbody></table>
+    <div class="card-hdr">
+      <div><div class="card-title">Bulk Add Expenses</div><div class="card-sub">Zoho-style bulk entry · Click any cell to edit</div></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-ghost btn-sm" onclick="addExpenseRow()">+ Add Row</button>
+        <button class="btn btn-navy btn-sm" onclick="mockAction('Save bulk expenses')">💾 Save</button>
+      </div>
+    </div>
+    <div class="tbl-wrap" style="max-height:none">
+      <table class="bulk-grid" id="bulk-expense-tbl">
+        <thead><tr>
+          <th style="width:30px">#</th>
+          <th style="min-width:95px">Date</th>
+          <th style="min-width:120px">Expense Account</th>
+          <th style="min-width:100px">Amount (Incl.)</th>
+          <th style="min-width:110px">Paid Through</th>
+          <th style="min-width:130px">Vendor</th>
+          <th style="min-width:90px">Location</th>
+          <th style="min-width:120px">VAT Treatment</th>
+          <th style="min-width:110px">Expense Type</th>
+          <th style="min-width:80px">VAT</th>
+          <th style="min-width:110px">Customer / Claim</th>
+          <th style="min-width:90px">Project</th>
+          <th style="width:36px"></th>
+        </tr></thead>
+        <tbody id="bulk-expense-body">
+          <tr>
+            <td style="color:var(--muted);font-size:11px;text-align:center">1</td>
+            <td><input class="fi-xs" type="date" value="2026-01-15"></td>
+            <td><select class="fi-xs"><option>Materials &amp; Hardware</option><option>Fuel &amp; Transport</option><option>Subcontractor Costs</option><option>Office Expenses</option><option>Equipment</option><option>Other</option></select></td>
+            <td><input class="fi-xs mono" type="text" value="1265.00"></td>
+            <td><select class="fi-xs"><option>FNB Operating Account</option><option>Petty Cash</option><option>Credit Card</option></select></td>
+            <td><input class="fi-xs" value="Builders Warehouse"></td>
+            <td><input class="fi-xs" value="Midrand"></td>
+            <td><select class="fi-xs"><option>Standard VAT @ 15%</option><option>Zero-Rated</option><option>Exempt (Petrol)</option><option>No VAT</option></select></td>
+            <td><select class="fi-xs"><option>Direct Cost</option><option>Operating Expense</option><option>Capital</option></select></td>
+            <td><input class="fi-xs mono" value="164.78" readonly style="background:rgba(26,122,74,.05);color:var(--green)"></td>
+            <td><input class="fi-xs" placeholder="HLB/2026/..."></td>
+            <td><input class="fi-xs" placeholder="CAT 2026"></td>
+            <td><button class="btn btn-ghost btn-xs" onclick="removeExpRow(this)" style="padding:2px 6px;color:var(--red)">✕</button></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);font-size:11px;text-align:center">2</td>
+            <td><input class="fi-xs" type="date" value="2026-01-20"></td>
+            <td><select class="fi-xs"><option>Materials &amp; Hardware</option><option selected>Fuel &amp; Transport</option><option>Subcontractor Costs</option><option>Office Expenses</option><option>Equipment</option><option>Other</option></select></td>
+            <td><input class="fi-xs mono" type="text" value="650.00"></td>
+            <td><select class="fi-xs"><option>FNB Operating Account</option><option>Petty Cash</option><option>Credit Card</option></select></td>
+            <td><input class="fi-xs" value="Engen Petroleum"></td>
+            <td><input class="fi-xs" value="Midrand"></td>
+            <td><select class="fi-xs"><option>Standard VAT @ 15%</option><option>Zero-Rated</option><option selected>Exempt (Petrol)</option><option>No VAT</option></select></td>
+            <td><select class="fi-xs"><option>Direct Cost</option><option selected>Operating Expense</option><option>Capital</option></select></td>
+            <td><input class="fi-xs mono" value="0.00 (N/A)" readonly style="background:var(--amber-p);color:var(--amber)"></td>
+            <td><input class="fi-xs" placeholder="HLB/2026/..."></td>
+            <td><input class="fi-xs" placeholder="CAT 2026"></td>
+            <td><button class="btn btn-ghost btn-xs" onclick="removeExpRow(this)" style="padding:2px 6px;color:var(--red)">✕</button></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);font-size:11px;text-align:center">3</td>
+            <td><input class="fi-xs" type="date" value="2026-02-15"></td>
+            <td><select class="fi-xs"><option selected>Materials &amp; Hardware</option><option>Fuel &amp; Transport</option><option>Subcontractor Costs</option><option>Office Expenses</option><option>Equipment</option><option>Other</option></select></td>
+            <td><input class="fi-xs mono" type="text" value="4312.50"></td>
+            <td><select class="fi-xs"><option>FNB Operating Account</option><option>Petty Cash</option><option>Credit Card</option></select></td>
+            <td><input class="fi-xs" value="Roof World"></td>
+            <td><input class="fi-xs" value="Johannesburg"></td>
+            <td><select class="fi-xs"><option selected>Standard VAT @ 15%</option><option>Zero-Rated</option><option>Exempt (Petrol)</option><option>No VAT</option></select></td>
+            <td><select class="fi-xs"><option selected>Direct Cost</option><option>Operating Expense</option><option>Capital</option></select></td>
+            <td><input class="fi-xs mono" value="562.07" readonly style="background:rgba(26,122,74,.05);color:var(--green)"></td>
+            <td><input class="fi-xs mono" value="HLB/2026/471982"></td>
+            <td><input class="fi-xs" value="CAT 2026"></td>
+            <td><button class="btn btn-ghost btn-xs" onclick="removeExpRow(this)" style="padding:2px 6px;color:var(--red)">✕</button></td>
+          </tr>
+          <tr id="bulk-add-row">
+            <td colspan="13"><button class="item-add-btn" style="margin:6px auto;display:flex" onclick="addExpenseRow()">+ Add New Expense Row</button></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="9" style="text-align:right;padding:8px 12px;font-size:11.5px;color:var(--muted)">Totals</td><td class="mono" style="padding:8px 10px;font-weight:700;color:var(--green)">R 727.57</td><td colspan="3"></td></tr>
+          <tr class="total-row"><td colspan="9" style="padding:10px 12px">TOTAL EXPENSES (INCL. VAT)</td><td colspan="4" class="mono" style="padding:10px 12px">R 6,227.50</td></tr>
+        </tfoot>
+      </table>
     </div>
   </div>
 </div>
@@ -1451,10 +1193,10 @@ function switchSettingsTab(tab, targetId) {
 ════════════════════════════════════════ -->
 <div class="panel" id="panel-vatsars">
   <div class="ph">
-    <div><div class="ph-title">VAT &amp; SARS</div><div class="ph-sub">VAT201 Portal · AI Analysis · Submission · Audit Trail</div></div>
+    <div><div class="ph-title">VAT &amp; SARS</div><div class="ph-sub">Return Preview · AI Analysis · Submission · Audit Trail</div></div>
     <div class="ph-actions">
-      <button class="btn btn-ghost btn-sm" onclick="mockAction('Download VAT201 XML')">⬇ Export XML</button>
-      <button class="btn btn-gold btn-sm" onclick="mockAction('Download VAT201 CSV')">📋 Export CSV</button>
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export VAT201 XML')">⬇ Export XML</button>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Generate VAT201 File')">🏛️ Generate VAT201</button>
     </div>
   </div>
   <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
@@ -1463,180 +1205,196 @@ function switchSettingsTab(tab, targetId) {
     <div class="stat s-navy"><div class="sl">Net VAT Payable</div><div class="sv">R 138,799</div><div class="ss">To SARS</div></div>
     <div class="stat s-amber"><div class="sl">Due Date</div><div class="sv" style="font-size:16px">30 Apr</div><div class="ss">34 days remaining</div></div>
   </div>
+
+  <!-- 4 TABS -->
   <div class="tab-bar">
-    <div class="tab active" onclick="switchVatTab(this,'vat-preview')">📋 Return Preview</div>
+    <div class="tab active" onclick="switchVatTab(this,'vat-return')">📋 Return Preview</div>
     <div class="tab" onclick="switchVatTab(this,'vat-ai')">🤖 AI Analysis</div>
     <div class="tab" onclick="switchVatTab(this,'vat-submit')">🏛️ Submission</div>
     <div class="tab" onclick="switchVatTab(this,'vat-audit')">📜 Audit Trail</div>
   </div>
 
   <!-- TAB 1: RETURN PREVIEW -->
-  <div class="vat-tab-content active" id="vat-preview">
+  <div id="vat-return">
     <div class="two-col">
       <div class="card">
-        <div class="card-hdr"><div class="card-title">VAT201 Return Preview</div><div class="card-sub">Period: Jan–Feb 2026 · Auto-filled from invoices &amp; expenses</div></div>
+        <div class="card-hdr"><div class="card-title">VAT201 Auto-Fill Preview</div><div class="card-sub">Period: Jan–Feb 2026 · Auto-populated from invoices &amp; expenses</div></div>
         <div class="card-body">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Output VAT — Standard Rated Supplies</div>
-          <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 1 — Standard-rated supplies (Excl. VAT)</span><strong>R 1,012,660.23</strong></div>
-          <div style="background:var(--navy);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 4 — Output VAT @ 15%</span><strong>R 151,899.04</strong></div>
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Input VAT — Standard Rated Purchases</div>
-          <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 14 — Standard-rated purchases (Excl. VAT)</span><strong>R 87,334.22</strong></div>
-          <div style="background:var(--teal);color:white;border-radius:6px;padding:10px 12px;font-size:12px;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 15 — Input VAT @ 15%</span><strong>R 13,100.13</strong></div>
-          <div style="background:var(--red);color:white;border-radius:6px;padding:13px 14px;font-size:14px;font-weight:700;font-family:var(--mono);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="font-family:var(--font)">Field 20 — Net VAT Payable</span><strong>R 138,798.91</strong></div>
+          <div style="background:#F8F9FC;border-radius:8px;padding:14px;margin-bottom:14px;border:1px solid var(--border-md)">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px">Company Details</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+              <div><div style="color:var(--muted);font-size:10px;margin-bottom:2px">Company Name</div><div style="font-weight:600">Big O Projects (Pty) Ltd</div></div>
+              <div><div style="color:var(--muted);font-size:10px;margin-bottom:2px">VAT Number</div><div style="font-weight:600;font-family:var(--mono)">[To be registered]</div></div>
+              <div><div style="color:var(--muted);font-size:10px;margin-bottom:2px">Tax Period</div><div style="font-weight:600">Jan–Feb 2026</div></div>
+              <div><div style="color:var(--muted);font-size:10px;margin-bottom:2px">Prepared By</div><div style="font-weight:600">Norman (Admin)</div></div>
+            </div>
+          </div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;padding-left:4px">▼ Output VAT (Section A)</div>
+          <div style="border:1px solid var(--border-md);border-radius:8px;overflow:hidden;margin-bottom:12px">
+            <div style="background:var(--navy);color:white;display:flex;justify-content:space-between;padding:9px 12px;font-size:12px;gap:8px;flex-wrap:wrap"><span>Field 1 — Standard-rated supplies (Excl. VAT)</span><strong class="mono">R 1,012,660.23</strong></div>
+            <div style="background:rgba(10,45,94,.06);color:var(--navy);display:flex;justify-content:space-between;padding:9px 12px;font-size:12px;gap:8px;flex-wrap:wrap"><span>Field 4 — Output Tax @ 15%</span><strong class="mono">R 151,899.04</strong></div>
+          </div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;padding-left:4px">▼ Input VAT (Section B)</div>
+          <div style="border:1px solid var(--border-md);border-radius:8px;overflow:hidden;margin-bottom:12px">
+            <div style="background:var(--teal);color:white;display:flex;justify-content:space-between;padding:9px 12px;font-size:12px;gap:8px;flex-wrap:wrap"><span>Field 14 — Standard-rated purchases (Excl. VAT)</span><strong class="mono">R 87,334.22</strong></div>
+            <div style="background:rgba(15,95,90,.07);color:var(--teal);display:flex;justify-content:space-between;padding:9px 12px;font-size:12px;gap:8px;flex-wrap:wrap"><span>Field 15 — Input Tax @ 15%</span><strong class="mono">R 13,100.13</strong></div>
+          </div>
+          <div style="background:var(--red);color:white;border-radius:8px;display:flex;justify-content:space-between;padding:13px 14px;font-size:14px;font-weight:700;gap:8px;flex-wrap:wrap"><span>Field 20 — Net VAT Payable to SARS</span><span class="mono">R 138,798.91</span></div>
           <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-navy btn-sm" onclick="mockAction('Download VAT201 PDF')">📄 Download PDF</button>
-            <button class="btn btn-ghost btn-sm" onclick="mockAction('Download VAT201 XML')">⬇ XML</button>
-            <button class="btn btn-ghost btn-sm" onclick="mockAction('Download VAT201 CSV')">⬇ CSV</button>
+            <button class="btn btn-navy btn-sm" onclick="mockAction('Validate VAT201')">✅ Validate Return</button>
+            <button class="btn btn-ghost btn-sm" onclick="mockAction('Export VAT201 PDF')">📄 Export PDF</button>
+            <button class="btn btn-ghost btn-sm" onclick="mockAction('Export VAT201 XML')">📋 Export XML</button>
+            <button class="btn btn-ghost btn-sm" onclick="mockAction('Export VAT201 CSV')">📊 Export CSV</button>
           </div>
         </div>
       </div>
       <div class="card">
-        <div class="card-hdr"><div class="card-title">VAT201 Core Fields</div><div class="card-sub">Schema reference for eFiling</div></div>
-        <div class="card-body" style="font-size:12px">
-          <div style="display:grid;gap:6px">
-            <div class="vat-row"><span style="color:var(--muted)">TaxPeriod</span><span class="mono">202602</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">CompanyName</span><span class="mono">Big O Projects (Pty) Ltd</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">VATNumber</span><span class="mono" style="color:var(--amber)">Pending Registration</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">SubmissionDate</span><span class="mono">2026-04-30</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">OutputVAT</span><span class="mono" style="color:var(--red)">R 151,899.04</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">InputVAT</span><span class="mono" style="color:var(--green)">R 13,100.13</span></div>
-            <div class="vat-row total"><span>NetVAT</span><span class="mono" style="color:var(--red)">R 138,798.91</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">Currency</span><span class="mono">ZAR</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">PreparedBy</span><span class="mono">Norman</span></div>
-            <div class="vat-row"><span style="color:var(--muted)">ReferenceID</span><span class="mono">VAT-202602-001</span></div>
+        <div class="card-hdr"><div class="card-title">Input/Output Summary</div><div class="card-sub">All periods</div></div>
+        <div class="tbl-wrap">
+          <table class="tbl"><thead><tr><th>Period</th><th>Output VAT</th><th>Input VAT</th><th>Net Payable</th><th>Due</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Jan–Feb 2026</td><td class="mono" style="color:var(--red)">R 151,899</td><td class="mono" style="color:var(--green)">R 13,100</td><td class="mono td-bold" style="color:var(--red)">R 138,799</td><td>30 Apr 26</td><td><span class="badge b-medium">Pending</span></td></tr>
+            <tr><td>Nov–Dec 2025</td><td class="mono" style="color:var(--red)">R 45,210</td><td class="mono" style="color:var(--green)">R 4,320</td><td class="mono td-bold" style="color:var(--red)">R 40,890</td><td>28 Feb 26</td><td><span class="badge b-paid">Paid</span></td></tr>
+          </tbody></table>
+        </div>
+        <div class="card-body" style="padding-top:12px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+            <div class="alert amber"><div class="alert-icon">⚡</div><div><div class="alert-title">VAT201 — 34 days</div><div class="alert-body">Due 30 April 2026 · R 138,799</div></div></div>
+            <div class="alert ok"><div class="alert-icon">📅</div><div><div class="alert-title">EMP201 — 11 days</div><div class="alert-body">Due 7 April 2026</div></div></div>
+            <div class="alert info"><div class="alert-icon">📋</div><div><div class="alert-title">EMP501 — 65 days</div><div class="alert-body">Due 31 May 2026</div></div></div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-hdr"><div class="card-title">Period Summary</div></div>
-      <div class="tbl-wrap">
-        <table class="tbl"><thead><tr><th>Period</th><th>Output VAT</th><th>Input VAT</th><th>Net Payable</th><th>Due Date</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>Jan – Feb 2026</td><td class="mono" style="color:var(--red)">R 151,899.04</td><td class="mono" style="color:var(--green)">R 13,100.13</td><td class="mono td-bold" style="color:var(--red)">R 138,798.91</td><td>30 Apr 2026</td><td><span class="badge b-medium">Pending</span></td></tr>
-          <tr><td>Nov – Dec 2025</td><td class="mono" style="color:var(--red)">R 45,210.00</td><td class="mono" style="color:var(--green)">R 4,320.00</td><td class="mono td-bold" style="color:var(--red)">R 40,890.00</td><td>28 Feb 2026</td><td><span class="badge b-paid">Paid</span></td></tr>
-        </tbody></table>
       </div>
     </div>
   </div>
 
   <!-- TAB 2: AI ANALYSIS -->
-  <div class="vat-tab-content" id="vat-ai">
+  <div id="vat-ai" style="display:none">
+    <div class="alert info" style="margin-bottom:0">
+      <div class="alert-icon">🤖</div>
+      <div><div class="alert-title">AI Advisory Engine — Mock Output</div>
+      <div class="alert-body">AI analysis based on Jan–Mar 2026 data. In Phase 2 this will connect to the live Anthropic API for real-time advisory and scenario simulation.</div></div>
+    </div>
     <div class="two-col">
       <div class="card">
-        <div class="card-hdr"><div class="card-title">🤖 AI VAT Advisory</div><div class="card-sub">Scenario simulation &amp; recommendations</div></div>
+        <div class="card-hdr"><div class="card-title">🤖 AI VAT Advisory Summary</div><div class="card-sub">Period Jan–Feb 2026</div></div>
         <div class="card-body">
-          <div style="background:linear-gradient(135deg,var(--navy),#1A4A8A);color:white;border-radius:10px;padding:16px;margin-bottom:14px">
-            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;opacity:.6;margin-bottom:6px">AI Summary</div>
-            <div style="font-size:13px;line-height:1.6">Based on your Jan–Feb 2026 data, your net VAT payable is <strong>R 138,799</strong>. You have <strong>34 days</strong> to submit. Consider deferring 3 invoices totalling R 82,400 to the next period to reduce this liability by R 10,765.</div>
+          <div style="background:var(--navy);color:white;border-radius:10px;padding:16px;margin-bottom:14px">
+            <div style="font-size:11px;opacity:.6;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">AI Summary</div>
+            <div style="font-size:13px;line-height:1.65">Based on 83 invoices totalling <strong>R 1,164,559.27</strong> incl. VAT, your net VAT liability for Jan–Feb 2026 is <strong>R 138,798.91</strong>. Collection rate is 98.8% — excellent. One outstanding invoice (R 6,264) is the only risk factor. Petrol expenses (R 18,432) correctly excluded from input VAT claims.</div>
           </div>
-          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px">Scenario Simulations</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px">Scenario Simulations</div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <div style="border:1px solid var(--border-md);border-radius:8px;padding:12px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-                <div><div style="font-weight:700;font-size:12px">Include all outstanding expenses</div><div style="font-size:11px;color:var(--muted)">Add R 18,432 fuel + additional materials</div></div>
-                <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--green)">- R 2,764 saving</div><div style="font-size:10px;color:var(--muted)">Net payable: R 136,035</div></div>
-              </div>
+            <div style="background:var(--green-p);border-radius:8px;padding:12px;border:1px solid rgba(26,122,74,.2)">
+              <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:4px">✅ Scenario A — Collect Outstanding Invoice</div>
+              <div style="font-size:12px">If ZIPHOZIHLE WONCI pays R 6,264.05: Cash position improves to <strong>R 856,157.86</strong>. No change to VAT liability.</div>
             </div>
-            <div style="border:1px solid var(--border-md);border-radius:8px;padding:12px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-                <div><div style="font-weight:700;font-size:12px">Defer 3 invoices to next period</div><div style="font-size:11px;color:var(--muted)">Move QTE-003, QTE-004, QTE-005</div></div>
-                <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--green)">- R 10,765 saving</div><div style="font-size:10px;color:var(--muted)">Net payable: R 128,034</div></div>
-              </div>
+            <div style="background:var(--amber-p);border-radius:8px;padding:12px;border:1px solid rgba(217,119,6,.2)">
+              <div style="font-weight:700;font-size:12px;color:var(--amber);margin-bottom:4px">⚡ Scenario B — Add R 50,000 Materials Expense</div>
+              <div style="font-size:12px">If R 50,000 in materials expenses (VAT-inclusive) added: Input VAT increases by <strong>R 6,521.74</strong>. Net VAT payable reduces to <strong>R 132,277.17</strong>.</div>
             </div>
-            <div style="border:1px solid var(--border-md);border-radius:8px;padding:12px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-                <div><div style="font-weight:700;font-size:12px">Both: include expenses + defer</div><div style="font-size:11px;color:var(--muted)">Combined optimisation scenario</div></div>
-                <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--green)">- R 13,529 saving</div><div style="font-size:10px;color:var(--muted)">Net payable: R 125,270</div></div>
-              </div>
+            <div style="background:var(--blue-p);border-radius:8px;padding:12px;border:1px solid rgba(37,99,235,.15)">
+              <div style="font-weight:700;font-size:12px;color:var(--blue);margin-bottom:4px">📊 Scenario C — Defer 5 March Invoices to Next Period</div>
+              <div style="font-size:12px">Deferring R 76,140 of March invoices: Output VAT reduces by <strong>R 9,931.30</strong>. Net payable: <strong>R 128,867.61</strong>. Note: SARS matching rules apply — only defer genuinely unbilled work.</div>
             </div>
           </div>
-          <div style="margin-top:12px;padding:10px 12px;background:var(--amber-p);border-radius:6px;font-size:11.5px;border:1px solid rgba(217,119,6,.2)">
-            ⚠️ <strong>SARS Compliance Note:</strong> VAT201 must reflect actual tax period. Deferral scenarios are planning tools only and must be implemented via correct invoice dating.
+          <div style="margin-top:12px;background:#F3F4F6;border-radius:6px;padding:10px 12px;font-size:11px;color:var(--muted)">
+            ⚖️ <strong>Compliance note:</strong> All scenarios are advisory only. Consult a registered tax practitioner before adjusting VAT returns. SARS penalties apply for incorrect submissions.
           </div>
         </div>
       </div>
       <div class="card">
-        <div class="card-hdr"><div class="card-title">VAT Trend Chart</div><div class="card-sub">Output vs Input — Monthly</div></div>
-        <div class="card-body"><div class="chart-wrap"><canvas id="chart-vat-trend"></canvas></div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-hdr"><div class="card-title">AI Compliance Checklist</div></div>
-      <div class="card-body">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span style="font-size:18px">✅</span><span>All invoices have valid VAT numbers</span></div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span style="font-size:18px">✅</span><span>Output VAT calculated at 15% on all supplies</span></div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span style="font-size:18px">✅</span><span>Petrol/fuel excluded from input VAT claims</span></div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--amber-p);border-radius:8px;font-size:12px"><span style="font-size:18px">⚠️</span><span>Company VAT number not yet registered</span></div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--amber-p);border-radius:8px;font-size:12px"><span style="font-size:18px">⚠️</span><span>1 outstanding invoice — affects AR reporting</span></div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span style="font-size:18px">✅</span><span>Bi-monthly filing cycle correctly configured</span></div>
+        <div class="card-hdr"><div class="card-title">📊 VAT Trend Chart</div><div class="card-sub">Output vs Input vs Net Payable</div></div>
+        <div class="card-body"><div class="vat-ai-chart"><canvas id="chart-vat-ai"></canvas></div></div>
+        <div class="card-body" style="padding-top:0">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px">AI Advisory JSON Output (Mock)</div>
+          <div style="background:#1F2937;color:#A5F3FC;border-radius:8px;padding:12px;font-size:10.5px;font-family:var(--mono);line-height:1.7;overflow-x:auto">
+{<br>
+&nbsp;"period": "Jan-Feb 2026",<br>
+&nbsp;"vat_payable": 138798.91,<br>
+&nbsp;"vat_refundable": 0,<br>
+&nbsp;"scenarios": [{<br>
+&nbsp;&nbsp;"id": "A",<br>
+&nbsp;&nbsp;"description": "Collect outstanding",<br>
+&nbsp;&nbsp;"impact": "+R 6,264 cash"<br>
+&nbsp;}],<br>
+&nbsp;"compliance": "GREEN",<br>
+&nbsp;"risk_flags": ["1 invoice overdue"]<br>
+}
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- TAB 3: SUBMISSION -->
-  <div class="vat-tab-content" id="vat-submit">
+  <div id="vat-submit" style="display:none">
     <div class="two-col">
       <div class="card">
-        <div class="card-hdr"><div class="card-title">📤 Automated Portal Submission</div><div style="background:var(--green-p);color:var(--green);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px">● Active</div></div>
+        <div class="card-hdr"><div class="card-title">✅ Automated Portal Submission</div><div style="background:var(--green-p);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Active</div></div>
         <div class="card-body">
-          <div style="background:var(--green-p);border:1px solid rgba(26,122,74,.2);border-radius:10px;padding:16px;margin-bottom:16px">
-            <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px">✅ VAT201 File Ready for Upload</div>
-            <div style="font-size:12px;color:var(--text);margin-bottom:10px">Your VAT201 return for period Jan–Feb 2026 has been generated and validated. Download the file and upload it manually to SARS eFiling portal.</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn btn-green btn-sm" onclick="mockAction('Download VAT201 XML for eFiling')">📥 Download VAT201 File</button>
-              <button class="btn btn-ghost btn-sm" onclick="mockAction('Open SARS eFiling')">🔗 Open SARS eFiling →</button>
+          <div class="alert ok" style="margin-bottom:14px"><div class="alert-icon">✅</div><div><div class="alert-title">Manual Upload Workflow — Ready</div><div class="alert-body">Generate your VAT201 file (XML or CSV), then manually upload to SARS eFiling portal at efiling.sars.gov.za.</div></div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:#F4F5F9;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div><div style="font-weight:700;font-size:12px">Step 1 — Generate VAT201 File</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Creates XML/CSV with all required SARS fields</div></div>
+              <button class="btn btn-navy btn-sm" onclick="mockAction('Generate VAT201 XML')">Generate</button>
             </div>
-          </div>
-          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">Manual Upload Steps:</div>
-          <div style="font-size:12px;display:flex;flex-direction:column;gap:6px">
-            <div style="display:flex;align-items:flex-start;gap:8px;padding:8px;background:var(--bg);border-radius:6px"><span style="background:var(--navy);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0">1</span><span>Log into SARS eFiling at www.sarsefiling.co.za</span></div>
-            <div style="display:flex;align-items:flex-start;gap:8px;padding:8px;background:var(--bg);border-radius:6px"><span style="background:var(--navy);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0">2</span><span>Navigate to Returns → VAT → VAT201</span></div>
-            <div style="display:flex;align-items:flex-start;gap:8px;padding:8px;background:var(--bg);border-radius:6px"><span style="background:var(--navy);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0">3</span><span>Select period Jan–Feb 2026 and upload downloaded file</span></div>
-            <div style="display:flex;align-items:flex-start;gap:8px;padding:8px;background:var(--bg);border-radius:6px"><span style="background:var(--navy);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0">4</span><span>Review, confirm and submit. Save the submission receipt.</span></div>
+            <div style="background:#F4F5F9;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div><div style="font-weight:700;font-size:12px">Step 2 — Download VAT201</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Download XML or CSV for upload to eFiling</div></div>
+              <button class="btn btn-ghost btn-sm" onclick="mockAction('Download VAT201')">⬇ Download</button>
+            </div>
+            <div style="background:#F4F5F9;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div><div style="font-weight:700;font-size:12px">Step 3 — Upload to SARS eFiling</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Log in at efiling.sars.gov.za and upload file</div></div>
+              <a href="#" onclick="mockAction('Open SARS eFiling')"><button class="btn btn-teal btn-sm">🌐 Open eFiling</button></a>
+            </div>
+            <div style="background:#F4F5F9;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div><div style="font-weight:700;font-size:12px">Step 4 — Mark as Submitted</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Record submission in ClaimSync audit trail</div></div>
+              <button class="btn btn-green btn-sm" onclick="mockAction('Mark VAT201 submitted')">✅ Mark Submitted</button>
+            </div>
           </div>
         </div>
       </div>
       <div class="card">
-        <div class="card-hdr"><div class="card-title">🔌 Direct API Integration</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px">Coming Soon</div></div>
+        <div class="card-hdr"><div class="card-title">🔌 Direct API Integration</div><div style="background:var(--amber-p);color:var(--amber);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px">Coming Soon</div></div>
         <div class="card-body">
           <div class="coming-soon">
             <div class="coming-icon">🏛️</div>
-            <div class="coming-title">SARS eFiling API</div>
-            <div class="coming-body">Direct one-click VAT201 submission via the official SARS API. Awaiting SARS API approval and OAuth 2.0 integration.</div>
-            <button class="btn btn-ghost btn-sm" disabled style="opacity:.5;cursor:not-allowed" title="Awaiting SARS API approval">🔌 Connect SARS API (Coming Soon)</button>
+            <div class="coming-title">SARS Direct API</div>
+            <div class="coming-body">One-click VAT201, EMP201 and EMP501 submission directly via SARS API — no manual upload required.</div>
+            <button class="btn btn-ghost btn-sm" disabled style="opacity:.5;cursor:not-allowed" title="Awaiting SARS API approval">🔒 Awaiting SARS API Approval</button>
           </div>
-          <div style="margin-top:12px;font-size:11px;color:var(--muted);text-align:center;padding:8px;background:var(--bg);border-radius:6px">This button will be enabled once SARS API credentials are approved and configured in Settings → Integrations</div>
+          <div style="margin-top:14px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px">VAT201 File Schema Preview</div>
+            <div style="background:#1F2937;color:#86EFAC;border-radius:8px;padding:12px;font-size:10.5px;font-family:var(--mono);line-height:1.7;overflow-x:auto">
+&lt;VAT201&gt;<br>
+&nbsp;&lt;TaxPeriod&gt;202602&lt;/TaxPeriod&gt;<br>
+&nbsp;&lt;CompanyName&gt;Big O Projects&lt;/CompanyName&gt;<br>
+&nbsp;&lt;VATNumber&gt;[Pending]&lt;/VATNumber&gt;<br>
+&nbsp;&lt;OutputVAT&gt;151899.04&lt;/OutputVAT&gt;<br>
+&nbsp;&lt;InputVAT&gt;13100.13&lt;/InputVAT&gt;<br>
+&nbsp;&lt;NetVAT&gt;138798.91&lt;/NetVAT&gt;<br>
+&nbsp;&lt;Currency&gt;ZAR&lt;/Currency&gt;<br>
+&lt;/VAT201&gt;
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- TAB 4: AUDIT TRAIL -->
-  <div class="vat-tab-content" id="vat-audit">
+  <div id="vat-audit" style="display:none">
     <div class="card">
-      <div class="card-hdr"><div class="card-title">📜 VAT Audit Trail</div><div class="card-sub">All return actions, AI scenarios, and submissions logged</div></div>
+      <div class="card-hdr"><div class="card-title">📜 VAT Audit Trail</div><div class="card-sub">All returns, AI scenarios, submissions logged</div></div>
       <div class="tbl-wrap">
-        <table class="tbl"><thead><tr><th>Timestamp</th><th>Action</th><th>User</th><th>Period</th><th>Detail</th><th>Status</th></tr></thead>
+        <table class="tbl"><thead><tr><th>Date/Time</th><th>Action</th><th>User</th><th>Period</th><th>Amount</th><th>Reference</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>27 Mar 2026 09:14</td><td>Return Generated</td><td>Norman</td><td>Jan–Feb 2026</td><td class="td-muted">VAT201 auto-compiled from 83 invoices</td><td><span class="badge b-active">Complete</span></td></tr>
-          <tr><td>27 Mar 2026 09:15</td><td>AI Analysis Run</td><td>AI Engine</td><td>Jan–Feb 2026</td><td class="td-muted">3 scenarios simulated · R 13,529 max saving identified</td><td><span class="badge b-active">Complete</span></td></tr>
-          <tr><td>27 Mar 2026 09:16</td><td>XML File Generated</td><td>Norman</td><td>Jan–Feb 2026</td><td class="td-muted">VAT201-202602-001.xml · 4.2 KB</td><td><span class="badge b-active">Ready</span></td></tr>
-          <tr><td>28 Feb 2026 11:30</td><td>VAT201 Submitted</td><td>Norman</td><td>Nov–Dec 2025</td><td class="td-muted">Manual upload via SARS eFiling · Receipt: SB2026-04421</td><td><span class="badge b-paid">Submitted</span></td></tr>
-          <tr><td>28 Feb 2026 11:35</td><td>Payment Made</td><td>Norman</td><td>Nov–Dec 2025</td><td class="td-muted">R 40,890.00 paid via FNB Business Banking</td><td><span class="badge b-paid">Paid</span></td></tr>
+          <tr><td>27 Mar 2026 09:14</td><td>🤖 AI Analysis Run</td><td>Norman</td><td>Jan–Feb 2026</td><td class="mono">R 138,799</td><td class="mono td-muted">AI-2026-003</td><td><span class="badge b-active">Completed</span></td></tr>
+          <tr><td>27 Mar 2026 09:10</td><td>📋 VAT201 Generated</td><td>Norman</td><td>Jan–Feb 2026</td><td class="mono">R 138,799</td><td class="mono td-muted">VAT201-2026-002</td><td><span class="badge b-navy">Generated</span></td></tr>
+          <tr><td>15 Mar 2026 14:22</td><td>✅ VAT201 Submitted</td><td>Norman</td><td>Nov–Dec 2025</td><td class="mono">R 40,890</td><td class="mono td-muted">VAT201-2025-001</td><td><span class="badge b-paid">Submitted</span></td></tr>
+          <tr><td>10 Mar 2026 11:05</td><td>🤖 AI Analysis Run</td><td>Norman</td><td>Nov–Dec 2025</td><td class="mono">R 40,890</td><td class="mono td-muted">AI-2026-002</td><td><span class="badge b-active">Completed</span></td></tr>
+          <tr><td>28 Feb 2026 09:00</td><td>📋 VAT201 Generated</td><td>Norman</td><td>Nov–Dec 2025</td><td class="mono">R 40,890</td><td class="mono td-muted">VAT201-2025-001</td><td><span class="badge b-paid">Submitted</span></td></tr>
         </tbody></table>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-hdr"><div class="card-title">Filing Deadlines &amp; Alerts</div></div>
-      <div class="card-body">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
-          <div class="alert amber"><div class="alert-icon">⚡</div><div><div class="alert-title">VAT201 — 34 days</div><div class="alert-body">Due 30 April 2026 · R 138,799 payable</div></div></div>
-          <div class="alert ok"><div class="alert-icon">📅</div><div><div class="alert-title">EMP201 — 11 days</div><div class="alert-body">Due 7 April 2026 · PAYE submission</div></div></div>
-          <div class="alert info"><div class="alert-icon">📋</div><div><div class="alert-title">EMP501 — 65 days</div><div class="alert-body">Due 31 May 2026 · Bi-annual recon</div></div></div>
-        </div>
       </div>
     </div>
   </div>
@@ -1718,9 +1476,8 @@ function switchSettingsTab(tab, targetId) {
     <div class="tab active" onclick="switchSettingsTab(this,'set-company')">🏢 Company</div>
     <div class="tab" onclick="switchSettingsTab(this,'set-integrations')">🔌 Integrations</div>
     <div class="tab" onclick="switchSettingsTab(this,'set-users')">👥 Users</div>
-    <div class="tab" onclick="switchSettingsTab(this,'set-roles')">🔐 Roles</div>
-    <div class="tab" onclick="switchSettingsTab(this,'set-templates')">📝 Comm. Templates</div>
     <div class="tab" onclick="switchSettingsTab(this,'set-billing')">💳 Billing</div>
+    <div class="tab" onclick="switchSettingsTab(this,'set-templates')">💬 Comm Templates</div>
   </div>
   <!-- Company -->
   <div id="set-company">
@@ -1797,114 +1554,14 @@ function switchSettingsTab(tab, targetId) {
       <div class="tbl-wrap">
         <table class="tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Last Login</th><th>Status</th><th>Action</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="td-bold">Norman</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5f31302d323e311f3d3638302f2d30353a3c2b2c713c3071253e">[email&#160;protected]</a></td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
-          <tr><td>2</td><td class="td-bold">Field User</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cdaba4a8a1a98dafa4aaa2bdbfa2a7a8aeb9bee3aea2e3b7ac">[email&#160;protected]</a></td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
-          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91e5f9f0f3fed1f3f8f6fee1e3fefbf4f2e5e2bff2febfebf0">[email&#160;protected]</a></td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
-          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="deb3b1adbbad9ebcb7b9b1aeacb1b4bbbdaaadf0bdb1f0a4bf">[email&#160;protected]</a></td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
+          <tr><td>1</td><td class="td-bold">Norman</td><td>norman@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+          <tr><td>2</td><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
+          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td>thabo@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
+          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td>moses@bigoprojects.co.za</td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
         </tbody></table>
       </div>
     </div>
   </div>
-  <!-- Roles & Permissions -->
-  <div id="set-roles" style="display:none">
-    <div class="card">
-      <div class="card-hdr"><div class="card-title">🔐 Role Permissions</div><div class="card-sub">What each role can see and do in ClaimSync</div></div>
-      <div class="card-body">
-        <div class="role-perm-grid">
-          <div class="perm-card">
-            <div class="perm-card-hdr admin">🔐 Administrator <span style="font-size:9px;opacity:.6;font-weight:400;margin-left:4px">Full override authority</span></div>
-            <div class="perm-row"><span class="perm-yes">✓</span> View all claims &amp; invoices</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Create, edit &amp; delete invoices</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Reassign jobs to any assessor</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Override any claim status</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Upload &amp; manage photos</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Attach invoices &amp; assessments</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Access Accounting &amp; VAT modules</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Configure settings &amp; integrations</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Manage users &amp; roles</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Send communications (all channels)</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Run AI analysis &amp; VAT submission</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> View financial reports &amp; exports</div>
-          </div>
-          <div class="perm-card">
-            <div class="perm-card-hdr assessor">🏗️ Assessor / Team Leader <span style="font-size:9px;opacity:.7;font-weight:400;margin-left:4px">Field operations</span></div>
-            <div class="perm-row"><span class="perm-yes">✓</span> View assigned claims only</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Update status of assigned jobs</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Upload site photos</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> Attach assessment reports</div>
-            <div class="perm-row"><span class="perm-yes">✓</span> View invoice for assigned claim</div>
-            <div class="perm-row"><span class="perm-no">✗</span> <span style="color:var(--muted)">Cannot override Admin decisions</span></div>
-            <div class="perm-row"><span class="perm-no">✗</span> <span style="color:var(--muted)">Cannot reassign jobs</span></div>
-            <div class="perm-row"><span class="perm-no">✗</span> <span style="color:var(--muted)">Cannot access Accounting / VAT</span></div>
-            <div class="perm-row"><span class="perm-no">✗</span> <span style="color:var(--muted)">Cannot create or edit invoices</span></div>
-            <div class="perm-row"><span class="perm-no">✗</span> <span style="color:var(--muted)">Cannot send bulk communications</span></div>
-            <div class="perm-row"><span class="perm-no">✗</span> <span style="color:var(--muted)">Cannot view financial reports</span></div>
-            <div class="perm-row"><span class="perm-no">✗</span> <span style="color:var(--muted)">Cannot modify system settings</span></div>
-          </div>
-        </div>
-        <div style="margin-top:14px;padding:12px 14px;background:var(--blue-p);border-radius:8px;font-size:12px;border:1px solid rgba(29,78,216,.15)">
-          <strong>Job Card Actions:</strong> &nbsp; <strong>View</strong> = read-only — see current status, details, photos, invoices. &nbsp; <strong>Update</strong> = edit mode — change status, upload photos, attach invoices/assessments. Both roles can perform Update on their assigned claims; only Admin can update any claim.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Communication Templates -->
-  <div id="set-templates" style="display:none">
-    <div class="card">
-      <div class="card-hdr"><div class="card-title">📝 Communication Templates</div><div class="card-sub">Pre-built templates for Email &amp; WhatsApp messages</div>
-        <button class="btn btn-gold btn-sm" onclick="mockAction('Add new template')">+ New Template</button>
-      </div>
-      <div class="card-body">
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
-            <div style="background:#F8F9FC;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-md)">
-              <div><div style="font-weight:700;font-size:12px">📄 Send Invoice</div><div style="font-size:10px;color:var(--muted)">Triggered from: Claims → Communicate / Invoices → Communicate</div></div>
-              <div style="display:flex;gap:6px"><span class="badge b-active">Active</span><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Send Invoice template')">Edit</button></div>
-            </div>
-            <div style="padding:12px 14px;font-size:12px">
-              <div style="margin-bottom:4px"><strong>Subject:</strong> Invoice {{InvoiceNo}} — {{CompanyName}} — Claim {{ClaimRef}}</div>
-              <div style="color:var(--muted);line-height:1.6">Dear {{ClientName}},<br>Please find attached your invoice {{InvoiceNo}} for the repairs completed at {{PropertyAddress}}. The total amount due is {{TotalAmount}}. Please contact us if you have any queries.<br>Regards, Big O Projects</div>
-            </div>
-          </div>
-          <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
-            <div style="background:#F8F9FC;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-md)">
-              <div><div style="font-weight:700;font-size:12px">💳 Excess Invoice</div><div style="font-size:10px;color:var(--muted)">For excess amount due directly from policyholder</div></div>
-              <div style="display:flex;gap:6px"><span class="badge b-active">Active</span><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Excess template')">Edit</button></div>
-            </div>
-            <div style="padding:12px 14px;font-size:12px">
-              <div style="margin-bottom:4px"><strong>Subject:</strong> Excess Payment Required — {{ClaimRef}} — R {{ExcessAmount}}</div>
-              <div style="color:var(--muted);line-height:1.6">Dear {{ClientName}},<br>Your insurance policy requires an excess payment of {{ExcessAmount}} for claim {{ClaimRef}}. Please make payment at your earliest convenience. Our banking details: {{BankDetails}}.<br>Regards, Big O Projects</div>
-            </div>
-          </div>
-          <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
-            <div style="background:#F8F9FC;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-md)">
-              <div><div style="font-weight:700;font-size:12px">🔍 Request Assessment</div><div style="font-size:10px;color:var(--muted)">Notify assessor of new claim assignment</div></div>
-              <div style="display:flex;gap:6px"><span class="badge b-active">Active</span><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Assessment template')">Edit</button></div>
-            </div>
-            <div style="padding:12px 14px;font-size:12px">
-              <div style="margin-bottom:4px"><strong>Subject:</strong> New Assessment Required — {{ClaimRef}} — {{PropertyAddress}}</div>
-              <div style="color:var(--muted);line-height:1.6">Hi {{AssessorName}},<br>A new assessment has been assigned to you. Claim: {{ClaimRef}} · Client: {{ClientName}} · Address: {{PropertyAddress}} · Peril: {{PerilType}}. Please confirm receipt and schedule site visit.<br>Regards, Norman</div>
-            </div>
-          </div>
-          <div style="border:1px solid var(--border-md);border-radius:10px;overflow:hidden">
-            <div style="background:#F8F9FC;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-md)">
-              <div><div style="font-weight:700;font-size:12px">⏰ Payment Reminder</div><div style="font-size:10px;color:var(--muted)">For outstanding invoices</div></div>
-              <div style="display:flex;gap:6px"><span class="badge b-active">Active</span><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Reminder template')">Edit</button></div>
-            </div>
-            <div style="padding:12px 14px;font-size:12px">
-              <div style="margin-bottom:4px"><strong>Subject:</strong> Payment Reminder — Invoice {{InvoiceNo}} — R {{OutstandingAmount}}</div>
-              <div style="color:var(--muted);line-height:1.6">Dear {{ClientName}},<br>This is a reminder that invoice {{InvoiceNo}} for R {{OutstandingAmount}} remains outstanding. Please arrange payment or contact us to discuss. Failure to pay may result in legal action.<br>Regards, Big O Projects</div>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px 12px;background:var(--blue-p);border-radius:8px;font-size:11.5px;border:1px solid rgba(29,78,216,.15)">
-          💡 <strong>Template variables:</strong> {{ClientName}} {{InvoiceNo}} {{ClaimRef}} {{PropertyAddress}} {{TotalAmount}} {{ExcessAmount}} {{AssessorName}} {{PerilType}} {{CompanyName}} {{BankDetails}} {{OutstandingAmount}} — all auto-populated at send time.
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Billing -->
   <div id="set-billing" style="display:none">
     <div class="two-col">
@@ -1942,6 +1599,57 @@ function switchSettingsTab(tab, targetId) {
       </div>
     </div>
   </div>
+  <!-- Communication Templates -->
+  <div id="set-templates" style="display:none">
+    <div class="card">
+      <div class="card-hdr">
+        <div><div class="card-title">Communication Templates</div><div class="card-sub">Email &amp; WhatsApp message templates for invoices, assessments and reminders</div></div>
+        <button class="btn btn-gold btn-sm" onclick="mockAction('Add new template')">+ New Template</button>
+      </div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+        <div style="border:1px solid var(--border-md);border-radius:var(--radius-sm);overflow:hidden">
+          <div style="background:#F4F5F9;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div><div style="font-weight:700;font-size:13px">Invoice Delivery — Standard</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Channels: Email · WhatsApp</div></div>
+            <div style="display:flex;gap:6px"><span class="badge b-active">Active</span><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit template')">Edit</button></div>
+          </div>
+          <div style="padding:12px 16px;font-size:12.5px;line-height:1.7;background:white;border-top:1px solid var(--border);font-family:var(--mono);color:var(--text)">
+            Dear [ClientName],<br>
+            Please find attached Invoice [InvoiceNo] for [Amount] (Incl. VAT) in respect of claim [ClaimRef].<br>
+            Payment is due by [DueDate]. EFT details: Big O Projects · FNB · Acc: [Account] · Ref: [InvoiceNo].<br>
+            Kind regards, [UserName] · Big O Projects · 082 402 8027
+          </div>
+        </div>
+        <div style="border:1px solid var(--border-md);border-radius:var(--radius-sm);overflow:hidden">
+          <div style="background:#F4F5F9;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div><div style="font-weight:700;font-size:13px">Assessment Request</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Channels: Email · WhatsApp</div></div>
+            <div style="display:flex;gap:6px"><span class="badge b-active">Active</span><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit template')">Edit</button></div>
+          </div>
+          <div style="padding:12px 16px;font-size:12.5px;line-height:1.7;background:white;border-top:1px solid var(--border);font-family:var(--mono);color:var(--text)">
+            Dear [ClientName],<br>
+            We confirm your assessment for [ClaimRef] has been scheduled for [Date] at [Address].<br>
+            Our assessor [AssessorName] will contact you. Please ensure access to the property.<br>
+            Big O Projects · 082 402 8027
+          </div>
+        </div>
+        <div style="border:1px solid var(--border-md);border-radius:var(--radius-sm);overflow:hidden">
+          <div style="background:#F4F5F9;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div><div style="font-weight:700;font-size:13px">Payment Reminder — Overdue</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Channels: Email · WhatsApp</div></div>
+            <div style="display:flex;gap:6px"><span class="badge b-active">Active</span><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit template')">Edit</button></div>
+          </div>
+          <div style="padding:12px 16px;font-size:12.5px;line-height:1.7;background:white;border-top:1px solid var(--border);font-family:var(--mono);color:var(--text)">
+            Dear [ClientName],<br>
+            This is a reminder that Invoice [InvoiceNo] for [Amount] is now [DaysOverdue] days overdue.<br>
+            Please arrange payment at your earliest convenience. Ref: [InvoiceNo].<br>
+            Big O Projects · Norman · 082 402 8027
+          </div>
+        </div>
+        <div style="border:2px dashed var(--border-md);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;color:var(--muted);transition:border-color .15s" onclick="mockAction('Add template')" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'">
+          <div style="font-size:22px;margin-bottom:6px">+</div>
+          <div style="font-size:12px;font-weight:600">Add New Template</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
     </div><!-- /content -->
@@ -1961,12 +1669,12 @@ function switchSettingsTab(tab, targetId) {
 <!-- ════════════════════════════════════════
      MODALS
 ════════════════════════════════════════ -->
-<!-- New Invoice Modal - Zoho-style -->
+<!-- New Invoice Modal -->
 <div class="modal-ov" id="modal-invoice">
   <div class="modal modal-lg">
     <div class="modal-hdr"><div class="modal-title">Create New Invoice</div><button class="modal-close" onclick="closeModal('modal-invoice')">×</button></div>
     <div class="modal-body">
-      <div class="fgrid" style="margin-bottom:14px">
+      <div class="fgrid" style="margin-bottom:16px">
         <div class="fg"><label class="fl">Invoice Number</label><input class="fi" value="BIG O-INV-0811" readonly style="font-family:var(--mono)"></div>
         <div class="fg"><label class="fl">Entity</label><select class="fi"><option>Bigo Direct</option><option>Phahamo Subcontract</option></select></div>
         <div class="fg"><label class="fl">Client *</label><input class="fi" id="ni-client" placeholder="Policy holder name"></div>
@@ -1974,35 +1682,42 @@ function switchSettingsTab(tab, targetId) {
         <div class="fg"><label class="fl">Invoice Date *</label><input class="fi" type="date" id="ni-date"></div>
         <div class="fg"><label class="fl">Status</label><select class="fi"><option>Draft</option><option>Sent</option><option>Paid</option><option>Outstanding</option></select></div>
       </div>
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Line Items</div>
-      <div style="overflow-x:auto">
-        <table class="item-tbl" id="inv-items-tbl">
-          <thead><tr><th style="width:35%">Item / Description</th><th style="width:10%">Qty</th><th style="width:18%">Rate (Excl. VAT)</th><th style="width:12%">VAT %</th><th style="width:15%">Amount</th><th style="width:5%"></th></tr></thead>
-          <tbody id="inv-items-body">
-            <tr><td><input class="fi-sm" placeholder="Labour — roof repair"></td><td><input class="fi-sm" type="number" value="1" oninput="recalcInvItems()"></td><td><input class="fi-sm" type="number" placeholder="0.00" oninput="recalcInvItems()" style="font-family:var(--mono)"></td><td><select class="fi-sm" onchange="recalcInvItems()"><option value="15">15%</option><option value="0">0%</option></select></td><td class="mono" style="font-weight:700;text-align:right">R 0.00</td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none" onclick="removeInvRow(this)">✕</button></td></tr>
-            <tr><td><input class="fi-sm" placeholder="Materials — tiles, cement"></td><td><input class="fi-sm" type="number" value="1" oninput="recalcInvItems()"></td><td><input class="fi-sm" type="number" placeholder="0.00" oninput="recalcInvItems()" style="font-family:var(--mono)"></td><td><select class="fi-sm" onchange="recalcInvItems()"><option value="15">15%</option><option value="0">0%</option></select></td><td class="mono" style="font-weight:700;text-align:right">R 0.00</td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none" onclick="removeInvRow(this)">✕</button></td></tr>
+      <!-- Zoho-style Item Line Table -->
+      <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Line Items</div>
+      <div style="overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--border-md)">
+        <table class="item-tbl" id="inv-item-tbl">
+          <thead><tr><th style="min-width:180px">Item / Description</th><th style="width:70px">Qty</th><th style="width:110px">Rate (Excl.)</th><th style="width:70px">VAT %</th><th style="width:110px">VAT Amt</th><th style="width:120px">Amount (Incl.)</th><th style="width:36px"></th></tr></thead>
+          <tbody id="inv-item-body">
+            <tr>
+              <td><input class="fi-sm" placeholder="Roof repair — storm damage"></td>
+              <td><input class="fi-sm mono" type="number" value="1" min="1" oninput="calcItemRow(this)"></td>
+              <td><input class="fi-sm mono" type="number" placeholder="0.00" oninput="calcItemRow(this)"></td>
+              <td><select class="fi-sm" onchange="calcItemRow(this)"><option value="15">15%</option><option value="0">0%</option></select></td>
+              <td><input class="fi-sm mono" readonly style="background:var(--bg)"></td>
+              <td><input class="fi-sm mono" readonly style="background:var(--bg);font-weight:700"></td>
+              <td><button onclick="removeItemRow(this)" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:2px">✕</button></td>
+            </tr>
           </tbody>
           <tfoot>
-            <tr><td colspan="3"></td><td colspan="1" style="color:var(--muted);font-size:11px">Subtotal Excl.</td><td class="mono" style="text-align:right" id="inv-subtotal">R 0.00</td><td></td></tr>
-            <tr><td colspan="3"></td><td colspan="1" style="color:var(--teal);font-size:11px">VAT @ 15%</td><td class="mono" style="text-align:right;color:var(--teal)" id="inv-vat-total">R 0.00</td><td></td></tr>
-            <tr style="background:var(--navy);color:white"><td colspan="3"></td><td colspan="1" style="color:rgba(255,255,255,.8);font-size:12px">TOTAL INCL.</td><td class="mono" style="text-align:right;font-size:14px;font-weight:700" id="inv-grand-total">R 0.00</td><td></td></tr>
+            <tr><td colspan="4" style="padding:6px 10px;font-size:11px;color:var(--muted)"><button class="item-add-btn" onclick="addItemRow('inv-item-body')">+ Add Line Item</button></td>
+              <td style="padding:7px 10px;font-size:11px;color:var(--muted)">Subtotal</td>
+              <td class="mono" style="padding:7px 10px;font-size:12px" id="inv-subtotal">R 0.00</td><td></td></tr>
+            <tr><td colspan="5" style="padding:5px 10px;text-align:right;font-size:11.5px;color:var(--muted)">VAT (15%)</td>
+              <td class="mono" style="padding:5px 10px;color:var(--teal)" id="inv-vat-total">R 0.00</td><td></td></tr>
+            <tr class="total-row"><td colspan="5" style="padding:9px 10px">TOTAL (INCL. VAT)</td>
+              <td class="mono" style="padding:9px 10px" id="inv-total">R 0.00</td><td></td></tr>
           </tfoot>
         </table>
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-xs" onclick="addInvRow()">+ Add Line</button>
-        <button class="btn btn-ghost btn-xs" onclick="addExcessRow()">+ Excess Line</button>
-        <button class="btn btn-ghost btn-xs" onclick="mockAction('Attach file to invoice')">📎 Attach File</button>
+      <div style="margin-top:12px">
+        <div class="fg"><label class="fl">Notes / Excess</label><textarea class="fi" rows="2" placeholder="Additional notes, excess clause, or special instructions..."></textarea></div>
       </div>
-      <div style="margin-top:10px">
-        <label class="fl">Notes / Terms</label>
-        <textarea class="fi" rows="2" placeholder="Payment terms, notes..."></textarea>
-      </div>
+      <div style="margin-top:10px;background:var(--bg);border-radius:8px;padding:10px;font-size:11.5px;color:var(--muted)">✅ VAT auto-calculated @ 15% · Supports excess line items · Link to claim &amp; assessment</div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-invoice')">Cancel</button>
-      <button class="btn btn-ghost" onclick="mockSave('modal-invoice','Invoice saved as draft')">💾 Save Draft</button>
-      <button class="btn btn-navy" onclick="mockSave('modal-invoice','Invoice created &amp; sent (mock)')">📤 Save &amp; Send</button>
+      <button class="btn btn-ghost" onclick="mockSave('modal-invoice','Invoice saved as Draft')">💾 Save Draft</button>
+      <button class="btn btn-navy" onclick="mockSave('modal-invoice','Invoice saved &amp; sent (mock)')">📤 Save &amp; Send</button>
     </div>
   </div>
 </div>
@@ -2038,43 +1753,49 @@ function switchSettingsTab(tab, targetId) {
   </div>
 </div>
 
-<!-- Create Quote Modal - Zoho-style -->
+<!-- Create Quote Modal -->
 <div class="modal-ov" id="modal-quote">
   <div class="modal modal-lg">
     <div class="modal-hdr"><div class="modal-title">Create New Quote</div><button class="modal-close" onclick="closeModal('modal-quote')">×</button></div>
     <div class="modal-body">
-      <div class="fgrid" style="margin-bottom:14px">
+      <div class="fgrid" style="margin-bottom:16px">
         <div class="fg"><label class="fl">Quote Number</label><input class="fi" value="QTE-008" readonly style="font-family:var(--mono)"></div>
-        <div class="fg"><label class="fl">Template</label><select class="fi" onchange="loadQuoteTemplate(this.value)"><option value="">— None —</option><option>Storm Damage</option><option>Hail Damage</option><option>Flood Damage</option><option>Burst Geyser</option></select></div>
+        <div class="fg"><label class="fl">Template</label><select class="fi"><option>— None —</option><option>Storm Damage</option><option>Hail Damage</option><option>Flood Damage</option><option>Burst Geyser</option></select></div>
         <div class="fg"><label class="fl">Client *</label><input class="fi" placeholder="Policy holder name"></div>
         <div class="fg"><label class="fl">Claim Reference</label><input class="fi" placeholder="HLB/2026/XXXXXX" style="font-family:var(--mono)"></div>
-        <div class="fg"><label class="fl">Quote Date</label><input class="fi" type="date"></div>
+        <div class="fg"><label class="fl">Date</label><input class="fi" type="date"></div>
         <div class="fg"><label class="fl">Valid Until</label><input class="fi" type="date"></div>
       </div>
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Line Items</div>
-      <div style="overflow-x:auto">
-        <table class="item-tbl" id="qte-items-tbl">
-          <thead><tr><th style="width:35%">Item / Description</th><th style="width:10%">Qty</th><th style="width:18%">Rate (Excl. VAT)</th><th style="width:12%">VAT %</th><th style="width:15%">Amount</th><th style="width:5%"></th></tr></thead>
-          <tbody id="qte-items-body">
-            <tr><td><input class="fi-sm" placeholder="Repair scope item..."></td><td><input class="fi-sm" type="number" value="1" oninput="recalcQteItems()"></td><td><input class="fi-sm" type="number" placeholder="0.00" oninput="recalcQteItems()" style="font-family:var(--mono)"></td><td><select class="fi-sm" onchange="recalcQteItems()"><option value="15">15%</option><option value="0">0%</option></select></td><td class="mono" style="font-weight:700;text-align:right">R 0.00</td><td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none" onclick="removeInvRow(this)">✕</button></td></tr>
+      <!-- Zoho-style Item Line Table -->
+      <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Line Items</div>
+      <div style="overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--border-md)">
+        <table class="item-tbl">
+          <thead><tr><th style="min-width:180px">Item / Description</th><th style="width:70px">Qty</th><th style="width:110px">Rate (Excl.)</th><th style="width:70px">VAT %</th><th style="width:110px">VAT Amt</th><th style="width:120px">Amount (Incl.)</th><th style="width:36px"></th></tr></thead>
+          <tbody id="qte-item-body">
+            <tr>
+              <td><input class="fi-sm" placeholder="Roof repair — hail damage"></td>
+              <td><input class="fi-sm mono" type="number" value="1" min="1"></td>
+              <td><input class="fi-sm mono" type="number" placeholder="0.00"></td>
+              <td><select class="fi-sm"><option value="15">15%</option><option value="0">0%</option></select></td>
+              <td><input class="fi-sm mono" readonly style="background:var(--bg)"></td>
+              <td><input class="fi-sm mono" readonly style="background:var(--bg);font-weight:700"></td>
+              <td><button onclick="removeItemRow(this)" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:2px">✕</button></td>
+            </tr>
           </tbody>
           <tfoot>
-            <tr><td colspan="3"></td><td colspan="1" style="color:var(--muted);font-size:11px">Subtotal Excl.</td><td class="mono" style="text-align:right" id="qte-subtotal">R 0.00</td><td></td></tr>
-            <tr><td colspan="3"></td><td colspan="1" style="color:var(--teal);font-size:11px">VAT @ 15%</td><td class="mono" style="text-align:right;color:var(--teal)" id="qte-vat-total">R 0.00</td><td></td></tr>
-            <tr style="background:var(--navy);color:white"><td colspan="3"></td><td colspan="1" style="color:rgba(255,255,255,.8);font-size:12px">TOTAL INCL.</td><td class="mono" style="text-align:right;font-size:14px;font-weight:700" id="qte-grand-total">R 0.00</td><td></td></tr>
+            <tr><td colspan="4"><button class="item-add-btn" onclick="addItemRow('qte-item-body')">+ Add Line Item</button></td>
+              <td style="padding:7px 10px;font-size:11px;color:var(--muted)">Subtotal</td><td class="mono" style="padding:7px 10px">R 0.00</td><td></td></tr>
+            <tr><td colspan="5" style="padding:5px 10px;text-align:right;font-size:11.5px;color:var(--muted)">VAT (15%)</td><td class="mono" style="padding:5px 10px;color:var(--teal)">R 0.00</td><td></td></tr>
+            <tr class="total-row"><td colspan="5" style="padding:9px 10px">TOTAL (INCL. VAT)</td><td class="mono" style="padding:9px 10px">R 0.00</td><td></td></tr>
           </tfoot>
         </table>
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="btn btn-ghost btn-xs" onclick="addQteRow()">+ Add Line</button>
-        <button class="btn btn-ghost btn-xs" onclick="mockAction('Attach file to quote')">📎 Attach File</button>
-      </div>
-      <div style="margin-top:10px"><label class="fl">Notes</label><textarea class="fi" rows="2" placeholder="Scope notes, exclusions..."></textarea></div>
+      <div style="margin-top:12px"><label class="fl">Notes / Scope of Work</label><textarea class="fi" rows="2" placeholder="Scope of work, special conditions..."></textarea></div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-quote')">Cancel</button>
-      <button class="btn btn-ghost" onclick="mockSave('modal-quote','Quote saved as draft')">💾 Save Draft</button>
-      <button class="btn btn-navy" onclick="mockSave('modal-quote','Quote sent to client (mock)')">📤 Save &amp; Send</button>
+      <button class="btn btn-ghost" onclick="mockSave('modal-quote','Quote saved as Draft')">💾 Save Draft</button>
+      <button class="btn btn-navy" onclick="mockSave('modal-quote','Quote created &amp; sent (mock)')">📤 Save &amp; Send</button>
     </div>
   </div>
 </div>
@@ -2101,154 +1822,185 @@ function switchSettingsTab(tab, targetId) {
   </div>
 </div>
 
-<!-- Add Expense Modal - Zoho Bulk Grid -->
+<!-- Add Expense Modal -->
 <div class="modal-ov" id="modal-expense">
-  <div class="modal modal-lg" style="width:900px">
-    <div class="modal-hdr"><div class="modal-title">Bulk Add Expenses</div><button class="modal-close" onclick="closeModal('modal-expense')">×</button></div>
-    <div class="modal-body" style="padding:14px">
-      <div style="overflow-x:auto">
-        <table class="exp-grid" id="exp-bulk-tbl">
-          <thead><tr>
-            <th>Date</th><th>Expense Account</th><th>Amount (Incl. VAT)</th><th>Paid Through</th><th>Vendor</th><th>Location</th><th>VAT Treatment</th><th>Expense Type</th><th>Input VAT</th><th>Customer/Claim</th><th></th>
-          </tr></thead>
-          <tbody id="exp-bulk-body">
-            <tr>
-              <td><input class="fi-xs" type="date"></td>
-              <td><select class="fi-xs"><option>Materials</option><option>Fuel &amp; Transport</option><option>Labour</option><option>Equipment</option><option>Office Expenses</option><option>Other</option></select></td>
-              <td><input class="fi-xs" type="number" placeholder="0.00" oninput="calcExpVAT(this)" style="font-family:var(--mono)"></td>
-              <td><select class="fi-xs"><option>FNB Operating</option><option>Cash</option><option>Credit Card</option></select></td>
-              <td><input class="fi-xs" placeholder="Supplier name"></td>
-              <td><input class="fi-xs" placeholder="City / Site"></td>
-              <td><select class="fi-xs" onchange="calcExpVAT(this.closest('tr').querySelector('[type=number]'))"><option value="std">Standard Rated (15%)</option><option value="none">Non-VATable (0%)</option><option value="exempt">VAT Exempt</option></select></td>
-              <td><select class="fi-xs"><option>Direct Cost</option><option>Overhead</option><option>Capital</option></select></td>
-              <td><input class="fi-xs" placeholder="Auto" readonly style="background:var(--bg);font-family:var(--mono)"></td>
-              <td><input class="fi-xs" placeholder="HLB/2026/XXXXXX"></td>
-              <td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none;white-space:nowrap" onclick="this.closest('tr').remove()">✕</button></td>
-            </tr>
-            <tr>
-              <td><input class="fi-xs" type="date"></td>
-              <td><select class="fi-xs"><option>Materials</option><option>Fuel &amp; Transport</option><option>Labour</option><option>Equipment</option><option>Office Expenses</option><option>Other</option></select></td>
-              <td><input class="fi-xs" type="number" placeholder="0.00" oninput="calcExpVAT(this)" style="font-family:var(--mono)"></td>
-              <td><select class="fi-xs"><option>FNB Operating</option><option>Cash</option><option>Credit Card</option></select></td>
-              <td><input class="fi-xs" placeholder="Supplier name"></td>
-              <td><input class="fi-xs" placeholder="City / Site"></td>
-              <td><select class="fi-xs" onchange="calcExpVAT(this.closest('tr').querySelector('[type=number]'))"><option value="std">Standard Rated (15%)</option><option value="none">Non-VATable (0%)</option><option value="exempt">VAT Exempt</option></select></td>
-              <td><select class="fi-xs"><option>Direct Cost</option><option>Overhead</option><option>Capital</option></select></td>
-              <td><input class="fi-xs" placeholder="Auto" readonly style="background:var(--bg);font-family:var(--mono)"></td>
-              <td><input class="fi-xs" placeholder="HLB/2026/XXXXXX"></td>
-              <td><button class="btn btn-xs" style="background:var(--red-p);color:var(--red);border:none;white-space:nowrap" onclick="this.closest('tr').remove()">✕</button></td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add Expense</div><button class="modal-close" onclick="closeModal('modal-expense')">×</button></div>
+    <div class="modal-body">
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Supplier *</label><input class="fi" placeholder="Supplier name"></div>
+        <div class="fg"><label class="fl">Date *</label><input class="fi" type="date"></div>
+        <div class="fg"><label class="fl">VAT Number</label><input class="fi" placeholder="SA VAT Reg No."></div>
+        <div class="fg"><label class="fl">Category</label><select class="fi"><option>Materials</option><option>Petrol (No Input VAT)</option><option>Labour</option><option>Equipment</option><option>Other</option></select></div>
+        <div class="fg full"><label class="fl">Description</label><input class="fi" placeholder="Expense description"></div>
+        <div class="fg"><label class="fl">Amount Incl. VAT (R) *</label><input class="fi" type="number" placeholder="0.00" style="font-family:var(--mono)"></div>
+        <div class="fg"><label class="fl">Input VAT (auto)</label><input class="fi" placeholder="Auto-calculated" readonly style="background:var(--bg);font-family:var(--mono)"></div>
+        <div class="fg full"><label class="fl">Claim Reference</label><input class="fi" placeholder="HLB/2026/XXXXXX (optional)"></div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center">
-        <button class="btn btn-ghost btn-xs" onclick="addExpRow()">+ Add Row</button>
-        <div style="flex:1"></div>
-        <div style="font-size:11px;color:var(--muted)">⚠️ Petrol/Fuel: Input VAT NOT claimable per SARS rules (automatically set to R 0)</div>
+      <div style="margin-top:10px;background:var(--amber-p);border-radius:6px;padding:9px 12px;font-size:11.5px;border:1px solid rgba(217,119,6,.2)">
+        ⚠️ <strong>Petrol:</strong> Input VAT on petrol is NOT claimable per SARS rules.
       </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-expense')">Cancel</button>
-      <button class="btn btn-navy" onclick="mockSave('modal-expense','Expenses recorded (mock)')">💾 Save All Expenses</button>
+      <button class="btn btn-navy" onclick="mockSave('modal-expense','Expense recorded (mock)')">+ Add Expense</button>
     </div>
   </div>
 </div>
 
 <!-- Communicate Modal -->
 <div class="modal-ov" id="modal-communicate">
-  <div class="modal">
+  <div class="modal modal-lg">
     <div class="modal-hdr">
       <div>
         <div class="modal-title">💬 Communicate</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="comm-context-label">Invoice / Claim</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="comm-subtitle">Send invoice or request assessment</div>
       </div>
       <button class="modal-close" onclick="closeModal('modal-communicate')">×</button>
     </div>
     <div class="modal-body">
-      <div class="comm-channels">
-        <div class="comm-ch active" id="ch-email" onclick="switchCommChannel('email')">
-          <div class="comm-ch-icon">📧</div>
-          <div class="comm-ch-label">Email</div>
-          <div class="comm-ch-sub">Send via SMTP</div>
-        </div>
-        <div class="comm-ch" id="ch-whatsapp" onclick="switchCommChannel('whatsapp')">
-          <div class="comm-ch-icon">💬</div>
-          <div class="comm-ch-label">WhatsApp Web</div>
-          <div class="comm-ch-sub">Scan QR to link</div>
-        </div>
-        <div class="comm-ch coming" id="ch-sms">
-          <div class="comm-ch-icon">📱</div>
-          <div class="comm-ch-label">SMS</div>
-          <div class="comm-ch-sub">Bulk SMS API</div>
-          <div class="cs-tag">Soon</div>
+      <!-- Action Type -->
+      <div style="margin-bottom:16px">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Action</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-navy btn-sm" id="comm-btn-invoice" onclick="setCommAction('invoice')">🧾 Send Invoice</button>
+          <button class="btn btn-ghost btn-sm" id="comm-btn-excess" onclick="setCommAction('excess')">📋 Send Excess Invoice</button>
+          <button class="btn btn-ghost btn-sm" id="comm-btn-assess" onclick="setCommAction('assess')">🗺️ Request Assessment</button>
+          <button class="btn btn-ghost btn-sm" id="comm-btn-reminder" onclick="setCommAction('reminder')">⚡ Payment Reminder</button>
         </div>
       </div>
-
-      <!-- Email Panel -->
-      <div class="comm-panel active" id="comm-email">
-        <div style="margin-bottom:12px">
-          <label class="fl" style="margin-bottom:4px">Message Type</label>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-ghost btn-xs" onclick="loadCommTemplate('invoice')" style="font-size:11px">📄 Send Invoice</button>
-            <button class="btn btn-ghost btn-xs" onclick="loadCommTemplate('excess')" style="font-size:11px">💳 Excess Invoice</button>
-            <button class="btn btn-ghost btn-xs" onclick="loadCommTemplate('assessment')" style="font-size:11px">🔍 Request Assessment</button>
-            <button class="btn btn-ghost btn-xs" onclick="loadCommTemplate('reminder')" style="font-size:11px">⏰ Payment Reminder</button>
+      <!-- Message Preview -->
+      <div style="margin-bottom:16px">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Message Preview</div>
+        <textarea class="fi" id="comm-msg-preview" rows="5" style="font-size:12px;font-family:var(--mono)">Dear [Client],
+Please find attached Invoice BIG O-INV-0810 for R 6,264.05 (Incl. VAT) in respect of claim HLB/2026/466333.
+Payment is due by 27 Apr 2026. EFT: Big O Projects · FNB · Ref: INV-0810.
+Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
+      </div>
+      <!-- Channel Selection -->
+      <div>
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Send Via</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="comm-channel active" onclick="selectChannel(this,'email')">
+            <div class="ch-icon">📧</div>
+            <div style="flex:1"><div class="ch-label">Email</div><div class="ch-sub">Send to client email address · Uses Exchange template</div></div>
+            <span class="badge b-active">Active</span>
+          </div>
+          <div class="comm-channel" onclick="selectChannel(this,'whatsapp')">
+            <div class="ch-icon">💬</div>
+            <div style="flex:1"><div class="ch-label">WhatsApp Web</div><div class="ch-sub">Scan QR to link your WhatsApp · No tokens required · Free</div></div>
+            <span class="badge b-active">Active</span>
+          </div>
+          <div class="comm-channel coming" title="Coming Soon">
+            <div class="ch-icon">📱</div>
+            <div style="flex:1"><div class="ch-label">SMS</div><div class="ch-sub">Direct SMS via Twilio or local provider</div></div>
+            <span class="badge b-coming">Coming Soon</span>
           </div>
         </div>
-        <div class="fg" style="margin-bottom:10px"><label class="fl">To</label><input class="fi" id="comm-to" placeholder="recipient@email.co.za"></div>
-        <div class="fg" style="margin-bottom:10px"><label class="fl">Subject</label><input class="fi" id="comm-subject" placeholder="Invoice BIG O-INV-0811"></div>
-        <div class="fg"><label class="fl">Message</label><textarea class="fi" id="comm-body" rows="5" placeholder="Message body..."></textarea></div>
-        <div style="margin-top:8px;font-size:11px;color:var(--muted)">📎 Invoice PDF will be attached automatically</div>
       </div>
-
-      <!-- WhatsApp Panel -->
-      <div class="comm-panel" id="comm-whatsapp">
-        <div class="qr-container">
-          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px">Scan with WhatsApp to link your account</div>
-          <div class="qr-box" id="qr-box">
-            <div style="text-align:center;padding:12px">
-              <div style="font-size:28px;margin-bottom:6px">💬</div>
-              <div style="font-size:11px;color:var(--muted)">QR Code will<br>generate here</div>
-              <div style="font-size:10px;color:var(--muted);margin-top:4px">(Mock Demo)</div>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">Open WhatsApp → Linked Devices → Link a Device → Scan QR</div>
-          <div style="background:var(--green-p);border:1px solid rgba(26,122,74,.2);border-radius:8px;padding:10px;font-size:12px;margin-bottom:12px">
-            ✅ <strong>No tokens or API costs required.</strong> Uses WhatsApp Web — same as your desktop browser session.
-          </div>
+      <div id="comm-email-section" style="margin-top:14px">
+        <div class="fg"><label class="fl">Recipient Email</label><input class="fi" value="standard.bank.claims@standardbank.co.za" placeholder="Recipient email address"></div>
+        <div style="margin-top:8px" class="fg"><label class="fl">Attach File</label><input class="fi" type="text" value="INV-0810.pdf (auto-attached)" readonly style="background:var(--bg)"></div>
+      </div>
+      <div id="comm-wa-section" style="display:none;margin-top:14px">
+        <div class="qr-box">
+          <div style="font-weight:700;font-size:13px;margin-bottom:4px">Scan with WhatsApp</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Open WhatsApp → Linked Devices → Link a Device → Scan this QR</div>
+          <div class="qr-img"><div class="qr-pattern"></div><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px"><div style="background:white;width:48px;height:48px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:22px">💬</div><div style="font-size:9px;color:rgba(255,255,255,.5)">QR Mock</div></div></div>
+          <div style="font-size:11px;color:var(--muted)">QR code expires in <strong>60 seconds</strong> · Refresh to regenerate</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="mockAction('Refresh QR code')">↻ Refresh QR</button>
         </div>
-        <div class="fg" style="margin-top:10px"><label class="fl">WhatsApp Number</label><input class="fi" placeholder="27XXXXXXXXX (international format)"></div>
-        <div class="fg" style="margin-top:8px"><label class="fl">Message</label><textarea class="fi" rows="3" placeholder="Hi [Name], please find your invoice attached..."></textarea></div>
-      </div>
-
-      <!-- SMS Panel -->
-      <div class="comm-panel" id="comm-sms">
-        <div class="coming-soon">
-          <div class="coming-icon">📱</div>
-          <div class="coming-title">SMS Coming Soon</div>
-          <div class="coming-body">Bulk SMS via BulkSMS.com or Clickatell API. Configure in Settings → Integrations.</div>
+        <div style="margin-top:10px;background:var(--green-p);border-radius:6px;padding:8px 12px;font-size:11.5px;border:1px solid rgba(26,122,74,.2)">
+          ✅ <strong>No API tokens or costs required.</strong> Uses WhatsApp Web browser session.
         </div>
       </div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modal-communicate')">Cancel</button>
-      <button class="btn btn-teal" onclick="mockSave('modal-communicate','Message sent (mock)')">📤 Send</button>
+      <button class="btn btn-navy" onclick="sendCommunication()">📤 Send Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- T&C Full Text Modal (opened when user clicks link) -->
+<div class="modal-ov" id="modal-tc">
+  <div class="modal modal-lg" style="max-height:85vh">
+    <div class="modal-hdr" style="background:var(--navy);border-radius:16px 16px 0 0">
+      <div>
+        <div class="modal-title" style="color:white;font-size:15px">⬡ ClaimSync — Software Licence Agreement</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px">Imagelink Technologies (Pty) Ltd · Version 4.0 · 2026</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-tc')" style="color:rgba(255,255,255,.6)">×</button>
+    </div>
+    <div class="modal-body" style="font-size:12.5px;line-height:1.7">
+      <div style="background:var(--navy-d);color:rgba(255,255,255,.85);border-radius:8px;padding:14px 16px;font-size:11px;line-height:1.7;margin-bottom:16px;font-family:var(--mono)">
+        © 2026 Imagelink Technologies (Pty) Ltd. All rights reserved.<br>
+        Republic of South Africa · This software ("ClaimSync") is the sole and exclusive property of Imagelink Technologies (Pty) Ltd.
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">1. Proprietary Software &amp; Copyright</div>
+        <ul style="padding-left:18px;color:var(--text)">
+          <li style="margin-bottom:4px">ClaimSync is proprietary software developed, owned and copyrighted exclusively by <strong>Imagelink Technologies (Pty) Ltd</strong>.</li>
+          <li style="margin-bottom:4px">No part of this software, its source code, design, architecture, database schema, or any related intellectual property may be copied, reproduced, distributed, modified, reverse-engineered, sublicensed, or transferred to any third party without the express prior written consent of Imagelink Technologies (Pty) Ltd.</li>
+          <li>Unauthorised reproduction or distribution constitutes a violation of South African copyright law (Copyright Act 98 of 1978, as amended) and may result in civil and criminal prosecution.</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">2. Licence Grant</div>
+        <ul style="padding-left:18px;color:var(--text)">
+          <li style="margin-bottom:4px">A non-exclusive, non-transferable, revocable licence is granted to the registered organisation to use ClaimSync solely for its internal business operations.</li>
+          <li style="margin-bottom:4px">This licence may not be extended, sublicensed, or shared with any other person or entity.</li>
+          <li>The licence terminates immediately upon breach of these terms or non-payment of fees.</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">3. Restrictions</div>
+        <ul style="padding-left:18px;color:var(--text)">
+          <li style="margin-bottom:4px">You may not sell, resell, rent, lease, or commercially exploit ClaimSync.</li>
+          <li style="margin-bottom:4px">You may not create derivative works based on ClaimSync or use it to build a competing product.</li>
+          <li>You may not remove or alter any copyright, trademark, or proprietary notices.</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">4. Data &amp; Privacy (POPIA Compliance)</div>
+        <ul style="padding-left:18px;color:var(--text)">
+          <li style="margin-bottom:4px">Personal information is processed in accordance with the Protection of Personal Information Act (POPIA), Act 4 of 2013.</li>
+          <li style="margin-bottom:4px">All data stored within ClaimSync remains the property of the registered organisation.</li>
+          <li>Appropriate technical and organisational measures are implemented to protect data.</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">5. Limitation of Liability</div>
+        <p style="color:var(--text)">To the maximum extent permitted by applicable law, Imagelink Technologies (Pty) Ltd shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use or inability to use ClaimSync.</p>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">6. Governing Law</div>
+        <p style="color:var(--text)">These terms are governed by the laws of the Republic of South Africa. Any disputes shall be subject to the exclusive jurisdiction of the courts of South Africa.</p>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">7. Contact</div>
+        <p style="color:var(--text)">Imagelink Technologies (Pty) Ltd · South Africa · legal@imagelink.co.za</p>
+      </div>
+    </div>
+    <div class="modal-foot" style="justify-content:space-between;align-items:center">
+      <div style="font-size:11px;color:var(--muted)">© 2026 Imagelink Technologies (Pty) Ltd — All rights reserved</div>
+      <button class="btn btn-navy" onclick="closeModal('modal-tc');document.getElementById('tc-checkbox').checked=true;">✅ I Accept — Close</button>
     </div>
   </div>
 </div>
 
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ═══════════════════════════════════════════
    CLAIMSYNC v4.0 — COMPLETE MOCKUP ENGINE
    © 2026 Imagelink Technologies (Pty) Ltd
-   Blueprint-aligned · Mobile-responsive
+   All rights reserved — Proprietary Software
 ═══════════════════════════════════════════ */
 
 /* ── USERS ── */
 const USERS = [
   {email:'admin@bigoprojects.co.za', password:'BigO2026!', name:'Norman', role:'Administrator', initials:'N', type:'admin'},
-  {email:'field@bigoprojects.co.za', password:'Field123!', name:'Field User', role:'Team Leader', initials:'F', type:'field'},
+  {email:'field@bigoprojects.co.za', password:'Field123!', name:'Field User', role:'Team Leader (Assessor)', initials:'F', type:'field'},
 ];
 let currentUser = null;
 
@@ -2280,6 +2032,17 @@ function quickLogin(type) {
 function doLogin() {
   const email = document.getElementById('login-email').value.trim().toLowerCase();
   const pass  = document.getElementById('login-password').value;
+  // Check T&C checkbox
+  const tcCb = document.getElementById('tc-checkbox');
+  const tcErr = document.getElementById('tc-err');
+  if (tcCb && !tcCb.checked) {
+    if (tcErr) tcErr.style.display = 'block';
+    tcCb.parentElement.style.animation = 'none';
+    tcCb.parentElement.style.borderColor = 'var(--amber)';
+    setTimeout(() => { if (tcCb.parentElement) tcCb.parentElement.style.borderColor = 'var(--border-md)'; }, 2000);
+    return;
+  }
+  if (tcErr) tcErr.style.display = 'none';
   const user  = USERS.find(u => u.email === email && u.password === pass);
   if (!user) { document.getElementById('login-err').classList.add('show'); return; }
   document.getElementById('login-err').classList.remove('show');
@@ -2298,7 +2061,6 @@ function doLogin() {
   renderInvoiceTables();
   renderClaimsTable();
   showToast(`👋 Welcome back, ${user.name}!`, 'ok');
-  checkTermsOnLogin();
 }
 
 function doLogout() {
@@ -2371,7 +2133,7 @@ function switchAccTab(el, show) {
 function switchSettingsTab(el, show) {
   el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  ['set-company','set-integrations','set-users','set-billing'].forEach(id => {
+  ['set-company','set-integrations','set-users','set-billing','set-templates'].forEach(id => {
     const el2 = document.getElementById(id);
     if (el2) el2.style.display = id === show ? '' : 'none';
   });
@@ -2447,14 +2209,14 @@ function renderInvoiceTables() {
     <td class="mono td-muted" style="font-size:11px">${inv.claim}</td><td>${inv.date}</td>
     <td class="mono td-bold" style="color:${inv.status==='Outstanding'?'var(--red)':''}">${fmtR(inv.incl)}</td>
     <td>${statusBadge(inv.status)}</td>
-    <td><button class="btn btn-ghost btn-xs" onclick="mockAction('View ${inv.no}')">View</button></td>
+    <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View ${inv.no}')">View</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('${inv.client}','BIG O-${inv.no}')">💬</button></div></td>
   </tr>`).join('');
   if (tbody2) tbody2.innerHTML = INVOICES_PHA.map((inv,i) => `<tr>
     <td>${i+1}</td><td class="mono td-bold">BIG O-${inv.no}</td><td>${inv.client}</td>
     <td class="mono td-muted" style="font-size:11px">${inv.claim}</td><td>${inv.date}</td>
     <td class="mono td-bold">${fmtR(inv.incl)}</td>
     <td>${statusBadge(inv.status)}</td>
-    <td><button class="btn btn-ghost btn-xs" onclick="mockAction('View ${inv.no}')">View</button></td>
+    <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View ${inv.no}')">View</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('${inv.client}','BIG O-${inv.no}')">💬</button></div></td>
   </tr>`).join('');
 }
 
@@ -2472,7 +2234,7 @@ function renderClaimsTable() {
     <td><div style="display:flex;gap:4px">
       <button class="btn btn-ghost btn-xs" onclick="mockAction('View ${c.ref}')">View</button>
       <button class="btn btn-ghost btn-xs" onclick="showPanel('invoices')">Invoice</button>
-      <button class="btn btn-teal btn-xs" onclick="openCommunicate('claim','${c.ref}','${c.client}')">💬</button>
+      <button class="btn btn-navy btn-xs" onclick="openCommunicate('${c.client}','${c.ref}')">💬</button>
     </div></td>
   </tr>`).join('');
 }
@@ -2507,24 +2269,41 @@ function initCharts() {
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:10}}}}
     });
   }
+  // VAT AI trend chart
+  const vc = document.getElementById('chart-vat-ai');
+  if (vc) {
+    new Chart(vc, {
+      type: 'bar',
+      data: {
+        labels: ['Nov–Dec 2025','Jan–Feb 2026'],
+        datasets: [
+          {label:'Output VAT',data:[45210,151899],backgroundColor:'rgba(192,57,43,0.8)',borderRadius:6},
+          {label:'Input VAT',data:[4320,13100],backgroundColor:'rgba(15,95,90,0.75)',borderRadius:6},
+          {label:'Net Payable',data:[40890,138799],backgroundColor:'rgba(10,45,94,0.6)',borderRadius:6},
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:10}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>'R '+Number(v/1000).toFixed(0)+'k'}}}}
+    });
+  }
 }
 
 /* ── MODALS ── */
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-ov').forEach(ov => {
-  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
-});
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('open');
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
+}
+/* modal-ov click-outside listener added after DOM loads */
 
 function mockSave(modalId, msg) {
   closeModal(modalId);
   showToast('✅ ' + msg, 'ok');
 }
 
-function calcModalVAT() {
-  const incl = parseFloat(document.getElementById('ni-incl').value) || 0;
-  document.getElementById('ni-excl').value = incl ? 'R ' + (incl/1.15).toFixed(2) : '';
-}
+function calcModalVAT() { /* deprecated - invoice now uses line item table */ }
 
 /* ── CLIENT TYPE SELECTOR ── */
 function setClientType(type) {
@@ -2558,4 +2337,141 @@ function triggerSync() {
 
 /* ── TOAST ── */
 function showToast(msg, type='inf') {
-  const wrap = document.getElementBy
+  const wrap = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(() => {
+    t.style.animation = 'toastOut .3s ease forwards';
+    setTimeout(() => { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, 4000);
+}
+
+/* ── KEYBOARD SHORTCUTS ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-ov.open').forEach(m => m.classList.remove('open'));
+    closeSidebar();
+    closeDD();
+  }
+});
+
+/* ── TERMS & CONDITIONS — inline checkbox on login ── */
+function openTCModal() {
+  openModal('modal-tc');
+}
+
+/* ── VAT TAB SWITCHING ── */
+function switchVatTab(el, show) {
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['vat-return','vat-ai','vat-submit','vat-audit'].forEach(id => {
+    const el2 = document.getElementById(id);
+    if (el2) el2.style.display = id === show ? '' : 'none';
+  });
+}
+
+/* ── COMMUNICATE MODAL ── */
+function openCommunicate(client, ref) {
+  document.getElementById('comm-subtitle').textContent = client + ' · ' + ref;
+  openModal('modal-communicate');
+}
+function setCommAction(type) {
+  ['invoice','excess','assess','reminder'].forEach(t => {
+    const btn = document.getElementById('comm-btn-'+t);
+    if (btn) btn.className = 'btn btn-ghost btn-sm';
+  });
+  const active = document.getElementById('comm-btn-'+type);
+  if (active) active.className = 'btn btn-navy btn-sm';
+  const msgs = {
+    invoice: 'Dear [Client],\nPlease find attached your invoice for the completed repair work.\nPayment is due within 7 days. Ref: [InvoiceNo].\nKind regards, Norman · Big O Projects · 082 402 8027',
+    excess: 'Dear [Client],\nPlease find attached your Excess Invoice as per your policy requirements.\nKindly settle the excess amount directly. Ref: [InvoiceNo].\nBig O Projects',
+    assess: 'Dear [Client],\nYour assessment has been scheduled. Our assessor will contact you to confirm the date and time.\nPlease ensure access to the property. Big O Projects · 082 402 8027',
+    reminder: 'Dear [Client],\nThis is a friendly reminder that your invoice is now overdue.\nPlease arrange payment at your earliest convenience. Ref: [InvoiceNo].\nBig O Projects'
+  };
+  document.getElementById('comm-msg-preview').value = msgs[type] || '';
+}
+function selectChannel(el, type) {
+  document.querySelectorAll('.comm-channel:not(.coming)').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('comm-email-section').style.display = type === 'email' ? '' : 'none';
+  document.getElementById('comm-wa-section').style.display = type === 'whatsapp' ? '' : 'none';
+}
+function sendCommunication() {
+  closeModal('modal-communicate');
+  showToast('📤 Message sent successfully (mock)', 'ok');
+}
+
+/* ── ITEM LINE TABLE ── */
+function addItemRow(tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  const addRow = document.getElementById('bulk-add-row');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input class="fi-sm" placeholder="Item description"></td>
+    <td><input class="fi-sm mono" type="number" value="1" min="1" oninput="calcItemRow(this)"></td>
+    <td><input class="fi-sm mono" type="number" placeholder="0.00" oninput="calcItemRow(this)"></td>
+    <td><select class="fi-sm" onchange="calcItemRow(this)"><option value="15">15%</option><option value="0">0%</option></select></td>
+    <td><input class="fi-sm mono" readonly style="background:var(--bg)"></td>
+    <td><input class="fi-sm mono" readonly style="background:var(--bg);font-weight:700"></td>
+    <td><button onclick="removeItemRow(this)" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:2px">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+function removeItemRow(btn) {
+  btn.closest('tr').remove();
+}
+function calcItemRow(input) {
+  const row = input.closest('tr');
+  if (!row) return;
+  const inputs = row.querySelectorAll('input');
+  const qty = parseFloat(inputs[1] ? inputs[1].value : 1) || 0;
+  const rate = parseFloat(inputs[2] ? inputs[2].value : 0) || 0;
+  const sel = row.querySelector('select');
+  const vatPct = sel ? parseFloat(sel.value) / 100 : 0.15;
+  const excl = qty * rate;
+  const vatAmt = excl * vatPct;
+  const incl = excl + vatAmt;
+  if (inputs[3]) inputs[3].value = vatAmt > 0 ? 'R ' + vatAmt.toFixed(2) : 'R 0.00';
+  if (inputs[4]) inputs[4].value = incl > 0 ? 'R ' + incl.toFixed(2) : 'R 0.00';
+}
+
+/* ── EXPENSE BULK GRID ── */
+function addExpenseRow() {
+  const tbody = document.getElementById('bulk-expense-body');
+  if (!tbody) return;
+  const addRow = document.getElementById('bulk-add-row');
+  const rowCount = tbody.querySelectorAll('tr:not(#bulk-add-row)').length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="color:var(--muted);font-size:11px;text-align:center">${rowCount}</td>
+    <td><input class="fi-xs" type="date"></td>
+    <td><select class="fi-xs"><option>Materials &amp; Hardware</option><option>Fuel &amp; Transport</option><option>Subcontractor Costs</option><option>Office Expenses</option><option>Equipment</option><option>Other</option></select></td>
+    <td><input class="fi-xs mono" type="text" placeholder="0.00"></td>
+    <td><select class="fi-xs"><option>FNB Operating Account</option><option>Petty Cash</option><option>Credit Card</option></select></td>
+    <td><input class="fi-xs" placeholder="Supplier name"></td>
+    <td><input class="fi-xs" placeholder="Location"></td>
+    <td><select class="fi-xs"><option>Standard VAT @ 15%</option><option>Zero-Rated</option><option>Exempt (Petrol)</option><option>No VAT</option></select></td>
+    <td><select class="fi-xs"><option>Direct Cost</option><option>Operating Expense</option><option>Capital</option></select></td>
+    <td><input class="fi-xs mono" placeholder="0.00" readonly style="background:var(--bg)"></td>
+    <td><input class="fi-xs" placeholder="HLB/2026/..."></td>
+    <td><input class="fi-xs" placeholder="CAT 2026"></td>
+    <td><button class="btn btn-ghost btn-xs" onclick="removeExpRow(this)" style="padding:2px 6px;color:var(--red)">✕</button></td>`;
+  tbody.insertBefore(tr, addRow);
+}
+function removeExpRow(btn) { btn.closest('tr').remove(); }
+
+/* ── INIT & DOM READY ── */
+window.addEventListener('DOMContentLoaded', function() {
+  // Wire up modal click-outside-to-close for ALL modals (including auth-time modal-tc)
+  document.querySelectorAll('.modal-ov').forEach(function(ov) {
+    ov.addEventListener('click', function(e) {
+      if (e.target === ov) ov.classList.remove('open');
+    });
+  });
+});
+detectDevice();
+</script>
+</body>
+</html>
