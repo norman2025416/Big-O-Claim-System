@@ -389,6 +389,31 @@ textarea.fi{resize:vertical}
 ═══════════════════════════════════════════ */
 .device-badge{display:none;position:fixed;top:60px;right:12px;background:rgba(10,45,94,.9);color:rgba(255,255,255,.7);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:20px;z-index:99;text-transform:uppercase}
 @media(max-width:600px){.device-badge{display:block}}
+
+/* ── MANAGEMENT ACCOUNTS / AFS / FIN MODEL / FUNDING / DOC VAULT ── */
+.fin-tab-content{display:none}.fin-tab-content.active{display:block}
+.scenario-card{border:1.5px solid var(--border-md);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;position:relative}
+.scenario-card:hover{border-color:var(--navy);background:#F8F9FC}
+.scenario-card.selected{border-color:var(--gold);background:var(--gold-p)}
+.scenario-card .sc-badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px}
+.doc-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border-md);border-radius:8px;transition:background .12s;cursor:pointer}
+.doc-item:hover{background:#F8F9FC}
+.doc-item .doc-icon{font-size:24px;flex-shrink:0}
+.doc-item .doc-name{font-weight:700;font-size:12.5px;color:var(--navy)}
+.doc-item .doc-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.doc-item .doc-expiry{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:auto;flex-shrink:0}
+.expiry-ok{background:var(--green-p);color:var(--green)}
+.expiry-warn{background:var(--amber-p);color:var(--amber)}
+.expiry-red{background:var(--red-p);color:var(--red)}
+.upload-zone{border:2px dashed var(--border-md);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:all .15s}
+.upload-zone:hover{border-color:var(--navy);background:#F8F9FC}
+.model-slider{width:100%;accent-color:var(--navy)}
+.funding-kpi{background:white;border:1px solid var(--border-md);border-radius:10px;padding:14px;text-align:center}
+.funding-kpi .fk-val{font-size:20px;font-weight:700;font-family:var(--mono);color:var(--navy);margin-bottom:4px}
+.funding-kpi .fk-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.risk-bar{height:12px;border-radius:6px;background:var(--bg);overflow:hidden}
+.risk-fill{height:100%;border-radius:6px;transition:width .5s ease}
+
 </style>
 </head>
 <body>
@@ -501,6 +526,11 @@ textarea.fi{resize:vertical}
       <div class="nav-sec" style="margin-top:8px">Finance</div>
       <div class="nav-item" id="nav-accounting" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
       <div class="nav-item" id="nav-vatsars" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
+      <div class="nav-item" id="nav-mgmtaccounts" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
+      <div class="nav-item" id="nav-afs" onclick="showPanel('afs')"><span class="nav-icon">📑</span> Annual Fin. Stmts</div>
+      <div class="nav-item" id="nav-finmodel" onclick="showPanel('finmodel')"><span class="nav-icon">🔮</span> Fin. Modelling</div>
+      <div class="nav-item" id="nav-funding" onclick="showPanel('funding')"><span class="nav-icon">💼</span> Funding &amp; Credit</div>
+      <div class="nav-item" id="nav-docvault" onclick="showPanel('docvault')"><span class="nav-icon">🗄️</span> Document Vault</div>
       <div class="nav-item" id="nav-reports" onclick="showPanel('reports')"><span class="nav-icon">📈</span> Reports</div>
 
       <div class="nav-sec" style="margin-top:8px">System</div>
@@ -1465,6 +1495,384 @@ textarea.fi{resize:vertical}
 </div>
 
 <!-- ════════════════════════════════════════
+     MANAGEMENT ACCOUNTS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-mgmtaccounts">
+  <div class="ph">
+    <div><div class="ph-title">Management Accounts</div><div class="ph-sub">SA Accounting Standards · AI Advisory · Export PDF / Excel / CSV</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export Management Accounts PDF')">📄 Export PDF</button>
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export Management Accounts Excel')">📊 Export Excel</button>
+      <button class="btn btn-gold btn-sm" onclick="showMgmtAIAdvisory()">🤖 AI Explain</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+    <div class="stat s-green"><div class="sl">Gross Revenue</div><div class="sv">R 1,164,559</div><div class="ss">Incl. VAT · Q1 2026</div></div>
+    <div class="stat s-navy"><div class="sl">Net Profit</div><div class="sv">R 663,437</div><div class="ss">Margin: 65.5%</div></div>
+    <div class="stat s-teal"><div class="sl">Total Assets</div><div class="sv">R 901,358</div><div class="ss">As at 27 Mar 2026</div></div>
+    <div class="stat s-red"><div class="sl">Total Liabilities</div><div class="sv">R 157,231</div><div class="ss">VAT + AP</div></div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchFinTab(this,'mga-income','mga')">📈 Income Statement</div>
+    <div class="tab" onclick="switchFinTab(this,'mga-balance','mga')">⚖️ Balance Sheet</div>
+    <div class="tab" onclick="switchFinTab(this,'mga-cashflow','mga')">💸 Cash Flow</div>
+    <div class="tab" onclick="switchFinTab(this,'mga-ai','mga')">🤖 AI Advisory</div>
+  </div>
+  <!-- Income Statement -->
+  <div class="fin-tab-content active" id="mga-income">
+    <div class="two-col">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Income Statement</div><div class="card-sub">01 Jan – 27 Mar 2026 · SA Standards</div></div>
+        <div class="card-body" style="font-size:12.5px">
+          <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:6px;margin-bottom:10px">REVENUE</div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Insurance Repair Revenue — Bigo Direct</span><span class="mono">R 849,893.81</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Insurance Repair Revenue — Phahamo</span><span class="mono">R 314,665.46</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 10px;background:var(--blue-p);border-radius:6px;margin:8px 0;font-weight:700;color:var(--navy);gap:8px"><span>GROSS REVENUE (Incl. VAT)</span><span class="mono">R 1,164,559.27</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px;color:var(--muted)"><span>Less: Output VAT</span><span class="mono">(R 151,899.04)</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 10px;background:#F0F4FF;border-radius:6px;margin:6px 0;font-weight:700;gap:8px"><span>NET REVENUE (Excl. VAT)</span><span class="mono">R 1,012,660.23</span></div>
+          <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--red);border-bottom:2px solid var(--red);padding-bottom:6px;margin:14px 0 10px">DIRECT COSTS (Cost of Sales)</div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Subcontractor Costs</span><span class="mono" style="color:var(--red)">(R 248,390.00)</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Materials &amp; Hardware</span><span class="mono" style="color:var(--red)">(R 72,150.00)</span></div>
+          <div style="display:flex;justify-content:space-between;padding:7px 10px;background:var(--red-p);border-radius:6px;margin:6px 0;font-weight:700;color:var(--red);gap:8px"><span>TOTAL DIRECT COSTS</span><span class="mono">(R 320,540.00)</span></div>
+          <div style="display:flex;justify-content:space-between;padding:9px 10px;background:var(--teal-l);border-radius:6px;margin:6px 0;font-weight:700;font-size:13px;color:var(--teal);gap:8px"><span>GROSS PROFIT</span><span class="mono">R 692,120.23</span></div>
+          <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);border-bottom:2px solid var(--amber);padding-bottom:6px;margin:14px 0 10px">OPERATING EXPENSES</div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Fuel &amp; Transport</span><span class="mono" style="color:var(--amber)">(R 18,432.00)</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Admin &amp; Sundry</span><span class="mono" style="color:var(--amber)">(R 10,251.18)</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px;background:var(--green-p);border-radius:6px;margin-top:10px;font-weight:700;font-size:14px;color:var(--green);gap:8px"><span>NET PROFIT BEFORE TAX</span><span class="mono">R 663,437.05</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Key Performance Ratios</div></div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:12px;font-size:12.5px">
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Gross Profit Margin</span><strong style="color:var(--green)">68.4%</strong></div><div class="risk-bar"><div class="risk-fill" style="width:68.4%;background:var(--green)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Net Profit Margin</span><strong style="color:var(--teal)">65.5%</strong></div><div class="risk-bar"><div class="risk-fill" style="width:65.5%;background:var(--teal)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Collection Rate</span><strong style="color:var(--navy)">98.8%</strong></div><div class="risk-bar"><div class="risk-fill" style="width:98.8%;background:var(--navy)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Cost of Sales Ratio</span><strong style="color:var(--amber)">27.5%</strong></div><div class="risk-bar"><div class="risk-fill" style="width:27.5%;background:var(--amber)"></div></div></div>
+            <div style="margin-top:8px;padding:12px;background:var(--green-p);border-radius:8px;border:1px solid rgba(26,122,74,.2)">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px">AI Assessment</div>
+              <div style="font-size:12px">Excellent performance. 65.5% net margin is well above the construction industry average of 8–12%. Strong cash position at R 849,894. Single outstanding invoice is the only risk factor.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Balance Sheet tab -->
+  <div class="fin-tab-content" id="mga-balance">
+    <div class="two-col">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Balance Sheet</div><div class="card-sub">As at 27 March 2026</div></div>
+        <div class="card-body" style="font-size:12.5px">
+          <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:6px;margin-bottom:10px">ASSETS</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Current Assets</div>
+          <div style="display:flex;justify-content:space-between;padding:4px 8px;gap:8px"><span>Bank Account (FNB Operating)</span><span class="mono">R 849,893.81</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 8px;gap:8px"><span>Accounts Receivable</span><span class="mono">R 6,264.05</span></div>
+          <div style="font-size:11px;color:var(--muted);margin:8px 0 5px;text-transform:uppercase;letter-spacing:.5px">Fixed Assets</div>
+          <div style="display:flex;justify-content:space-between;padding:4px 8px;gap:8px"><span>Equipment &amp; Tools</span><span class="mono">R 45,200.00</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--blue-p);border-radius:6px;margin:8px 0;font-weight:700;color:var(--navy);gap:8px"><span>TOTAL ASSETS</span><span class="mono">R 901,357.86</span></div>
+          <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--red);border-bottom:2px solid var(--red);padding-bottom:6px;margin:12px 0 10px">LIABILITIES</div>
+          <div style="display:flex;justify-content:space-between;padding:4px 8px;gap:8px"><span>VAT Payable (Output VAT)</span><span class="mono" style="color:var(--red)">R 138,798.91</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 8px;gap:8px"><span>Accounts Payable</span><span class="mono" style="color:var(--red)">R 18,432.00</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--red-p);border-radius:6px;margin:6px 0;font-weight:700;color:var(--red);gap:8px"><span>TOTAL LIABILITIES</span><span class="mono">R 157,230.91</span></div>
+          <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--teal);border-bottom:2px solid var(--teal);padding-bottom:6px;margin:12px 0 10px">EQUITY</div>
+          <div style="display:flex;justify-content:space-between;padding:4px 8px;gap:8px"><span>Retained Earnings</span><span class="mono">R 744,126.95</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--teal-l);border-radius:6px;margin:6px 0;font-weight:700;color:var(--teal);gap:8px"><span>TOTAL EQUITY</span><span class="mono">R 744,126.95</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px;background:var(--green-p);border-radius:6px;margin-top:8px;font-weight:700;font-size:13px;color:var(--green);gap:8px"><span>TOTAL L + EQUITY</span><span class="mono">R 901,357.86 ✅</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Liquidity Ratios</div></div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:12px;font-size:12.5px">
+            <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--green-p);border-radius:8px;align-items:center"><span>Current Ratio</span><strong style="font-family:var(--mono);color:var(--green);font-size:18px">5.56</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--green-p);border-radius:8px;align-items:center"><span>Quick Ratio</span><strong style="font-family:var(--mono);color:var(--green);font-size:18px">5.38</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--blue-p);border-radius:8px;align-items:center"><span>Debt-to-Equity</span><strong style="font-family:var(--mono);color:var(--blue);font-size:18px">0.21</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 12px;background:var(--green-p);border-radius:8px;align-items:center"><span>Return on Equity</span><strong style="font-family:var(--mono);color:var(--green);font-size:18px">89.2%</strong></div>
+            <div style="padding:12px;background:var(--green-p);border-radius:8px;border:1px solid rgba(26,122,74,.2);font-size:12px"><strong style="color:var(--green)">✅ Excellent liquidity.</strong> Current ratio of 5.56 is far above the healthy threshold of 2.0. The company can easily meet all short-term obligations. Very low leverage (D/E 0.21).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Cash Flow -->
+  <div class="fin-tab-content" id="mga-cashflow">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Cash Flow Statement</div><div class="card-sub">01 Jan – 27 Mar 2026</div></div>
+      <div class="card-body" style="font-size:12.5px">
+        <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:6px;margin-bottom:10px">OPERATING ACTIVITIES</div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Cash received from customers</span><span class="mono" style="color:var(--green)">+ R 1,158,295.22</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Payments to subcontractors</span><span class="mono" style="color:var(--red)">(R 248,390.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Materials &amp; supplies paid</span><span class="mono" style="color:var(--red)">(R 72,150.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>Fuel &amp; transport</span><span class="mono" style="color:var(--red)">(R 18,432.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--green-p);border-radius:6px;margin:8px 0;font-weight:700;color:var(--green);gap:8px"><span>NET CASH FROM OPERATIONS</span><span class="mono">+ R 819,323.22</span></div>
+        <div style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);border-bottom:2px solid var(--amber);padding-bottom:6px;margin:12px 0 10px">FINANCING ACTIVITIES</div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--border);gap:8px"><span>VAT paid to SARS (Nov–Dec 2025)</span><span class="mono" style="color:var(--red)">(R 40,890.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--amber-p);border-radius:6px;margin:8px 0;font-weight:700;color:var(--amber);gap:8px"><span>NET CASH USED IN FINANCING</span><span class="mono">(R 40,890.00)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px;background:var(--navy);border-radius:6px;margin-top:10px;font-weight:700;font-size:13px;color:white;gap:8px"><span>NET INCREASE IN CASH</span><span class="mono">+ R 778,433.22</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)"><span>Opening cash balance (01 Jan 2026)</span><span class="mono">R 71,460.59</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 10px;background:var(--green-p);border-radius:6px;margin-top:6px;font-weight:700;font-size:14px;color:var(--green);gap:8px"><span>CLOSING CASH (27 Mar 2026)</span><span class="mono">R 849,893.81</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- AI Advisory -->
+  <div class="fin-tab-content" id="mga-ai">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">🤖 AI Management Account Advisory</div><div class="card-sub">SA Accounting Standards interpretation &amp; recommendations</div></div>
+      <div class="card-body">
+        <div style="background:linear-gradient(135deg,var(--navy),#1A4A8A);color:white;border-radius:12px;padding:20px;margin-bottom:16px">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;opacity:.6;margin-bottom:8px">AI Overall Assessment</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:8px">Excellent financial health — Q1 2026</div>
+          <div style="font-size:13px;line-height:1.65;opacity:.9">Big O Projects demonstrates outstanding financial performance for Q1 2026. The 65.5% net profit margin significantly outperforms the industry average of 8–12%. Cash position of R 849,894 provides strong liquidity with a current ratio of 5.56. The business is well-capitalised and carries minimal debt risk (D/E = 0.21).</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+          <div style="padding:14px;background:var(--green-p);border:1px solid rgba(26,122,74,.2);border-radius:10px"><div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:6px">✅ Strengths</div><ul style="font-size:12px;padding-left:16px;display:flex;flex-direction:column;gap:4px"><li>Exceptional profit margins vs industry</li><li>98.8% invoice collection rate</li><li>Strong cash position with zero long-term debt</li><li>Diversified revenue (Bigo + Phahamo)</li></ul></div>
+          <div style="padding:14px;background:var(--amber-p);border:1px solid rgba(217,119,6,.2);border-radius:10px"><div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;margin-bottom:6px">⚠️ Watch Points</div><ul style="font-size:12px;padding-left:16px;display:flex;flex-direction:column;gap:4px"><li>VAT payable R 138,799 due 30 Apr</li><li>Single outstanding invoice risk</li><li>Revenue concentrated in CAT events</li><li>VAT registration still pending</li></ul></div>
+          <div style="padding:14px;background:var(--blue-p);border:1px solid rgba(29,78,216,.15);border-radius:10px"><div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;margin-bottom:6px">📋 Recommendations</div><ul style="font-size:12px;padding-left:16px;display:flex;flex-direction:column;gap:4px"><li>Register for VAT immediately</li><li>Build reserve fund for off-peak periods</li><li>Consider formalising Phahamo relationship</li><li>Engage accountant for AFS preparation</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ANNUAL FINANCIAL STATEMENTS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-afs">
+  <div class="ph">
+    <div><div class="ph-title">Annual Financial Statements</div><div class="ph-sub">SA Chartered Accounting Standards · Historic comparison · AI analysis</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Upload historic AFS')">📤 Upload Historic AFS</button>
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export AFS PDF')">📄 Export PDF</button>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Generate AFS')">⚡ Generate AFS</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+    <div class="stat s-navy"><div class="sl">Current Period</div><div class="sv" style="font-size:16px">Q1 2026</div><div class="ss">Jan – Mar 2026</div></div>
+    <div class="stat s-teal"><div class="sl">Historic Periods</div><div class="sv">2</div><div class="ss">2024 · 2025 uploaded</div></div>
+    <div class="stat s-green"><div class="sl">Revenue Growth</div><div class="sv">+34.2%</div><div class="ss">vs 2025 equivalent</div></div>
+    <div class="stat s-gold"><div class="sl">Profit Growth</div><div class="sv">+41.8%</div><div class="ss">vs 2025 equivalent</div></div>
+  </div>
+  <div class="alert info" style="margin:0">
+    <div class="alert-icon">🤖</div>
+    <div><div class="alert-title">AI Comparative Analysis — Historic vs Current</div>
+    <div class="alert-body">Revenue increased 34.2% year-on-year. Net profit margin improved from 58.1% (2025) to 65.5% (2026 Q1) driven by subcontractor cost optimisation. Cash position is 312% higher than the same period in 2025, reflecting improved working capital management. No material liabilities beyond VAT obligations.</div></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Historic AFS Comparison</div><div class="card-sub">FY2024 vs FY2025 vs Q1 2026</div></div>
+      <div class="card-body">
+        <div style="overflow-x:auto">
+          <table class="tbl">
+            <thead><tr><th>Metric</th><th>FY2024</th><th>FY2025</th><th>Q1 2026</th><th>Trend</th></tr></thead>
+            <tbody>
+              <tr><td>Revenue (Incl. VAT)</td><td class="mono">R 624,000</td><td class="mono">R 868,000</td><td class="mono">R 1,164,559</td><td style="color:var(--green);font-weight:700">↑ 34.2%</td></tr>
+              <tr><td>Gross Profit</td><td class="mono">R 389,000</td><td class="mono">R 504,000</td><td class="mono">R 692,120</td><td style="color:var(--green);font-weight:700">↑ 37.3%</td></tr>
+              <tr><td>Net Profit</td><td class="mono">R 298,000</td><td class="mono">R 467,000</td><td class="mono">R 663,437</td><td style="color:var(--green);font-weight:700">↑ 41.8%</td></tr>
+              <tr><td>Net Margin</td><td class="mono">47.8%</td><td class="mono">53.8%</td><td class="mono">65.5%</td><td style="color:var(--green);font-weight:700">↑ 11.7pp</td></tr>
+              <tr><td>Total Assets</td><td class="mono">R 312,000</td><td class="mono">R 542,000</td><td class="mono">R 901,358</td><td style="color:var(--green);font-weight:700">↑ 66.3%</td></tr>
+              <tr><td>Cash &amp; Equivalents</td><td class="mono">R 198,000</td><td class="mono">R 206,000</td><td class="mono">R 849,894</td><td style="color:var(--green);font-weight:700">↑ 312%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Upload Historic AFS</div><div class="card-sub">PDF or Excel · AI will analyse and compare</div></div>
+      <div class="card-body">
+        <div class="upload-zone" onclick="mockAction('Upload AFS document')">
+          <div style="font-size:36px;margin-bottom:10px">📑</div>
+          <div style="font-weight:700;font-size:13px;color:var(--navy);margin-bottom:4px">Drop AFS file here or click to browse</div>
+          <div style="font-size:11.5px;color:var(--muted)">Supported: PDF, Excel, CSV · Max 10MB per file</div>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--green-p);border-radius:8px;font-size:12px;border:1px solid rgba(26,122,74,.2)">
+            <span>📑</span><div style="flex:1"><strong>AFS_FY2025.pdf</strong><div style="font-size:10px;color:var(--muted)">Uploaded 15 Jan 2026 · 2.4 MB</div></div><span class="badge b-active">Analysed</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--green-p);border-radius:8px;font-size:12px;border:1px solid rgba(26,122,74,.2)">
+            <span>📑</span><div style="flex:1"><strong>AFS_FY2024.pdf</strong><div style="font-size:10px;color:var(--muted)">Uploaded 15 Jan 2026 · 1.8 MB</div></div><span class="badge b-active">Analysed</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-navy btn-sm" onclick="mockAction('Run AI comparison')">🤖 Run AI Comparison</button>
+          <button class="btn btn-ghost btn-sm" onclick="mockAction('Export AFS comparison')">📊 Export Comparison</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     FINANCIAL MODELLING
+════════════════════════════════════════ -->
+<div class="panel" id="panel-finmodel">
+  <div class="ph">
+    <div><div class="ph-title">Financial Modelling</div><div class="ph-sub">Historic + current data · AI scenario simulations · Profitability targets</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export financial model Excel')">📊 Export Excel</button>
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export financial model PDF')">📄 Export PDF</button>
+      <button class="btn btn-gold btn-sm" onclick="acceptFinModel()">✅ Accept Selected Model</button>
+    </div>
+  </div>
+  <div class="alert info" style="margin:0"><div class="alert-icon">🔮</div><div><div class="alert-title">AI Financial Modelling Engine</div><div class="alert-body">Combining FY2024, FY2025 and Q1 2026 data to project forward scenarios. Select a model below, adjust the sliders, and click Accept to lock into reporting. All scenarios exportable.</div></div></div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Model Inputs — Adjust Assumptions</div></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px">
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Annual Revenue Target (R)</label><input class="model-slider" type="range" min="500000" max="5000000" value="1500000" step="50000" oninput="updateModelSliders(this,'model-rev-val')"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px"><span>R 500k</span><span id="model-rev-val" style="font-weight:700;color:var(--navy)">R 1,500,000</span><span>R 5M</span></div></div>
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Cost of Sales % of Revenue</label><input class="model-slider" type="range" min="10" max="60" value="28" oninput="updateModelSliders(this,'model-cos-val')"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px"><span>10%</span><span id="model-cos-val" style="font-weight:700;color:var(--navy)">28%</span><span>60%</span></div></div>
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Operating Expenses (R/year)</label><input class="model-slider" type="range" min="20000" max="500000" value="120000" step="10000" oninput="updateModelSliders(this,'model-opex-val')"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px"><span>R 20k</span><span id="model-opex-val" style="font-weight:700;color:var(--navy)">R 120,000</span><span>R 500k</span></div></div>
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Growth Rate (YoY %)</label><input class="model-slider" type="range" min="-20" max="100" value="34" oninput="updateModelSliders(this,'model-growth-val')"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px"><span>-20%</span><span id="model-growth-val" style="font-weight:700;color:var(--navy)">34%</span><span>100%</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">
+    <div class="scenario-card selected" id="sc-growth" onclick="selectScenario(this,'growth')">
+      <div class="sc-badge badge b-green">Selected</div>
+      <div style="font-size:18px;margin-bottom:8px">🚀</div>
+      <div style="font-weight:700;font-size:14px;color:var(--navy);margin-bottom:4px">Growth Scenario</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Maintain current growth trajectory (34% YoY). Expand claim portfolio to 150 claims by Q4 2026.</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span>Projected FY2026 Revenue</span><strong class="mono" style="color:var(--green)">R 3.2M</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Net Profit (projected)</span><strong class="mono" style="color:var(--green)">R 2.1M</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Required team size</span><strong>6 assessors</strong></div>
+      </div>
+    </div>
+    <div class="scenario-card" id="sc-profit" onclick="selectScenario(this,'profit')">
+      <div style="font-size:18px;margin-bottom:8px">📈</div>
+      <div style="font-weight:700;font-size:14px;color:var(--navy);margin-bottom:4px">Profit Optimisation</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Stable revenue, reduce costs. Focus on margin improvement and operational efficiency.</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span>Projected FY2026 Revenue</span><strong class="mono" style="color:var(--navy)">R 1.8M</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Net Profit (projected)</span><strong class="mono" style="color:var(--navy)">R 1.3M</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Target margin</span><strong>72%+</strong></div>
+      </div>
+    </div>
+    <div class="scenario-card" id="sc-conservative" onclick="selectScenario(this,'conservative')">
+      <div style="font-size:18px;margin-bottom:8px">🛡️</div>
+      <div style="font-weight:700;font-size:14px;color:var(--navy);margin-bottom:4px">Conservative</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Assume slower growth (15% YoY). Reduced CAT event frequency. Conservative cash preservation.</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span>Projected FY2026 Revenue</span><strong class="mono" style="color:var(--amber)">R 1.2M</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Net Profit (projected)</span><strong class="mono" style="color:var(--amber)">R 750k</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Required injection</span><strong>None</strong></div>
+      </div>
+    </div>
+    <div class="scenario-card" id="sc-expansion" onclick="selectScenario(this,'expansion')">
+      <div style="font-size:18px;margin-bottom:8px">🏗️</div>
+      <div style="font-weight:700;font-size:14px;color:var(--navy);margin-bottom:4px">Expansion (Funding Required)</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Aggressive expansion. Hire 10 assessors, acquire equipment, target R 10M revenue by FY2027.</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span>Projected FY2026 Revenue</span><strong class="mono" style="color:var(--blue)">R 5.5M</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Funding required</span><strong class="mono" style="color:var(--red)">R 750,000</strong></div>
+        <div style="display:flex;justify-content:space-between"><span>Break-even</span><strong>Q3 2026</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     FUNDING & CREDIT APPLICATION
+════════════════════════════════════════ -->
+<div class="panel" id="panel-funding">
+  <div class="ph">
+    <div><div class="ph-title">Funding &amp; Credit Application</div><div class="ph-sub">Automated funding pack · Loan simulation · Affordability scoring · Export PDF</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Export funding pack PDF')">📄 Export Pack</button>
+      <button class="btn btn-gold btn-sm" onclick="runAffordabilitySim()">🤖 Run Simulation</button>
+    </div>
+  </div>
+  <div class="alert ok" style="margin:0"><div class="alert-icon">✅</div><div><div class="alert-title">Funding Pack Ready to Compile</div><div class="alert-body">ClaimSync automatically compiles your management accounts, AFS, financial model, and company documents into a single professional funding proposal pack. Fill in the details below and export as PDF.</div></div></div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">Loan Application Details</div></div>
+      <div class="card-body">
+        <div class="fgrid">
+          <div class="fg full"><label class="fl">Purpose of Funding</label><select class="fi"><option>Business expansion — additional equipment &amp; staff</option><option>Working capital — bridge funding</option><option>Vehicle / transport acquisition</option><option>Property / premises</option><option>Technology infrastructure</option></select></div>
+          <div class="fg"><label class="fl">Loan Amount Requested (R)</label><input class="fi mono" type="number" id="loan-amount" value="750000" oninput="calcLoanSim()"></div>
+          <div class="fg"><label class="fl">Loan Term (months)</label><select class="fi" id="loan-term" onchange="calcLoanSim()"><option value="12">12 months</option><option value="24">24 months</option><option value="36" selected>36 months</option><option value="48">48 months</option><option value="60">60 months</option></select></div>
+          <div class="fg"><label class="fl">Interest Rate (% p.a.)</label><input class="fi mono" type="number" id="loan-rate" value="12.5" step="0.5" oninput="calcLoanSim()"></div>
+          <div class="fg"><label class="fl">Lender Type</label><select class="fi"><option>Commercial Bank (FNB/ABSA/Standard)</option><option>SEFA (Small Enterprise Finance)</option><option>IDC (Industrial Development Corp)</option><option>Private Funder</option></select></div>
+          <div class="fg"><label class="fl">Repayment Structure</label><select class="fi"><option>Monthly equal instalments</option><option>Interest-only then principal</option><option>Balloon payment</option></select></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="card-title">🤖 AI Affordability Simulation</div><div id="aff-sim-result-badge" style="display:none"><span class="badge b-green">Simulation Ready</span></div></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div class="funding-kpi"><div class="fk-val" id="sim-monthly">R 25,012</div><div class="fk-label">Monthly Repayment</div></div>
+          <div class="funding-kpi"><div class="fk-val" id="sim-total">R 900,432</div><div class="fk-label">Total Repayable</div></div>
+          <div class="funding-kpi"><div class="fk-val" id="sim-dscr" style="color:var(--green)">4.4x</div><div class="fk-label">DSCR</div></div>
+          <div class="funding-kpi"><div class="fk-val" id="sim-risk" style="color:var(--green)">Low</div><div class="fk-label">Risk Score</div></div>
+        </div>
+        <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px"><span>Affordability Score</span><span style="font-weight:700;color:var(--green)" id="sim-score">82 / 100</span></div><div class="risk-bar"><div class="risk-fill" id="sim-score-bar" style="width:82%;background:var(--green)"></div></div></div>
+        <div style="font-size:11.5px;padding:10px 12px;background:var(--green-p);border-radius:8px;border:1px solid rgba(26,122,74,.2)">
+          <strong>✅ AI Assessment:</strong> With monthly cash flow of ~R 110,000, the R 25,012 monthly repayment represents <strong>22.7% of income</strong> — well within the recommended 35% threshold. DSCR of 4.4x is excellent. This application has a high probability of approval.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Funding Proposal Pack Contents</div><div class="card-sub">All items auto-compiled from ClaimSync modules</div></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span>✅</span><span>Management Accounts (Q1 2026)</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span>✅</span><span>Annual Financial Statements (FY2025)</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span>✅</span><span>Financial Model (Growth Scenario)</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span>✅</span><span>Cash Flow Projections (12 months)</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--amber-p);border-radius:8px;font-size:12px"><span>⚠️</span><span>CIDB Certificate (from Vault)</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--amber-p);border-radius:8px;font-size:12px"><span>⚠️</span><span>Director Resolution (upload required)</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--amber-p);border-radius:8px;font-size:12px"><span>⚠️</span><span>Shareholding Certificate (upload required)</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span>✅</span><span>Bank Statements (FNB — 6 months)</span></div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-navy btn-sm" onclick="mockAction('Generate full funding pack PDF')">📄 Generate Funding Pack PDF</button>
+        <button class="btn btn-ghost btn-sm" onclick="showPanel('docvault')">🗄️ Upload Missing Docs →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     DOCUMENT VAULT
+════════════════════════════════════════ -->
+<div class="panel" id="panel-docvault">
+  <div class="ph">
+    <div><div class="ph-title">Document Vault</div><div class="ph-sub">Company documents · Certificates · AI expiry monitoring · Funding-ready</div></div>
+    <div class="ph-actions">
+      <button class="btn btn-ghost btn-sm" onclick="mockAction('Download all documents ZIP')">⬇ Download All</button>
+      <button class="btn btn-gold btn-sm" onclick="mockAction('Upload document')">📤 Upload Document</button>
+    </div>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">
+    <div class="stat s-navy"><div class="sl">Total Documents</div><div class="sv">12</div></div>
+    <div class="stat s-green"><div class="sl">Valid / Current</div><div class="sv">9</div></div>
+    <div class="stat s-amber"><div class="sl">Expiring Soon</div><div class="sv">2</div><div class="ss">Within 90 days</div></div>
+    <div class="stat s-red"><div class="sl">Expired</div><div class="sv">1</div><div class="ss">Action required</div></div>
+  </div>
+  <div class="alert warn" style="margin:0"><div class="alert-icon">🤖</div><div><div class="alert-title">AI Document Monitoring Alert</div><div class="alert-body">CIDB Certificate expires in 47 days (14 May 2026). Tax Clearance expires in 23 days (20 Apr 2026). NHBRC renewal is overdue — please renew immediately to maintain compliance for insurance work.</div></div></div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Company Documents</div><div class="card-sub">All documents linked to funding applications automatically</div></div>
+    <div class="card-body">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="doc-item"><div class="doc-icon">🏛️</div><div><div class="doc-name">Company Registration Certificate</div><div class="doc-meta">CIPC · Uploaded 01 Jan 2026 · PDF · 0.8 MB</div></div><div class="doc-expiry expiry-ok">No Expiry</div><button class="btn btn-ghost btn-xs" onclick="mockAction('View registration certificate')">View</button></div>
+        <div class="doc-item"><div class="doc-icon">🏗️</div><div><div class="doc-name">CIDB Registration Certificate</div><div class="doc-meta">CIDB PE 6GB · Uploaded 01 Jan 2026 · PDF · 1.2 MB</div></div><div class="doc-expiry expiry-warn">47 days left</div><button class="btn btn-ghost btn-xs" onclick="mockAction('View CIDB certificate')">View</button></div>
+        <div class="doc-item"><div class="doc-icon">🏠</div><div><div class="doc-name">NHBRC Registration</div><div class="doc-meta">NHBRC · Uploaded 01 Jan 2026 · PDF · 0.6 MB</div></div><div class="doc-expiry expiry-red">EXPIRED</div><button class="btn btn-amber btn-xs" onclick="mockAction('Renew NHBRC')">Renew</button></div>
+        <div class="doc-item"><div class="doc-icon">🧾</div><div><div class="doc-name">SARS Tax Clearance Certificate</div><div class="doc-meta">SARS · Uploaded 15 Jan 2026 · PDF · 0.4 MB</div></div><div class="doc-expiry expiry-warn">23 days left</div><button class="btn btn-ghost btn-xs" onclick="mockAction('View tax clearance')">View</button></div>
+        <div class="doc-item"><div class="doc-icon">📋</div><div><div class="doc-name">Director Resolution — General</div><div class="doc-meta">Big O Projects · Uploaded 10 Feb 2026 · PDF · 0.3 MB</div></div><div class="doc-expiry expiry-ok">No Expiry</div><button class="btn btn-ghost btn-xs" onclick="mockAction('View director resolution')">View</button></div>
+        <div class="doc-item"><div class="doc-icon">📜</div><div><div class="doc-name">Shareholding Certificate</div><div class="doc-meta">Norman · 100% · Uploaded 01 Jan 2026 · PDF · 0.5 MB</div></div><div class="doc-expiry expiry-ok">No Expiry</div><button class="btn btn-ghost btn-xs" onclick="mockAction('View shareholding certificate')">View</button></div>
+        <div class="doc-item"><div class="doc-icon">🏦</div><div><div class="doc-name">FNB Bank Statements — 6 months</div><div class="doc-meta">FNB Business · Jan–Mar 2026 · PDF · 3.2 MB</div></div><div class="doc-expiry expiry-ok">Current</div><button class="btn btn-ghost btn-xs" onclick="mockAction('View bank statements')">View</button></div>
+        <div class="doc-item"><div class="doc-icon">📋</div><div><div class="doc-name">Standard Bank HOC Contract</div><div class="doc-meta">SB Insurance · CAT 2026 · PDF · 1.8 MB</div></div><div class="doc-expiry expiry-ok">Active</div><button class="btn btn-ghost btn-xs" onclick="mockAction('View SB contract')">View</button></div>
+        <div class="doc-item" style="border:2px dashed var(--border-md);cursor:pointer" onclick="mockAction('Upload new document')" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border-md)'">
+          <div class="doc-icon">➕</div><div><div class="doc-name" style="color:var(--muted)">Upload New Document</div><div class="doc-meta">PDF, Word, Excel · Max 10 MB · AI monitors expiry</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
      SETTINGS
 ════════════════════════════════════════ -->
 <div class="panel" id="panel-settings">
@@ -1554,10 +1962,10 @@ textarea.fi{resize:vertical}
       <div class="tbl-wrap">
         <table class="tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Last Login</th><th>Status</th><th>Action</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="td-bold">Norman</td><td>norman@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
-          <tr><td>2</td><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
-          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td>thabo@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
-          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td>moses@bigoprojects.co.za</td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
+          <tr><td>1</td><td class="td-bold">Norman</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ae4e5f8e7ebe4cae8e3ede5faf8e5e0efe9fef9a4e9e5a4f0eb">[email&#160;protected]</a></td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+          <tr><td>2</td><td class="td-bold">Field User</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="26404f434a4266444f41495654494c43455255084549085c47">[email&#160;protected]</a></td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
+          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89fde1e8ebe6c9ebe0eee6f9fbe6e3eceafdfaa7eae6a7f3e8">[email&#160;protected]</a></td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
+          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b0604180e182b09020c041b1904010e081f1845080445110a">[email&#160;protected]</a></td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
         </tbody></table>
       </div>
     </div>
@@ -1979,7 +2387,7 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
       </div>
       <div>
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">7. Contact</div>
-        <p style="color:var(--text)">Imagelink Technologies (Pty) Ltd · South Africa · legal@imagelink.co.za</p>
+        <p style="color:var(--text)">Imagelink Technologies (Pty) Ltd · South Africa · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0d61686a6c614d64606c6a6861646366236e6223776c">[email&#160;protected]</a></p>
       </div>
     </div>
     <div class="modal-foot" style="justify-content:space-between;align-items:center">
@@ -1990,7 +2398,87 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
 </div>
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
+/* ── FINANCIAL MODELLING ── */
+function updateModelSliders(input, valId) {
+  const el = document.getElementById(valId);
+  if (!el) return;
+  let val = parseFloat(input.value);
+  if (valId === 'model-rev-val') el.textContent = 'R ' + Number(val).toLocaleString('en-ZA');
+  else if (valId === 'model-cos-val') el.textContent = val + '%';
+  else if (valId === 'model-opex-val') el.textContent = 'R ' + Number(val).toLocaleString('en-ZA');
+  else if (valId === 'model-growth-val') el.textContent = (val >= 0 ? '+' : '') + val + '%';
+}
+function selectScenario(el, id) {
+  document.querySelectorAll('.scenario-card').forEach(c => {
+    c.classList.remove('selected');
+    const b = c.querySelector('.sc-badge');
+    if (b) b.remove();
+  });
+  el.classList.add('selected');
+  const badge = document.createElement('div');
+  badge.className = 'sc-badge badge b-green';
+  badge.textContent = 'Selected';
+  el.appendChild(badge);
+  showToast('✅ ' + id.charAt(0).toUpperCase()+id.slice(1) + ' scenario selected', 'ok');
+}
+function acceptFinModel() {
+  showToast('✅ Financial model locked into reporting. Funding pack updated.', 'ok');
+}
+
+/* ── LOAN SIMULATION ── */
+function calcLoanSim() {
+  const P = parseFloat(document.getElementById('loan-amount').value) || 750000;
+  const t = parseInt(document.getElementById('loan-term').value) || 36;
+  const r = (parseFloat(document.getElementById('loan-rate').value) || 12.5) / 100 / 12;
+  const monthly = r > 0 ? P * r * Math.pow(1+r,t) / (Math.pow(1+r,t)-1) : P/t;
+  const total = monthly * t;
+  const monthlyIncome = 97000;
+  const dscr = monthlyIncome / monthly;
+  const score = Math.min(100, Math.round(60 + dscr * 5 + (monthly/monthlyIncome < 0.3 ? 15 : 0)));
+  const risk = dscr >= 3 ? 'Low' : dscr >= 1.5 ? 'Medium' : 'High';
+  const riskColor = dscr >= 3 ? 'var(--green)' : dscr >= 1.5 ? 'var(--amber)' : 'var(--red)';
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const setStyle = (id, k, v) => { const el = document.getElementById(id); if (el) el.style[k] = v; };
+  set('sim-monthly', 'R ' + monthly.toLocaleString('en-ZA', {minimumFractionDigits:0, maximumFractionDigits:0}));
+  set('sim-total', 'R ' + total.toLocaleString('en-ZA', {minimumFractionDigits:0, maximumFractionDigits:0}));
+  set('sim-dscr', dscr.toFixed(1) + 'x');
+  set('sim-risk', risk);
+  set('sim-score', score + ' / 100');
+  setStyle('sim-dscr', 'color', riskColor);
+  setStyle('sim-risk', 'color', riskColor);
+  const bar = document.getElementById('sim-score-bar');
+  if (bar) { bar.style.width = score + '%'; bar.style.background = riskColor; }
+}
+function runAffordabilitySim() {
+  calcLoanSim();
+  const badge = document.getElementById('aff-sim-result-badge');
+  if (badge) badge.style.display = '';
+  showToast('🤖 AI affordability simulation complete. Results updated.', 'ok');
+}
+
+/* ── MANAGEMENT ACCOUNTS AI ── */
+function showMgmtAIAdvisory() {
+  switchFinTab(document.querySelector('#panel-mgmtaccounts .tab-bar .tab:last-child'), 'mga-ai', 'mga');
+  document.querySelector('#panel-mgmtaccounts .tab-bar .tab:last-child').click();
+  showToast('🤖 AI Advisory loaded for Management Accounts', 'ok');
+}
+
+/* ── GENERIC FIN TAB SWITCHER ── */
+function switchFinTab(el, show, prefix) {
+  if (!el || !el.parentElement) return;
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.fin-tab-content').forEach(tc => {
+    if (tc.id.startsWith(prefix + '-') || tc.closest('#panel-' + (prefix==='mga'?'mgmtaccounts':prefix))) {
+      tc.classList.remove('active');
+    }
+  });
+  const target = document.getElementById(show);
+  if (target) target.classList.add('active');
+}
+
+</script><script>
 /* ═══════════════════════════════════════════
    CLAIMSYNC v4.0 — COMPLETE MOCKUP ENGINE
    © 2026 Imagelink Technologies (Pty) Ltd
@@ -2455,23 +2943,26 @@ function addExpenseRow() {
     <td><select class="fi-xs"><option>Standard VAT @ 15%</option><option>Zero-Rated</option><option>Exempt (Petrol)</option><option>No VAT</option></select></td>
     <td><select class="fi-xs"><option>Direct Cost</option><option>Operating Expense</option><option>Capital</option></select></td>
     <td><input class="fi-xs mono" placeholder="0.00" readonly style="background:var(--bg)"></td>
-    <td><input class="fi-xs" placeholder="HLB/2026/..."></td>
-    <td><input class="fi-xs" placeholder="CAT 2026"></td>
-    <td><button class="btn btn-ghost btn-xs" onclick="removeExpRow(this)" style="padding:2px 6px;color:var(--red)">✕</button></td>`;
-  tbody.insertBefore(tr, addRow);
+    <td><input class="fi-xs" placeholder="Notes"></td>
+    <td><button onclick="this.closest('tr').remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;padding:2px">✕</button></td>`;
+  if (addRow) {
+    tbody.insertBefore(tr, addRow);
+  } else {
+    tbody.appendChild(tr);
+  }
 }
-function removeExpRow(btn) { btn.closest('tr').remove(); }
 
-/* ── INIT & DOM READY ── */
-window.addEventListener('DOMContentLoaded', function() {
-  // Wire up modal click-outside-to-close for ALL modals (including auth-time modal-tc)
-  document.querySelectorAll('.modal-ov').forEach(function(ov) {
+/* ── DOM READY ── */
+document.addEventListener('DOMContentLoaded', function() {
+  detectDevice();
+  document.querySelectorAll('.modal-ov').forEach(ov => {
     ov.addEventListener('click', function(e) {
       if (e.target === ov) ov.classList.remove('open');
     });
   });
+  showPanel('dashboard');
 });
-detectDevice();
+
 </script>
 </body>
 </html>
