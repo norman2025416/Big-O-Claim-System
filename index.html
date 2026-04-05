@@ -117,6 +117,7 @@ input,select,textarea,button{font-family:var(--font)}
 .nb-green{background:var(--green);color:white}
 .nb-teal{background:var(--teal);color:white}
 .nb-blue{background:var(--blue);color:white}
+.nb-amber{background:var(--amber);color:white}
 .sb-footer{margin-top:auto;padding:10px 8px;border-top:1px solid rgba(255,255,255,.07)}
 .sb-build{margin:8px 16px;padding:8px 12px;background:rgba(201,152,42,.12);border:1px solid rgba(201,152,42,.2);border-radius:8px;font-size:10px;color:rgba(255,255,255,.5);line-height:1.5}
 .sb-build strong{color:var(--gold);display:block;font-size:11px;margin-bottom:2px}
@@ -543,9 +544,6 @@ textarea.fi{resize:vertical}
       <div class="nav-sec">Main</div>
       <div class="nav-item active" id="nav-dashboard" onclick="showPanel('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
       <div class="nav-item" id="nav-clients" onclick="showPanel('clients')"><span class="nav-icon">👥</span> Clients</div>
-      <div class="nav-item" id="nav-quotes" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes<span class="nav-badge nb-gold">3</span></div>
-      <div class="nav-item" id="nav-invoices" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices<span class="nav-badge nb-red">1</span></div>
-      <div class="nav-item" id="nav-payments" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
 
       <div class="nav-sec" style="margin-top:8px">Operations</div>
       <div class="nav-item" id="nav-claims" onclick="showPanel('claims')"><span class="nav-icon">📋</span> Claims<span class="nav-badge nb-teal">83</span></div>
@@ -553,6 +551,9 @@ textarea.fi{resize:vertical}
       <div class="nav-item" id="nav-expenses" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
 
       <div class="nav-sec" style="margin-top:8px">Finance</div>
+      <div class="nav-item" id="nav-quotes" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes<span class="nav-badge nb-gold">3</span></div>
+      <div class="nav-item" id="nav-invoices" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices<span class="nav-badge nb-red">1</span></div>
+      <div class="nav-item" id="nav-payments" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
       <div class="nav-item" id="nav-accounting" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
       <div class="nav-item" id="nav-vatsars" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
       <div class="nav-item" id="nav-mgmtaccounts" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
@@ -568,27 +569,28 @@ textarea.fi{resize:vertical}
       <!-- INSURANCE NAV is the default above; hidden when other pack active -->
       <div class="industry-nav" id="nav-pack-it">
         <div class="nav-sec">IT — Main</div>
-        <div class="nav-item" onclick="showPanel('it-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
-        <div class="nav-item" onclick="showPanel('clients')"><span class="nav-icon">👥</span> Clients</div>
-        <div class="nav-item" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes</div>
-        <div class="nav-item" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices</div>
-        <div class="nav-item" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
+        <div class="nav-item" id="nav-it-dashboard" onclick="showPanel('it-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+        <div class="nav-item" id="nav-it-clients" onclick="showPanel('clients')"><span class="nav-icon">👥</span> Clients</div>
         <div class="nav-sec" style="margin-top:8px">IT Operations</div>
         <div class="nav-item" id="nav-it-pipeline" onclick="showPanel('it-pipeline')"><span class="nav-icon">◈</span> Pipeline<span class="nav-badge nb-gold">28</span></div>
         <div class="nav-item" id="nav-it-contracts" onclick="showPanel('it-contracts')"><span class="nav-icon">📋</span> Contracts</div>
         <div class="nav-item" id="nav-it-technicians" onclick="showPanel('it-technicians')"><span class="nav-icon">🔧</span> Technicians</div>
         <div class="nav-item" id="nav-it-salesteam" onclick="showPanel('it-salesteam')"><span class="nav-icon">📈</span> Sales Team</div>
-        <div class="nav-item" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
+        <div class="nav-item" id="nav-it-expenses" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
         <div class="nav-sec" style="margin-top:8px">Finance</div>
-        <div class="nav-item" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
-        <div class="nav-item" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
-        <div class="nav-item" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
-        <div class="nav-item" onclick="showPanel('afs')"><span class="nav-icon">📑</span> Annual Fin. Stmts</div>
-        <div class="nav-item" onclick="showPanel('finmodel')"><span class="nav-icon">🔮</span> Fin. Modelling</div>
-        <div class="nav-item" onclick="showPanel('funding')"><span class="nav-icon">💼</span> Funding &amp; Credit</div>
-        <div class="nav-item" onclick="showPanel('docvault')"><span class="nav-icon">🗄️</span> Document Vault</div>
-        <div class="nav-item" onclick="showPanel('reports')"><span class="nav-icon">📈</span> Reports</div>
-        <div class="nav-item" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+        <div class="nav-item" id="nav-it-quotes" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes</div>
+        <div class="nav-item" id="nav-it-invoices" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices</div>
+        <div class="nav-item" id="nav-it-payments" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
+        <div class="nav-item" id="nav-it-accounting" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
+        <div class="nav-item" id="nav-it-vatsars" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
+        <div class="nav-item" id="nav-it-mgmt" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
+        <div class="nav-item" id="nav-it-afs" onclick="showPanel('afs')"><span class="nav-icon">📑</span> Annual Fin. Stmts</div>
+        <div class="nav-item" id="nav-it-finmodel" onclick="showPanel('finmodel')"><span class="nav-icon">🔮</span> Fin. Modelling</div>
+        <div class="nav-item" id="nav-it-funding" onclick="showPanel('funding')"><span class="nav-icon">💼</span> Funding &amp; Credit</div>
+        <div class="nav-item" id="nav-it-docvault" onclick="showPanel('docvault')"><span class="nav-icon">🗄️</span> Document Vault</div>
+        <div class="nav-item" id="nav-it-reports" onclick="showPanel('reports')"><span class="nav-icon">📈</span> Reports</div>
+        <div class="nav-sec" style="margin-top:8px">System</div>
+        <div class="nav-item" id="nav-it-settings" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
       </div>
       <div class="industry-nav" id="nav-pack-construction">
         <div class="nav-sec">Construction — Main</div>
@@ -611,29 +613,32 @@ textarea.fi{resize:vertical}
       </div>
       <div class="industry-nav" id="nav-pack-realestate">
         <div class="nav-sec">Real Estate — Main</div>
-        <div class="nav-item" onclick="showPanel('re-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+        <div class="nav-item" id="nav-re-dashboard" onclick="showPanel('re-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+        <div class="nav-sec" style="margin-top:8px">RE Operations</div>
         <div class="nav-item" id="nav-re-properties" onclick="showPanel('re-properties')"><span class="nav-icon">🏘️</span> Properties</div>
         <div class="nav-item" id="nav-re-tenants" onclick="showPanel('re-tenants')"><span class="nav-icon">👤</span> Tenants</div>
-        <div class="nav-item" id="nav-re-leases" onclick="showPanel('re-leases')"><span class="nav-icon">📋</span> Leases<span class="nav-badge nb-teal">8</span></div>
+        <div class="nav-item" id="nav-re-leases" onclick="showPanel('re-leases')"><span class="nav-icon">📋</span> Leases<span class="nav-badge nb-amber">2</span></div>
         <div class="nav-item" id="nav-re-rentroll" onclick="showPanel('re-rentroll')"><span class="nav-icon">🗓️</span> Rent Roll</div>
         <div class="nav-item" id="nav-re-payments" onclick="showPanel('re-payments')"><span class="nav-icon">💳</span> Rent Payments</div>
-        <div class="nav-sec" style="margin-top:8px">Operations</div>
         <div class="nav-item" id="nav-re-maintenance" onclick="showPanel('re-maintenance')"><span class="nav-icon">🔧</span> Maintenance<span class="nav-badge nb-red">3</span></div>
         <div class="nav-item" id="nav-re-inspections" onclick="showPanel('re-inspections')"><span class="nav-icon">🔍</span> Inspections</div>
         <div class="nav-item" id="nav-re-listings" onclick="showPanel('re-listings')"><span class="nav-icon">📌</span> Listings</div>
         <div class="nav-item" id="nav-re-portal" onclick="showPanel('re-portal')"><span class="nav-icon">🌐</span> Tenant Portal</div>
-        <div class="nav-item" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
+        <div class="nav-item" id="nav-re-expenses" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
         <div class="nav-sec" style="margin-top:8px">Finance</div>
-        <div class="nav-item" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices</div>
-        <div class="nav-item" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
-        <div class="nav-item" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
-        <div class="nav-item" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
-        <div class="nav-item" onclick="showPanel('afs')"><span class="nav-icon">📑</span> Annual Fin. Stmts</div>
-        <div class="nav-item" onclick="showPanel('finmodel')"><span class="nav-icon">🔮</span> Fin. Modelling</div>
-        <div class="nav-item" onclick="showPanel('funding')"><span class="nav-icon">💼</span> Funding &amp; Credit</div>
-        <div class="nav-item" onclick="showPanel('docvault')"><span class="nav-icon">🗄️</span> Document Vault</div>
+        <div class="nav-item" id="nav-re-quotes" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes</div>
+        <div class="nav-item" id="nav-re-invoices" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices</div>
+        <div class="nav-item" id="nav-re-finpayments" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
+        <div class="nav-item" id="nav-re-accounting" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
+        <div class="nav-item" id="nav-re-vatsars" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
+        <div class="nav-item" id="nav-re-mgmt" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
+        <div class="nav-item" id="nav-re-afs" onclick="showPanel('afs')"><span class="nav-icon">📑</span> Annual Fin. Stmts</div>
+        <div class="nav-item" id="nav-re-finmodel" onclick="showPanel('finmodel')"><span class="nav-icon">🔮</span> Fin. Modelling</div>
+        <div class="nav-item" id="nav-re-funding" onclick="showPanel('funding')"><span class="nav-icon">💼</span> Funding &amp; Credit</div>
+        <div class="nav-item" id="nav-re-docvault" onclick="showPanel('docvault')"><span class="nav-icon">🗄️</span> Document Vault</div>
         <div class="nav-item" id="nav-re-reports" onclick="showPanel('re-reports')"><span class="nav-icon">📈</span> RE Reports</div>
-        <div class="nav-item" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+        <div class="nav-sec" style="margin-top:8px">System</div>
+        <div class="nav-item" id="nav-re-settings" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
       </div>
       <div class="industry-nav" id="nav-pack-support">
         <div class="nav-sec">Platform Admin</div>
@@ -2076,10 +2081,10 @@ textarea.fi{resize:vertical}
       <div class="tbl-wrap">
         <table class="tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Last Login</th><th>Status</th><th>Action</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="td-bold">Norman</td><td>norman@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
-          <tr><td>2</td><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
-          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td>thabo@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
-          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td>moses@bigoprojects.co.za</td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
+          <tr><td>1</td><td class="td-bold">Norman</td><td>contact@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+          <tr><td>2</td><td class="td-bold">Field User</td><td>contact@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
+          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td>contact@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
+          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td>contact@bigoprojects.co.za</td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
         </tbody></table>
       </div>
     </div>
@@ -2928,9 +2933,9 @@ textarea.fi{resize:vertical}
 </div>
 <div class="card"><div class="card-hdr"><div class="card-title">Registered Companies</div><div class="card-sub">3 active companies · 3 industry packs</div></div>
   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Company</th><th>Industry Pack</th><th>Reg No.</th><th>Plan</th><th>Users</th><th>Modules Active</th><th>Status</th><th>Action</th></tr></thead><tbody>
-    <tr><td>1</td><td><div style="display:flex;align-items:center;gap:8px"><span>🛡️</span><div><div class="td-bold">Big O Projects (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">admin@bigoprojects.co.za</div></div></div></td><td><span class="badge b-navy">Insurance</span></td><td class="mono td-muted" style="font-size:11px">2021/123456/07</td><td>Professional</td><td>4</td><td>12 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('insurance')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
-    <tr><td>2</td><td><div style="display:flex;align-items:center;gap:8px"><span>💻</span><div><div class="td-bold">ImageLink Technologies (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">info@imagelink.co.za</div></div></div></td><td><span class="badge b-teal">IT</span></td><td class="mono td-muted" style="font-size:11px">2021/763847/07</td><td>Professional</td><td>3</td><td>8 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('it')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
-    <tr><td>3</td><td><div style="display:flex;align-items:center;gap:8px"><span>🏘️</span><div><div class="td-bold">N.T.O Real Estate (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">admin@nto.co.za</div></div></div></td><td><span class="badge b-purple">Real Estate</span></td><td class="mono td-muted" style="font-size:11px">2020/987654/07</td><td>Starter</td><td>1</td><td>10 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('realestate')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
+    <tr><td>1</td><td><div style="display:flex;align-items:center;gap:8px"><span>🛡️</span><div><div class="td-bold">Big O Projects (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">contact@bigoprojects.co.za</div></div></div></td><td><span class="badge b-navy">Insurance</span></td><td class="mono td-muted" style="font-size:11px">2021/123456/07</td><td>Professional</td><td>4</td><td>12 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('insurance')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
+    <tr><td>2</td><td><div style="display:flex;align-items:center;gap:8px"><span>💻</span><div><div class="td-bold">ImageLink Technologies (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">contact@bigoprojects.co.za</div></div></div></td><td><span class="badge b-teal">IT</span></td><td class="mono td-muted" style="font-size:11px">2021/763847/07</td><td>Professional</td><td>3</td><td>8 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('it')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
+    <tr><td>3</td><td><div style="display:flex;align-items:center;gap:8px"><span>🏘️</span><div><div class="td-bold">N.T.O Real Estate (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">contact@bigoprojects.co.za</div></div></div></td><td><span class="badge b-purple">Real Estate</span></td><td class="mono td-muted" style="font-size:11px">2020/987654/07</td><td>Starter</td><td>1</td><td>10 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('realestate')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
   </tbody></table></div>
 </div>
 </div>
@@ -3074,12 +3079,12 @@ textarea.fi{resize:vertical}
   <div style="display:flex;flex-direction:column;gap:0">
     <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap">
       <div style="width:38px;height:38px;border-radius:50%;background:var(--amber-p);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--amber);flex-shrink:0">SM</div>
-      <div style="flex:1;min-width:150px"><div style="font-weight:700;font-size:13px">Sipho Mokoena</div><div style="font-size:11px;color:var(--muted)">sipho@imagelink.co.za · ImageLink Technologies · Sales Rep</div><div style="font-size:11px;color:var(--muted)">Registered: 04 Apr 2026 · Device: iPhone 15</div></div>
+      <div style="flex:1;min-width:150px"><div style="font-weight:700;font-size:13px">Sipho Mokoena</div><div style="font-size:11px;color:var(--muted)">contact@bigoprojects.co.za · ImageLink Technologies · Sales Rep</div><div style="font-size:11px;color:var(--muted)">Registered: 04 Apr 2026 · Device: iPhone 15</div></div>
       <div style="display:flex;gap:6px"><button class="btn btn-green btn-sm" onclick="showToast('✅ Sipho Mokoena approved','ok')">✅ Accept</button><button class="btn btn-red btn-sm" onclick="showToast('❌ Sipho Mokoena rejected','warn')">✕ Reject</button></div>
     </div>
     <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;flex-wrap:wrap">
       <div style="width:38px;height:38px;border-radius:50%;background:var(--amber-p);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--amber);flex-shrink:0">LN</div>
-      <div style="flex:1;min-width:150px"><div style="font-weight:700;font-size:13px">Lerato Nkosi</div><div style="font-size:11px;color:var(--muted)">lerato@nto.co.za · N.T.O Real Estate · Property Manager</div><div style="font-size:11px;color:var(--muted)">Registered: 05 Apr 2026 · Device: Samsung Galaxy S25</div></div>
+      <div style="flex:1;min-width:150px"><div style="font-weight:700;font-size:13px">Lerato Nkosi</div><div style="font-size:11px;color:var(--muted)">contact@bigoprojects.co.za · N.T.O Real Estate · Property Manager</div><div style="font-size:11px;color:var(--muted)">Registered: 05 Apr 2026 · Device: Samsung Galaxy S25</div></div>
       <div style="display:flex;gap:6px"><button class="btn btn-green btn-sm" onclick="showToast('✅ Lerato Nkosi approved','ok')">✅ Accept</button><button class="btn btn-red btn-sm" onclick="showToast('❌ Lerato Nkosi rejected','warn')">✕ Reject</button></div>
     </div>
   </div>
@@ -3087,13 +3092,13 @@ textarea.fi{resize:vertical}
 <div class="card">
   <div class="card-hdr"><div class="card-title">All Registered Users</div></div>
   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Company</th><th>Role</th><th>Status</th><th>Licence</th><th>Actions</th></tr></thead><tbody>
-    <tr><td class="td-bold">Norman</td><td>admin@bigoprojects.co.za</td><td>Big O Projects</td><td>Administrator</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
-    <tr><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td>Big O Projects</td><td>Assessor</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
-    <tr><td class="td-bold">Julie</td><td>julie@imagelink.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Julie')">Edit</button></td></tr>
-    <tr><td class="td-bold">Brett</td><td>brett@imagelink.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Brett')">Edit</button></td></tr>
-    <tr><td class="td-bold">Wayne</td><td>wayne@imagelink.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-sent">Idle</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Wayne')">Edit</button></td></tr>
-    <tr><td class="td-bold">NTO Admin</td><td>admin@ntorealestate.co.za</td><td>N.T.O Real Estate</td><td>Administrator</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-teal">Starter</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit NTO Admin')">Edit</button></td></tr>
-    <tr style="opacity:.5"><td class="td-bold">Old User</td><td>olduser@bigoprojects.co.za</td><td>Big O Projects</td><td>—</td><td><span class="badge b-void">Deactivated</span></td><td>—</td><td><button class="btn btn-ghost btn-xs" onclick="showToast('User reactivated','ok')">Reactivate</button></td></tr>
+    <tr><td class="td-bold">Norman</td><td>contact@bigoprojects.co.za</td><td>Big O Projects</td><td>Administrator</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+    <tr><td class="td-bold">Field User</td><td>contact@bigoprojects.co.za</td><td>Big O Projects</td><td>Assessor</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
+    <tr><td class="td-bold">Julie</td><td>contact@bigoprojects.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Julie')">Edit</button></td></tr>
+    <tr><td class="td-bold">Brett</td><td>contact@bigoprojects.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Brett')">Edit</button></td></tr>
+    <tr><td class="td-bold">Wayne</td><td>contact@bigoprojects.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-sent">Idle</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Wayne')">Edit</button></td></tr>
+    <tr><td class="td-bold">NTO Admin</td><td>contact@bigoprojects.co.za</td><td>N.T.O Real Estate</td><td>Administrator</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-teal">Starter</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit NTO Admin')">Edit</button></td></tr>
+    <tr style="opacity:.5"><td class="td-bold">Old User</td><td>contact@bigoprojects.co.za</td><td>Big O Projects</td><td>—</td><td><span class="badge b-void">Deactivated</span></td><td>—</td><td><button class="btn btn-ghost btn-xs" onclick="showToast('User reactivated','ok')">Reactivate</button></td></tr>
   </tbody></table></div>
 </div>
 </div>
@@ -3545,7 +3550,7 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
       </div>
       <div>
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">7. Contact</div>
-        <p style="color:var(--text)">Imagelink Technologies (Pty) Ltd · South Africa · support@imagelink.co.za</p>
+        <p style="color:var(--text)">Imagelink Technologies (Pty) Ltd · South Africa · contact@bigoprojects.co.za</p>
       </div>
     </div>
     <div class="modal-foot" style="justify-content:space-between;align-items:center">
@@ -3556,7 +3561,7 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
 </div>
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── FINANCIAL MODELLING ── */
 function updateModelSliders(input, valId) {
   const el = document.getElementById(valId);
@@ -4104,8 +4109,115 @@ function addExpenseRow() {
   }
 }
 
-/* ── DOM READY ── */
+/* DOM ready handler moved to pack-switching section */
+
+
+/* ══════════════════════════════════════════════════
+   PACK SWITCHING — Company / Industry switcher
+   Finance modules are ALWAYS per-company (independent).
+   Only Group Reporting in Platform Admin pulls cross-company data.
+══════════════════════════════════════════════════ */
+
+const PACK_CONFIG = {
+  insurance: {
+    label: 'Big O Projects', icon: '🛡️', badge: 'Big O Projects',
+    dashboard: 'dashboard', nav: 'nav-pack-insurance'
+  },
+  it: {
+    label: 'ImageLink Tech', icon: '💻', badge: 'ImageLink Technologies',
+    dashboard: 'it-dashboard', nav: 'nav-pack-it'
+  },
+  realestate: {
+    label: 'N.T.O Real Estate', icon: '🏘️', badge: 'N.T.O Real Estate',
+    dashboard: 're-dashboard', nav: 'nav-pack-realestate'
+  },
+  support: {
+    label: 'Platform Admin', icon: '⊞', badge: 'ImageSync Platform',
+    dashboard: 'support', nav: 'nav-pack-support'
+  }
+};
+
+let currentPack = 'insurance';
+
+/* List of all sidebar nav packs. The default insurance nav uses a
+   different mechanism — it's the base sidebar, shown/hidden by class */
+const ALL_PACKS = ['nav-pack-it','nav-pack-construction','nav-pack-realestate','nav-pack-support'];
+
+function switchPack(packId) {
+  const cfg = PACK_CONFIG[packId];
+  if (!cfg) return;
+  currentPack = packId;
+
+  // Update topbar badge and switcher label
+  const badge = document.getElementById('tb-co-badge');
+  if (badge) badge.textContent = cfg.badge;
+  const icon = document.getElementById('co-sw-icon');
+  if (icon) icon.textContent = cfg.icon;
+  const label = document.getElementById('co-sw-label');
+  if (label) label.textContent = cfg.label;
+
+  // Show correct industry nav, hide all others
+  // The insurance/default nav items live in the base sidebar (no industry-nav wrapper)
+  // Other packs use .industry-nav divs
+  const baseNavItems = document.querySelectorAll('.sidebar > .nav-sec, .sidebar > .nav-item');
+
+  if (packId === 'insurance') {
+    // Show base nav, hide all industry packs
+    baseNavItems.forEach(el => el.style.display = '');
+    ALL_PACKS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  } else {
+    // Hide base nav items (except sidebar footer)
+    baseNavItems.forEach(el => {
+      if (!el.classList.contains('sb-footer') && !el.classList.contains('sb-build')) {
+        el.style.display = 'none';
+      }
+    });
+    // Hide all packs, show the right one
+    ALL_PACKS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = id === cfg.nav ? '' : 'none';
+    });
+  }
+
+  // Update company switcher active state
+  document.querySelectorAll('.co-sw-item').forEach(el => el.classList.remove('sw-active'));
+  const activeCoSw = document.getElementById('cosw-' + packId);
+  if (activeCoSw) activeCoSw.classList.add('sw-active');
+
+  // Navigate to the pack's dashboard
+  showPanel(cfg.dashboard);
+
+  // Close the company switcher dropdown
+  closeCoSw();
+}
+
+function toggleCoSw() {
+  const dd = document.getElementById('co-sw-dd');
+  if (!dd) return;
+  dd.style.display = dd.style.display === 'none' || dd.style.display === '' ? 'block' : 'none';
+}
+
+function closeCoSw() {
+  const dd = document.getElementById('co-sw-dd');
+  if (dd) dd.style.display = 'none';
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#co-sw-btn') && !e.target.closest('#co-sw-dd')) {
+    closeCoSw();
+  }
+});
+
+/* ── DOM READY — initialise industry nav visibility ── */
 document.addEventListener('DOMContentLoaded', function() {
+  // Hide all industry nav packs on load (insurance is default)
+  ALL_PACKS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
   detectDevice();
   document.querySelectorAll('.modal-ov').forEach(ov => {
     ov.addEventListener('click', function(e) {
@@ -4115,83 +4227,6 @@ document.addEventListener('DOMContentLoaded', function() {
   showPanel('dashboard');
 });
 
-/* ══════════════════════════════════════════════════
-   NEXUS MULTI-INDUSTRY PLATFORM — PACK SWITCHING JS
-   © 2026 Imagelink Technologies (Pty) Ltd
-══════════════════════════════════════════════════ */
-
-const PACK_CONFIG = {
-  insurance: {
-    label: 'Big O Projects',
-    icon: '🛡️',
-    badge: 'Big O Projects',
-    dashboard: 'dashboard',
-    nav: 'nav-pack-insurance'
-  },
-  it: {
-    label: 'ImageLink Tech',
-    icon: '💻',
-    badge: 'ImageLink Technologies',
-    dashboard: 'it-dashboard',
-    nav: 'nav-pack-it'
-  },
-  realestate: {
-    label: 'N.T.O Real Estate',
-    icon: '🏘️',
-    badge: 'N.T.O Real Estate',
-    dashboard: 're-dashboard',
-    nav: 'nav-pack-realestate'
-  },
-  support: {
-    label: 'Platform Admin',
-    icon: '⊞',
-    badge: 'ImageSync Platform',
-    dashboard: 'support',
-    nav: 'nav-pack-support'
-  }
-};
-
-let currentPack = 'insurance';
-
-function switchPack(packId) {
-  const cfg = PACK_CONFIG[packId];
-  if (!cfg) return;
-  currentPack = packId;
-
-
-  // Update topbar badge and switcher
-  const badge = document.getElementById('tb-co-badge');
-  if (badge) badge.textContent = cfg.badge;
-  const icon = document.getElementById('co-sw-icon');
-  if (icon) icon.textContent = cfg.icon;
-  const label = document.getElementById('co-sw-label');
-  if (label) label.textContent = cfg.label;
-
-  // Show/hide nav packs
-  document.querySelectorAll('[id^="nav-pack-"]').forEach(el => el.style.display = 'none');
-  const activeNav = document.getElementById(cfg.nav);
-  if (activeNav) activeNav.style.display = '';
-
-  // Navigate to pack dashboard
-  showPanel(cfg.dashboard);
-
-  // Close switcher dropdown
-  const dd = document.getElementById('co-sw-dd');
-  if (dd) dd.style.display = 'none';
-}
-
-function toggleCoSw() {
-  const dd = document.getElementById('co-sw-dd');
-  if (!dd) return;
-  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
-}
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('#co-sw-btn') && !e.target.closest('#co-sw-dd')) {
-    const dd = document.getElementById('co-sw-dd');
-    if (dd) dd.style.display = 'none';
-  }
-});
 </script>
 </body>
 </html>
