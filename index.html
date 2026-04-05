@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ClaimSync v4.0 — Big O Projects (Pty) Ltd</title>
+<title>ImageSync — Multi-Company Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+window.onerror = function() { return true; };
+window.addEventListener('unhandledrejection', function(e) { e.preventDefault(); });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 /* ═══════════════════════════════════════════
@@ -49,14 +53,7 @@ input,select,textarea,button{font-family:var(--font)}
 .auth-body{padding:28px 32px 32px}
 .auth-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px}
 .auth-sub{font-size:12px;color:var(--muted);margin-bottom:24px}
-.auth-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.auth-quick-btn{padding:14px 10px;border:none;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--font);font-size:13px;font-weight:700;transition:all .15s}
-.auth-quick-btn.admin{background:var(--navy);color:white}
-.auth-quick-btn.admin:hover{background:var(--navy-l)}
-.auth-quick-btn.field{background:var(--gold);color:var(--navy-d)}
-.auth-quick-btn.field:hover{background:var(--gold-l)}
-.auth-quick-btn span{font-size:22px}
-.auth-quick-btn small{font-size:10px;opacity:.75;font-weight:400}
+
 .auth-divider{display:flex;align-items:center;gap:10px;margin-bottom:18px;color:var(--muted);font-size:11px}
 .auth-divider::before,.auth-divider::after{content:'';flex:1;border-top:1px solid var(--border-md)}
 .auth-fg{margin-bottom:16px}
@@ -414,6 +411,33 @@ textarea.fi{resize:vertical}
 .risk-bar{height:12px;border-radius:6px;background:var(--bg);overflow:hidden}
 .risk-fill{height:100%;border-radius:6px;transition:width .5s ease}
 
+
+/* ═══════ NEXUS MULTI-INDUSTRY ADDITIONS ═══════ */
+.co-sw-item{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border)}
+.co-sw-item:hover{background:#F4F6FB}.co-sw-item.sw-active{background:#EAF0FB}
+.cosw-icon{font-size:20px;width:28px;text-align:center;flex-shrink:0}
+.cosw-name{font-size:12.5px;font-weight:700;color:var(--navy);line-height:1.2}
+.cosw-sub{font-size:10.5px;color:var(--muted);margin-top:2px}
+.industry-nav{display:none}.industry-nav.pack-active{display:block}
+.pack-banner{padding:8px 16px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:.3px}
+.pack-ins{background:var(--navy);color:white}
+.pack-it{background:var(--teal);color:white}
+.pack-con{background:#92400E;color:white}
+.pack-re{background:var(--purple);color:white}
+.pack-sup{background:#111827;color:white}
+.prop-card{background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .15s}
+.prop-card:hover{box-shadow:var(--shadow-lg)}
+.prop-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:48px}
+.prop-body{padding:14px}
+.prop-addr{font-weight:700;font-size:13px;color:var(--navy);margin-bottom:4px}
+.prop-meta{font-size:11px;color:var(--muted)}
+.prop-rent{font-size:15px;font-weight:700;font-family:var(--mono);color:var(--green);margin-top:6px}
+.mod-tag{display:inline-block;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;margin:2px}
+.mod-on{background:var(--green-p);color:var(--green)}.mod-off{background:#F3F4F6;color:var(--muted)}
+.grp-bar{height:10px;border-radius:5px;overflow:hidden;background:rgba(0,0,0,.07)}
+.grp-fill{height:100%;border-radius:5px}
+.co-card{background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:box-shadow .15s}
+.co-card:hover{box-shadow:var(--shadow-lg)}
 </style>
 </head>
 <body>
@@ -428,21 +452,12 @@ textarea.fi{resize:vertical}
   <div class="auth-bg-hex" style="bottom:-100px;right:-80px;font-size:250px">⬡</div>
   <div class="auth-card">
     <div class="auth-hdr">
-      <div class="auth-logo"><span class="hex">⬡</span> ClaimSync<span style="color:var(--gold)">.</span></div>
-      <div class="auth-tagline">Insurance Field Management Platform</div>
+      <div class="auth-logo"><span class="hex">⬡</span> ImageSync<span style="color:var(--gold)">.</span></div>
+      <div class="auth-tagline">Multi-Company Business Platform</div>
     </div>
     <div class="auth-body">
       <div class="auth-title">Sign In</div>
       <div class="auth-sub">Big O Projects (Pty) Ltd · bigoprojects.co.za</div>
-      <div class="auth-quick">
-        <button class="auth-quick-btn admin" onclick="quickLogin('admin')">
-          <span>🔐</span><strong>Admin Login</strong><small>Full system access</small>
-        </button>
-        <button class="auth-quick-btn field" onclick="quickLogin('field')">
-          <span>🏗️</span><strong>Field Login</strong><small>Field operations</small>
-        </button>
-      </div>
-      <div class="auth-divider">or sign in manually</div>
       <div class="auth-fg">
         <label class="auth-label">Email Address</label>
         <input class="auth-input" type="email" id="login-email" placeholder="you@bigoprojects.co.za" autocomplete="email">
@@ -456,11 +471,11 @@ textarea.fi{resize:vertical}
       <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;padding:10px 12px;background:#F8F9FC;border-radius:8px;border:1px solid var(--border-md)">
         <input type="checkbox" id="tc-checkbox" style="width:18px;height:18px;accent-color:var(--navy);flex-shrink:0;margin-top:1px;cursor:pointer">
         <label for="tc-checkbox" style="font-size:11.5px;color:var(--text);line-height:1.55;cursor:pointer">
-          I agree to the <a href="javascript:void(0)" onclick="openTCModal()" style="color:var(--navy);font-weight:700;text-decoration:underline">Terms &amp; Conditions</a> and <a href="javascript:void(0)" onclick="openTCModal()" style="color:var(--navy);font-weight:700;text-decoration:underline">Privacy Policy</a> of ClaimSync by Imagelink Technologies (Pty) Ltd.
+          I agree to the <a href="javascript:void(0)" onclick="openTCModal()" style="color:var(--navy);font-weight:700;text-decoration:underline">Terms &amp; Conditions</a> and <a href="javascript:void(0)" onclick="openTCModal()" style="color:var(--navy);font-weight:700;text-decoration:underline">Privacy Policy</a> of ImageSync by Imagelink Technologies (Pty) Ltd.
         </label>
       </div>
       <div class="auth-err" id="tc-err" style="display:none;background:var(--amber-p);border-color:rgba(217,119,6,.3);color:var(--amber)">Please tick the box to agree to the Terms &amp; Conditions before signing in.</div>
-      <button class="auth-btn" onclick="doLogin()">Sign In to ClaimSync →</button>
+      <button class="auth-btn" onclick="doLogin()">Sign In to ImageSync →</button>
       <div class="auth-trust">
         <span>🔒 SSL Encrypted</span>
         <span>🇿🇦 SA Hosted</span>
@@ -483,9 +498,23 @@ textarea.fi{resize:vertical}
   <div class="topbar">
     <button class="tb-hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
     <div class="tb-logo" onclick="showPanel('dashboard')">
-      <span class="hex">⬡</span> ClaimSync<span style="color:var(--gold)">.</span>
+      <span class="hex">⬡</span> ImageSync<span style="color:var(--gold)">.</span>
     </div>
-    <div class="tb-badge">Big O Projects</div>
+    <div class="tb-badge" id="tb-co-badge">Big O Projects</div>
+    <div style="position:relative;margin-left:6px">
+      <button id="co-sw-btn" onclick="toggleCoSw()" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:4px 12px;border-radius:8px;cursor:pointer;font-size:11px;color:rgba(255,255,255,.85);font-weight:600;font-family:var(--font)">
+        <span id="co-sw-icon">🛡️</span><span id="co-sw-label">Insurance</span><span style="font-size:9px;opacity:.5;margin-left:2px">▼</span>
+      </button>
+      <div id="co-sw-dd" style="display:none;position:absolute;top:calc(100%+8px);left:0;background:white;border-radius:12px;box-shadow:var(--shadow-lg);width:272px;z-index:600;border:1px solid var(--border);overflow:hidden;animation:ddDown .15s ease">
+        <div style="padding:9px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);border-bottom:1px solid var(--border-md);background:#F8F9FC">Switch Company / Industry</div>
+        <div class="co-sw-item sw-active" id="cosw-insurance" onclick="switchPack('insurance')"><span class="cosw-icon">🛡️</span><div style="flex:1"><div class="cosw-name">Big O Projects (Pty) Ltd</div><div class="cosw-sub">Insurance · Claims Management</div></div><span style="color:var(--green);font-size:11px">●</span></div>
+        <div class="co-sw-item" id="cosw-it" onclick="switchPack('it')"><span class="cosw-icon">💻</span><div style="flex:1"><div class="cosw-name">ImageLink Technologies (Pty) Ltd</div><div class="cosw-sub">IT &amp; Contract Management</div></div></div>
+        <div class="co-sw-item" id="cosw-realestate" onclick="switchPack('realestate')"><span class="cosw-icon">🏘️</span><div style="flex:1"><div class="cosw-name">N.T.O Real Estate (Pty) Ltd</div><div class="cosw-sub">Rental &amp; Lease Management</div></div></div>
+        <div style="padding:10px 14px;border-top:1px solid var(--border-md);background:#F8F9FC">
+          <button class="btn btn-gold btn-sm btn-full" onclick="closeCoSw();showPanel('support')">⊞ Platform Overview &amp; Support Panel</button>
+        </div>
+      </div>
+    </div>
     <div class="tb-spacer"></div>
     <div class="tb-sync" onclick="triggerSync()">
       <div class="sync-dot"></div><span id="sync-lbl">Online — Synced</span>
@@ -536,10 +565,94 @@ textarea.fi{resize:vertical}
       <div class="nav-sec" style="margin-top:8px">System</div>
       <div class="nav-item" id="nav-settings" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
 
+      <!-- INSURANCE NAV is the default above; hidden when other pack active -->
+      <div class="industry-nav" id="nav-pack-it">
+        <div class="nav-sec">IT — Main</div>
+        <div class="nav-item" onclick="showPanel('it-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+        <div class="nav-item" onclick="showPanel('clients')"><span class="nav-icon">👥</span> Clients</div>
+        <div class="nav-item" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes</div>
+        <div class="nav-item" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices</div>
+        <div class="nav-item" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
+        <div class="nav-sec" style="margin-top:8px">IT Operations</div>
+        <div class="nav-item" id="nav-it-pipeline" onclick="showPanel('it-pipeline')"><span class="nav-icon">◈</span> Pipeline<span class="nav-badge nb-gold">28</span></div>
+        <div class="nav-item" id="nav-it-contracts" onclick="showPanel('it-contracts')"><span class="nav-icon">📋</span> Contracts</div>
+        <div class="nav-item" id="nav-it-technicians" onclick="showPanel('it-technicians')"><span class="nav-icon">🔧</span> Technicians</div>
+        <div class="nav-item" id="nav-it-salesteam" onclick="showPanel('it-salesteam')"><span class="nav-icon">📈</span> Sales Team</div>
+        <div class="nav-item" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
+        <div class="nav-sec" style="margin-top:8px">Finance</div>
+        <div class="nav-item" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
+        <div class="nav-item" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
+        <div class="nav-item" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
+        <div class="nav-item" onclick="showPanel('afs')"><span class="nav-icon">📑</span> Annual Fin. Stmts</div>
+        <div class="nav-item" onclick="showPanel('finmodel')"><span class="nav-icon">🔮</span> Fin. Modelling</div>
+        <div class="nav-item" onclick="showPanel('funding')"><span class="nav-icon">💼</span> Funding &amp; Credit</div>
+        <div class="nav-item" onclick="showPanel('docvault')"><span class="nav-icon">🗄️</span> Document Vault</div>
+        <div class="nav-item" onclick="showPanel('reports')"><span class="nav-icon">📈</span> Reports</div>
+        <div class="nav-item" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="industry-nav" id="nav-pack-construction">
+        <div class="nav-sec">Construction — Main</div>
+        <div class="nav-item" onclick="showPanel('co-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+        <div class="nav-item" onclick="showPanel('clients')"><span class="nav-icon">👥</span> Clients</div>
+        <div class="nav-item" onclick="showPanel('quotes')"><span class="nav-icon">📄</span> Quotes</div>
+        <div class="nav-item" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices</div>
+        <div class="nav-item" onclick="showPanel('payments')"><span class="nav-icon">💳</span> Payments</div>
+        <div class="nav-sec" style="margin-top:8px">Operations</div>
+        <div class="nav-item" id="nav-co-projects" onclick="showPanel('co-projects')"><span class="nav-icon">🏗️</span> Projects<span class="nav-badge nb-teal">4</span></div>
+        <div class="nav-item" id="nav-co-boq" onclick="showPanel('co-boq')"><span class="nav-icon">📐</span> Bill of Quantities</div>
+        <div class="nav-item" id="nav-co-siteprog" onclick="showPanel('co-siteprog')"><span class="nav-icon">🗺️</span> Site Progress</div>
+        <div class="nav-item" onclick="showPanel('field')"><span class="nav-icon">📷</span> Field / Photos</div>
+        <div class="nav-item" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
+        <div class="nav-sec" style="margin-top:8px">Finance</div>
+        <div class="nav-item" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
+        <div class="nav-item" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
+        <div class="nav-item" onclick="showPanel('reports')"><span class="nav-icon">📈</span> Reports</div>
+        <div class="nav-item" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="industry-nav" id="nav-pack-realestate">
+        <div class="nav-sec">Real Estate — Main</div>
+        <div class="nav-item" onclick="showPanel('re-dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+        <div class="nav-item" id="nav-re-properties" onclick="showPanel('re-properties')"><span class="nav-icon">🏘️</span> Properties</div>
+        <div class="nav-item" id="nav-re-tenants" onclick="showPanel('re-tenants')"><span class="nav-icon">👤</span> Tenants</div>
+        <div class="nav-item" id="nav-re-leases" onclick="showPanel('re-leases')"><span class="nav-icon">📋</span> Leases<span class="nav-badge nb-teal">8</span></div>
+        <div class="nav-item" id="nav-re-rentroll" onclick="showPanel('re-rentroll')"><span class="nav-icon">🗓️</span> Rent Roll</div>
+        <div class="nav-item" id="nav-re-payments" onclick="showPanel('re-payments')"><span class="nav-icon">💳</span> Rent Payments</div>
+        <div class="nav-sec" style="margin-top:8px">Operations</div>
+        <div class="nav-item" id="nav-re-maintenance" onclick="showPanel('re-maintenance')"><span class="nav-icon">🔧</span> Maintenance<span class="nav-badge nb-red">3</span></div>
+        <div class="nav-item" id="nav-re-inspections" onclick="showPanel('re-inspections')"><span class="nav-icon">🔍</span> Inspections</div>
+        <div class="nav-item" id="nav-re-listings" onclick="showPanel('re-listings')"><span class="nav-icon">📌</span> Listings</div>
+        <div class="nav-item" id="nav-re-portal" onclick="showPanel('re-portal')"><span class="nav-icon">🌐</span> Tenant Portal</div>
+        <div class="nav-item" onclick="showPanel('expenses')"><span class="nav-icon">💸</span> Expenses</div>
+        <div class="nav-sec" style="margin-top:8px">Finance</div>
+        <div class="nav-item" onclick="showPanel('invoices')"><span class="nav-icon">🧾</span> Invoices</div>
+        <div class="nav-item" onclick="showPanel('accounting')"><span class="nav-icon">📒</span> Accounting</div>
+        <div class="nav-item" onclick="showPanel('vatsars')"><span class="nav-icon">🏛️</span> VAT &amp; SARS</div>
+        <div class="nav-item" onclick="showPanel('mgmtaccounts')"><span class="nav-icon">📊</span> Mgmt Accounts</div>
+        <div class="nav-item" onclick="showPanel('afs')"><span class="nav-icon">📑</span> Annual Fin. Stmts</div>
+        <div class="nav-item" onclick="showPanel('finmodel')"><span class="nav-icon">🔮</span> Fin. Modelling</div>
+        <div class="nav-item" onclick="showPanel('funding')"><span class="nav-icon">💼</span> Funding &amp; Credit</div>
+        <div class="nav-item" onclick="showPanel('docvault')"><span class="nav-icon">🗄️</span> Document Vault</div>
+        <div class="nav-item" id="nav-re-reports" onclick="showPanel('re-reports')"><span class="nav-icon">📈</span> RE Reports</div>
+        <div class="nav-item" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
+      <div class="industry-nav" id="nav-pack-support">
+        <div class="nav-sec">Platform Admin</div>
+        <div class="nav-item" id="nav-support" onclick="showPanel('support')"><span class="nav-icon">⊞</span> Platform Overview</div>
+        <div class="nav-item" id="nav-groupreport" onclick="showPanel('groupreport')"><span class="nav-icon">📊</span> Group Reporting</div>
+        <div class="nav-item" id="nav-admincompanies" onclick="showPanel('admincompanies')"><span class="nav-icon">🏢</span> Company Manager</div>
+        <div class="nav-item" id="nav-adminmodules" onclick="showPanel('adminmodules')"><span class="nav-icon">🧩</span> Module Assignment</div>
+        <div class="nav-item" id="nav-adminbilling" onclick="showPanel('adminbilling')"><span class="nav-icon">💳</span> Subscription Billing</div>
+        <div class="nav-sec" style="margin-top:8px">Support Portal</div>
+        <div class="nav-item" id="nav-support-diagnostics" onclick="showPanel('support-diagnostics')"><span class="nav-icon">🔬</span> Diagnostics</div>
+        <div class="nav-item" id="nav-support-registration" onclick="showPanel('support-registration')"><span class="nav-icon">📝</span> Registration</div>
+        <div class="nav-item" id="nav-support-overrides" onclick="showPanel('support-overrides')"><span class="nav-icon">⚡</span> Overrides</div>
+        <div class="nav-item" id="nav-support-updates" onclick="showPanel('support-updates')"><span class="nav-icon">🔄</span> Updates</div>
+        <div class="nav-item" onclick="showPanel('settings')"><span class="nav-icon">⚙️</span> Settings</div>
+      </div>
       <div class="sb-footer">
         <div class="sb-build">
-          <strong>ClaimSync v4.0</strong>
-          Full Interactive Mockup<br>
+          <strong>ImageSync v1.0.4</strong>
+          Multi-Industry SaaS Platform<br>
           © 2026 Imagelink Technologies (Pty) Ltd
         </div>
       </div>
@@ -1378,7 +1491,7 @@ textarea.fi{resize:vertical}
               <a href="#" onclick="mockAction('Open SARS eFiling')"><button class="btn btn-teal btn-sm">🌐 Open eFiling</button></a>
             </div>
             <div style="background:#F4F5F9;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <div><div style="font-weight:700;font-size:12px">Step 4 — Mark as Submitted</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Record submission in ClaimSync audit trail</div></div>
+              <div><div style="font-weight:700;font-size:12px">Step 4 — Mark as Submitted</div><div style="font-size:11px;color:var(--muted);margin-top:2px">Record submission in ImageSync audit trail</div></div>
               <button class="btn btn-green btn-sm" onclick="mockAction('Mark VAT201 submitted')">✅ Mark Submitted</button>
             </div>
           </div>
@@ -1782,7 +1895,7 @@ textarea.fi{resize:vertical}
       <button class="btn btn-gold btn-sm" onclick="runAffordabilitySim()">🤖 Run Simulation</button>
     </div>
   </div>
-  <div class="alert ok" style="margin:0"><div class="alert-icon">✅</div><div><div class="alert-title">Funding Pack Ready to Compile</div><div class="alert-body">ClaimSync automatically compiles your management accounts, AFS, financial model, and company documents into a single professional funding proposal pack. Fill in the details below and export as PDF.</div></div></div>
+  <div class="alert ok" style="margin:0"><div class="alert-icon">✅</div><div><div class="alert-title">Funding Pack Ready to Compile</div><div class="alert-body">ImageSync automatically compiles your management accounts, AFS, financial model, and company documents into a single professional funding proposal pack. Fill in the details below and export as PDF.</div></div></div>
   <div class="two-col">
     <div class="card">
       <div class="card-hdr"><div class="card-title">Loan Application Details</div></div>
@@ -1814,7 +1927,7 @@ textarea.fi{resize:vertical}
     </div>
   </div>
   <div class="card">
-    <div class="card-hdr"><div class="card-title">Funding Proposal Pack Contents</div><div class="card-sub">All items auto-compiled from ClaimSync modules</div></div>
+    <div class="card-hdr"><div class="card-title">Funding Proposal Pack Contents</div><div class="card-sub">All items auto-compiled from ImageSync modules</div></div>
     <div class="card-body">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
         <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--green-p);border-radius:8px;font-size:12px"><span>✅</span><span>Management Accounts (Q1 2026)</span></div>
@@ -1886,6 +1999,7 @@ textarea.fi{resize:vertical}
     <div class="tab" onclick="switchSettingsTab(this,'set-users')">👥 Users</div>
     <div class="tab" onclick="switchSettingsTab(this,'set-billing')">💳 Billing</div>
     <div class="tab" onclick="switchSettingsTab(this,'set-templates')">💬 Comm Templates</div>
+    <div class="tab" onclick="switchSettingsTab(this,'set-support')">⊞ Platform</div>
   </div>
   <!-- Company -->
   <div id="set-company">
@@ -1962,10 +2076,10 @@ textarea.fi{resize:vertical}
       <div class="tbl-wrap">
         <table class="tbl"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Last Login</th><th>Status</th><th>Action</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="td-bold">Norman</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ae4e5f8e7ebe4cae8e3ede5faf8e5e0efe9fef9a4e9e5a4f0eb">[email&#160;protected]</a></td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
-          <tr><td>2</td><td class="td-bold">Field User</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="26404f434a4266444f41495654494c43455255084549085c47">[email&#160;protected]</a></td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
-          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89fde1e8ebe6c9ebe0eee6f9fbe6e3eceafdfaa7eae6a7f3e8">[email&#160;protected]</a></td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
-          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b0604180e182b09020c041b1904010e081f1845080445110a">[email&#160;protected]</a></td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
+          <tr><td>1</td><td class="td-bold">Norman</td><td>norman@bigoprojects.co.za</td><td><span class="badge b-navy">Administrator</span></td><td>Today, 09:14</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+          <tr><td>2</td><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>Yesterday</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
+          <tr><td>3</td><td class="td-bold">Thabo Mkhize</td><td>thabo@bigoprojects.co.za</td><td><span class="badge b-teal">Team Leader</span></td><td>24 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Thabo')">Edit</button></td></tr>
+          <tr><td>4</td><td class="td-bold">Moses Nkosi</td><td>moses@bigoprojects.co.za</td><td><span class="badge b-teal">Senior Assessor</span></td><td>25 Mar</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Moses')">Edit</button></td></tr>
         </tbody></table>
       </div>
     </div>
@@ -2058,6 +2172,1050 @@ textarea.fi{resize:vertical}
       </div>
     </div>
   </div>
+</div>
+
+
+<!-- ══════════════════ IT DASHBOARD ══════════════════ -->
+<div class="panel" id="panel-it-dashboard">
+<div class="pack-banner pack-it">💻 IMAGE LINK TECHNOLOGIES — IT &amp; Contract Management Pack</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">IT Dashboard</div><div class="ph-sub">Image Link Technologies (Pty) Ltd · Reg 2021/763847/07 · Midrand, Gauteng</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export IT report')">⬇ Export</button><button class="btn btn-gold btn-sm" onclick="openModal('modal-invoice')">+ New Invoice</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Monthly MRC</div><div class="sv">R 209,231</div><div class="ss">All active clients</div><div class="si">🔄</div></div>
+  <div class="stat s-teal"><div class="sl">Loan Book</div><div class="sv">R 4.2M</div><div class="ss">Remaining contracted</div><div class="si">📚</div></div>
+  <div class="stat s-green"><div class="sl">Active Clients</div><div class="sv">5</div><div class="ss">Under contract</div><div class="si">👥</div></div>
+  <div class="stat s-gold"><div class="sl">Pipeline Value</div><div class="sv">R 220M</div><div class="ss">2,144 quotes</div><div class="si">◈</div></div>
+  <div class="stat s-red"><div class="sl">Overdue</div><div class="sv">R 3,272</div><div class="ss">Diamond Channel</div><div class="si">⚠️</div></div>
+  <div class="stat s-navy"><div class="sl">5-Year Value</div><div class="sv">R 18.4M</div><div class="ss">@ 10% escalation</div><div class="si">🔮</div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Revenue Streams — Monthly</div></div><div class="card-body">
+    <div style="border:1px solid var(--border-md);border-radius:8px;overflow:hidden">
+      <div class="vat-row"><span>Rental Income (65%)</span><span class="mono" style="color:var(--navy)">R 135,900</span></div>
+      <div class="vat-row"><span>Interest Margin (18%)</span><span class="mono" style="color:var(--teal)">R 37,661</span></div>
+      <div class="vat-row"><span>Admin Fees (8%)</span><span class="mono" style="color:var(--purple)">R 16,739</span></div>
+      <div class="vat-row"><span>Insurance Commission (5%)</span><span class="mono" style="color:var(--amber)">R 10,462</span></div>
+      <div class="vat-row"><span>VoIP &amp; Services (4%)</span><span class="mono" style="color:var(--green)">R 8,369</span></div>
+      <div class="vat-row total"><span>Total MRC</span><span class="mono">R 209,231</span></div>
+    </div>
+  </div></div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Quick Actions</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+    <button class="btn btn-navy btn-full" onclick="showPanel('it-pipeline')">◈ Pipeline — 2,144 deals · R 220M</button>
+    <button class="btn btn-teal btn-full" onclick="showPanel('it-contracts')">📋 Active Contracts (6)</button>
+    <button class="btn btn-ghost btn-full" onclick="showPanel('it-technicians')">🔧 Technician Dispatch</button>
+    <button class="btn btn-ghost btn-full" onclick="showPanel('it-salesteam')">📈 Sales Team Performance</button>
+    <button class="btn btn-ghost btn-full" onclick="showPanel('vatsars')">🏛️ VAT &amp; SARS Portal</button>
+  </div></div>
+</div>
+<div class="card">
+  <div class="card-hdr"><div class="card-title">Active Contracts — Asset Register</div><button class="btn btn-ghost btn-sm" onclick="showPanel('it-contracts')">View All →</button></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Client</th><th>Product</th><th>Monthly</th><th>Term</th><th>Paid / Left</th><th>Finance</th><th>Status</th></tr></thead><tbody>
+    <tr><td class="td-bold">RTM Training Group</td><td style="font-size:11px;color:var(--muted)">Toshiba MFP e-STUDIO5018A</td><td class="mono">R 3,200</td><td>60mo</td><td><div class="pb" style="width:100px"><div class="pb-fill" style="width:80%;background:var(--teal)"></div></div> 48/60</td><td>Capitec</td><td><span class="badge b-active">Active</span></td></tr>
+    <tr><td class="td-bold">AMBASAAM CC</td><td style="font-size:11px;color:var(--muted)">Toshiba MFP + Hikvision CCTV</td><td class="mono">R 8,078</td><td>60mo</td><td><div class="pb" style="width:100px"><div class="pb-fill" style="width:50%;background:var(--navy)"></div></div> 30/60</td><td>Capitec</td><td><span class="badge b-active">Active</span></td></tr>
+    <tr><td class="td-bold">Diamond Channel</td><td style="font-size:11px;color:var(--muted)">Network + Access Control</td><td class="mono" style="color:var(--red)">R 2,845</td><td>60mo</td><td><div class="pb" style="width:100px"><div class="pb-fill" style="width:42%;background:var(--red)"></div></div> 25/60</td><td>Capitec</td><td><span class="badge b-outstanding">Overdue</span></td></tr>
+    <tr><td class="td-bold">Logic Elevators</td><td style="font-size:11px;color:var(--muted)">Toshiba MFP e-STUDIO6518A</td><td class="mono">R 1,216</td><td>60mo</td><td><div class="pb" style="width:100px"><div class="pb-fill" style="width:97%;background:var(--green)"></div></div> 58/60</td><td>Capitec</td><td><span class="badge b-active">Active</span></td></tr>
+    <tr><td class="td-bold">Kishugu Training</td><td style="font-size:11px;color:var(--muted)">Yealink VoIP T-Series</td><td class="mono">R 700</td><td>60mo</td><td><div class="pb" style="width:100px"><div class="pb-fill" style="width:70%;background:var(--blue)"></div></div> 42/60</td><td>Own Book</td><td><span class="badge b-active">Active</span></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ IT PIPELINE ══════════════════ -->
+<div class="panel" id="panel-it-pipeline">
+<div class="pack-banner pack-it">💻 IMAGE LINK TECHNOLOGIES — Sales Pipeline</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Sales Pipeline</div><div class="ph-sub">2,144 quotes · R 220M total · Johannesburg &amp; Nelspruit</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export CSV')">⬇ CSV</button><button class="btn btn-gold btn-sm" onclick="mockAction('Add deal')">+ Add Deal</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Total Quotes</div><div class="sv">2,144</div><div class="ss">R 220M pipeline</div></div>
+  <div class="stat s-green"><div class="sl">Active</div><div class="sv">1,073</div><div class="ss">50% of pipeline</div></div>
+  <div class="stat s-gold"><div class="sl">Accepted / Won</div><div class="sv">248</div><div class="ss">R 26M closed value</div></div>
+  <div class="stat"><div class="sl">Draft</div><div class="sv">578</div><div class="ss">27% of pipeline</div></div>
+  <div class="stat s-red"><div class="sl">Rejected</div><div class="sv">245</div><div class="ss">11.4% loss rate</div></div>
+  <div class="stat s-teal"><div class="sl">Avg Deal Size</div><div class="sv">R 102K</div></div>
+</div>
+<div class="card">
+  <div class="filter-bar">
+    <input class="fi-search" placeholder="🔍 Search client, quote, rep..." oninput="filterTable('tbl-pipeline',this.value)">
+    <select class="fi-sel"><option>All Status</option><option>Active</option><option>Accepted</option><option>Draft</option><option>Rejected</option></select>
+    <select class="fi-sel"><option>All Teams</option><option>Johannesburg</option><option>Nelspruit</option></select>
+    <select class="fi-sel"><option>Sort: Value ↓</option><option>Sort: Date ↓</option></select>
+  </div>
+  <div class="tbl-wrap"><table class="tbl" id="tbl-pipeline"><thead><tr><th>Quote #</th><th>Status</th><th>Client</th><th>Rep</th><th>Deal Value</th><th>Monthly</th><th>Team</th><th>Action</th></tr></thead><tbody>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q06729</td><td><span class="badge b-done">Accepted</span></td><td class="td-bold">Logic Elevators (Pty) Ltd</td><td>Brett Luck</td><td class="mono">R 211,322</td><td class="mono" style="color:var(--green)">R 1,216/mo</td><td>JHB</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q06729')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q07409</td><td><span class="badge b-active">Active</span></td><td class="td-bold">SIKHALO PRINTERS</td><td>Nicoleen Nkosi</td><td class="mono">R 292,843</td><td class="mono" style="color:var(--green)">R 233/mo</td><td>Nelspruit</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q07409')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q06315</td><td><span class="badge b-done">Accepted</span></td><td class="td-bold">RTM Training Group</td><td>Julie Breytenbach</td><td class="mono">R 922,300</td><td class="mono" style="color:var(--green)">R 3,200/mo</td><td>JHB</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q06315')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q04221</td><td><span class="badge b-done">Accepted</span></td><td class="td-bold">AMBASAAM CC</td><td>Wayne Britz</td><td class="mono">R 314,543</td><td class="mono" style="color:var(--green)">R 6,278/mo</td><td>JHB</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q04221')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q07068</td><td><span class="badge b-void">Rejected</span></td><td class="td-bold">Crest Information Systems</td><td>Brett Luck</td><td class="mono">R 161,300</td><td class="mono td-muted">—</td><td>JHB</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q07068')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q06496</td><td><span class="badge b-active">Active</span></td><td class="td-bold">Ritestand (Pty) Ltd</td><td>Tracey Botha</td><td class="mono">R 820,582</td><td class="mono td-muted">—</td><td>JHB</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q06496')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q06942</td><td><span class="badge b-active">Active</span></td><td class="td-bold">Mining &amp; Slurry Technology</td><td>Julie Breytenbach</td><td class="mono">R 904,198</td><td class="mono" style="color:var(--green)">R 1,618/mo</td><td>JHB</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q06942')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">OSD-Q04881</td><td><span class="badge b-active">Active</span></td><td class="td-bold">Trysome Head Office</td><td>Brett Luck</td><td class="mono">R 727,276</td><td class="mono" style="color:var(--green)">R 10,037/mo</td><td>JHB</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View OSD-Q04881')">View</button></td></tr>
+  </tbody></table></div>
+  <div style="padding:10px 16px;background:#FAFBFD;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted)">Showing 8 of 2,144 records · <a href="javascript:void(0)" style="color:var(--navy);font-weight:700" onclick="showToast('Loading full pipeline...','inf')">Load all →</a></div>
+</div>
+</div>
+
+<!-- ══════════════════ IT CONTRACTS ══════════════════ -->
+<div class="panel" id="panel-it-contracts">
+<div class="pack-banner pack-it">💻 IMAGE LINK TECHNOLOGIES — Contracts &amp; Asset Register</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Contract Management</div><div class="ph-sub">Active rental contracts · Finance agreements · Capitec Rental Finance</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export contracts')">⬇ Export</button><button class="btn btn-gold btn-sm" onclick="mockAction('New contract')">+ New Contract</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Active Contracts</div><div class="sv">6</div><div class="ss">R 4.2M loan book</div></div>
+  <div class="stat s-teal"><div class="sl">Total MRC</div><div class="sv">R 16,039</div><div class="ss">Monthly recurring</div></div>
+  <div class="stat s-green"><div class="sl">Collection Rate</div><div class="sv">98.6%</div></div>
+  <div class="stat s-gold"><div class="sl">5-Year Value</div><div class="sv">R 18.4M</div><div class="ss">@ 10% escalation</div></div>
+</div>
+<div class="card">
+  <div class="card-hdr"><div class="card-title">Active Contracts — Capitec Rental Finance &amp; Own Book</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Client</th><th>Product</th><th>Quote Ref</th><th>Value</th><th>Monthly</th><th>Period</th><th>Progress</th><th>Finance Ref</th><th>Status</th></tr></thead><tbody>
+    <tr><td class="td-bold">RTM Training Group</td><td style="font-size:11px;color:var(--muted)">Toshiba MFP e-STUDIO5018A</td><td class="mono td-muted" style="font-size:11px">OSD-Q06315</td><td class="mono">R 922,300</td><td class="mono" style="color:var(--green)">R 3,200</td><td>60mo</td><td><div class="pb" style="width:90px"><div class="pb-fill" style="width:80%;background:var(--teal)"></div></div><span style="font-size:10px;color:var(--muted)"> 48/60</span></td><td class="mono td-muted" style="font-size:11px">CAP-467956</td><td><span class="badge b-active">Active</span></td></tr>
+    <tr><td class="td-bold">AMBASAAM CC</td><td style="font-size:11px;color:var(--muted)">Toshiba MFP e-STUDIO6518A</td><td class="mono td-muted" style="font-size:11px">OSD-Q04221</td><td class="mono">R 314,543</td><td class="mono" style="color:var(--green)">R 6,278</td><td>60mo</td><td><div class="pb" style="width:90px"><div class="pb-fill" style="width:50%;background:var(--navy)"></div></div><span style="font-size:10px;color:var(--muted)"> 30/60</span></td><td class="mono td-muted" style="font-size:11px">CAP-312441</td><td><span class="badge b-active">Active</span></td></tr>
+    <tr><td class="td-bold">AMBASAAM CC</td><td style="font-size:11px;color:var(--muted)">Hikvision CCTV 8-Cam</td><td class="mono td-muted" style="font-size:11px">OSD-Q04221-B</td><td class="mono">R 86,400</td><td class="mono" style="color:var(--green)">R 1,800</td><td>36mo</td><td><div class="pb" style="width:90px"><div class="pb-fill" style="width:42%;background:var(--amber)"></div></div><span style="font-size:10px;color:var(--muted)"> 15/36</span></td><td class="mono td-muted" style="font-size:11px">CAP-312441-B</td><td><span class="badge b-active">Active</span></td></tr>
+    <tr><td class="td-bold">Diamond Channel</td><td style="font-size:11px;color:var(--muted)">Network + Access Control</td><td class="mono td-muted" style="font-size:11px">OSD-Q04652</td><td class="mono">R 158,642</td><td class="mono" style="color:var(--red)">R 2,845</td><td>60mo</td><td><div class="pb" style="width:90px"><div class="pb-fill" style="width:42%;background:var(--red)"></div></div><span style="font-size:10px;color:var(--muted)"> 25/60</span></td><td class="mono td-muted" style="font-size:11px">CAP-289003</td><td><span class="badge b-outstanding">Overdue</span></td></tr>
+    <tr><td class="td-bold">Logic Elevators</td><td style="font-size:11px;color:var(--muted)">Toshiba MFP e-STUDIO6518A</td><td class="mono td-muted" style="font-size:11px">OSD-Q06729</td><td class="mono">R 211,322</td><td class="mono" style="color:var(--green)">R 1,216</td><td>60mo</td><td><div class="pb" style="width:90px"><div class="pb-fill" style="width:97%;background:var(--green)"></div></div><span style="font-size:10px;color:var(--muted)"> 58/60</span></td><td class="mono td-muted" style="font-size:11px">CAP-501234</td><td><span class="badge b-active">Active</span></td></tr>
+    <tr><td class="td-bold">Kishugu Training</td><td style="font-size:11px;color:var(--muted)">Yealink VoIP T-Series</td><td class="mono td-muted" style="font-size:11px">OSD-Q05169</td><td class="mono">R 473,500</td><td class="mono" style="color:var(--green)">R 700</td><td>60mo</td><td><div class="pb" style="width:90px"><div class="pb-fill" style="width:70%;background:var(--blue)"></div></div><span style="font-size:10px;color:var(--muted)"> 42/60</span></td><td class="mono td-muted" style="font-size:11px">IL-0023</td><td><span class="badge b-active">Active</span></td></tr>
+  </tbody></table></div>
+  <div style="padding:10px 16px;background:#F8F9FC;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;font-weight:700"><span>Total Asset Book Value</span><span class="mono" style="color:var(--navy)">R 2,166,707</span></div>
+</div>
+</div>
+
+<!-- ══════════════════ IT TECHNICIANS ══════════════════ -->
+<div class="panel" id="panel-it-technicians">
+<div class="pack-banner pack-it">💻 IMAGE LINK TECHNOLOGIES — Technician Dispatch</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Technician Module</div><div class="ph-sub">Field dispatch · Job cards · Commission tracking</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('New job card')">+ New Job Card</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Technicians</div><div class="sv">3</div></div>
+  <div class="stat s-green"><div class="sl">Jobs Done</div><div class="sv">83</div></div>
+  <div class="stat s-amber"><div class="sl">Active Jobs</div><div class="sv">2</div></div>
+  <div class="stat s-gold"><div class="sl">Commission Paid</div><div class="sv">R 29,400</div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Technician Roster</div></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Region</th><th>Status</th><th>Skills</th><th>Jobs</th><th>Rate</th><th>Earned</th></tr></thead><tbody>
+      <tr><td class="td-bold">Sipho Ndlovu</td><td>JHB North</td><td><span class="badge b-active">Available</span></td><td style="font-size:11px">Printers, CCTV</td><td class="mono">34</td><td class="mono">8%</td><td class="mono" style="color:var(--gold)">R 12,400</td></tr>
+      <tr><td class="td-bold">Thabo Mokoena</td><td>JHB South</td><td><span class="badge b-progress">On Job</span></td><td style="font-size:11px">VoIP, Network</td><td class="mono">28</td><td class="mono">8%</td><td class="mono" style="color:var(--gold)">R 9,800</td></tr>
+      <tr><td class="td-bold">Fikile Zulu</td><td>Nelspruit</td><td><span class="badge b-active">Available</span></td><td style="font-size:11px">Printers, Alarms</td><td class="mono">21</td><td class="mono">8%</td><td class="mono" style="color:var(--gold)">R 7,200</td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Active Job Cards</div></div><div style="display:flex;flex-direction:column;gap:10px;padding:16px">
+    <div style="border:1px solid var(--border-md);border-radius:10px;border-top:3px solid var(--amber);overflow:hidden">
+      <div style="background:var(--amber-p);padding:10px 14px;border-bottom:1px solid var(--border)"><div class="mono td-muted" style="font-size:11px">JC-001</div><div style="font-weight:700;font-size:13px;color:var(--navy)">AMBASAAM CC — CCTV Camera 3 Fault</div></div>
+      <div style="padding:10px 14px;font-size:12px">
+        <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)"><span class="td-muted">Technician</span><span>Sipho Ndlovu</span></div>
+        <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)"><span class="td-muted">Priority</span><span class="badge b-medium">Medium</span></div>
+        <div style="display:flex;justify-content:space-between;padding:3px 0"><span class="td-muted">Commission</span><span class="mono" style="color:var(--gold)">R 1,800</span></div>
+      </div>
+      <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-001')">View</button><button class="btn btn-green btn-xs" onclick="showToast('✅ JC-001 completed. Commission: R 1,800 payable.','ok')">✅ Complete</button></div>
+    </div>
+    <div style="border:1px solid var(--border-md);border-radius:10px;border-top:3px solid var(--red);overflow:hidden">
+      <div style="background:var(--red-p);padding:10px 14px;border-bottom:1px solid var(--border)"><div class="mono td-muted" style="font-size:11px">JC-002</div><div style="font-weight:700;font-size:13px;color:var(--navy)">Diamond Channel — VoIP Line Drops</div></div>
+      <div style="padding:10px 14px;font-size:12px">
+        <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)"><span class="td-muted">Technician</span><span>Thabo Mokoena</span></div>
+        <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)"><span class="td-muted">Priority</span><span class="badge b-high">Critical</span></div>
+        <div style="display:flex;justify-content:space-between;padding:3px 0"><span class="td-muted">Commission</span><span class="mono" style="color:var(--gold)">R 2,845</span></div>
+      </div>
+      <div style="padding:8px 14px;background:#FAFBFD;border-top:1px solid var(--border);display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View JC-002')">View</button><button class="btn btn-green btn-xs" onclick="showToast('✅ JC-002 completed. Commission: R 2,845 payable.','ok')">✅ Complete</button></div>
+    </div>
+  </div></div>
+</div>
+</div>
+
+<!-- ══════════════════ IT SALES TEAM ══════════════════ -->
+<div class="panel" id="panel-it-salesteam">
+<div class="pack-banner pack-it">💻 IMAGE LINK TECHNOLOGIES — Sales Team Performance</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Sales Team</div><div class="ph-sub">Per-rep pipeline · Commission tracking · YTD performance</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export sales report')">⬇ Export</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Team Members</div><div class="sv">6</div></div>
+  <div class="stat s-green"><div class="sl">YTD Deals Closed</div><div class="sv">116</div></div>
+  <div class="stat s-gold"><div class="sl">YTD Deal Value</div><div class="sv">R 20.8M</div></div>
+  <div class="stat s-teal"><div class="sl">Total Commission</div><div class="sv">R 643K</div><div class="ss">YTD @ 20%</div></div>
+</div>
+<div class="card"><div class="card-hdr"><div class="card-title">🏆 Sales Leaderboard — YTD 2026</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Representative</th><th>Team</th><th>Deals</th><th>Value</th><th>Target</th><th>Achievement</th><th>Commission</th><th>Open</th></tr></thead><tbody>
+    <tr style="background:rgba(201,152,42,.06)"><td style="font-size:18px">🥇</td><td class="td-bold">Julie Breytenbach</td><td>JHB</td><td class="mono">35</td><td class="mono" style="color:var(--green)">R 6.24M</td><td class="mono td-muted">R 1.5M</td><td><div class="pb" style="width:80px;display:inline-block"><div class="pb-fill" style="width:100%;background:var(--green)"></div></div> <span style="color:var(--green);font-size:10px;font-weight:700">416%</span></td><td class="mono" style="color:var(--gold)">R 192,000</td><td class="mono">18</td></tr>
+    <tr><td style="font-size:18px">🥈</td><td class="td-bold">Brett Luck</td><td>JHB</td><td class="mono">28</td><td class="mono" style="color:var(--green)">R 4.82M</td><td class="mono td-muted">R 1.5M</td><td><div class="pb" style="width:80px;display:inline-block"><div class="pb-fill" style="width:100%;background:var(--teal)"></div></div> <span style="color:var(--teal);font-size:10px;font-weight:700">321%</span></td><td class="mono" style="color:var(--gold)">R 148,500</td><td class="mono">12</td></tr>
+    <tr><td style="font-size:18px">🥉</td><td class="td-bold">Wayne Britz</td><td>JHB</td><td class="mono">19</td><td class="mono" style="color:var(--green)">R 3.12M</td><td class="mono td-muted">R 1.2M</td><td><div class="pb" style="width:80px;display:inline-block"><div class="pb-fill" style="width:100%;background:var(--purple)"></div></div> <span style="color:var(--purple);font-size:10px;font-weight:700">260%</span></td><td class="mono" style="color:var(--gold)">R 98,400</td><td class="mono">7</td></tr>
+    <tr><td>4</td><td class="td-bold">Jeanré Joubert</td><td>JHB</td><td class="mono">8</td><td class="mono" style="color:var(--green)">R 2.49M</td><td class="mono td-muted">R 1.0M</td><td><div class="pb" style="width:80px;display:inline-block"><div class="pb-fill" style="width:100%;background:var(--navy)"></div></div> <span style="color:var(--navy);font-size:10px;font-weight:700">249%</span></td><td class="mono" style="color:var(--gold)">R 78,200</td><td class="mono">9</td></tr>
+    <tr><td>5</td><td class="td-bold">Dawie Van Deventer</td><td>Nelspruit</td><td class="mono">14</td><td class="mono" style="color:var(--green)">R 2.19M</td><td class="mono td-muted">R 900K</td><td><div class="pb" style="width:80px;display:inline-block"><div class="pb-fill" style="width:100%;background:var(--blue)"></div></div> <span style="color:var(--blue);font-size:10px;font-weight:700">243%</span></td><td class="mono" style="color:var(--gold)">R 68,400</td><td class="mono">6</td></tr>
+    <tr><td>6</td><td class="td-bold">Nicoleen Nkosi</td><td>Nelspruit</td><td class="mono">12</td><td class="mono" style="color:var(--green)">R 1.84M</td><td class="mono td-muted">R 800K</td><td><div class="pb" style="width:80px;display:inline-block"><div class="pb-fill" style="width:100%;background:var(--amber)"></div></div> <span style="color:var(--amber);font-size:10px;font-weight:700">230%</span></td><td class="mono" style="color:var(--gold)">R 56,800</td><td class="mono">5</td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+
+<!-- ══════════════════ CONSTRUCTION DASHBOARD ══════════════════ -->
+<div class="panel" id="panel-co-dashboard">
+<div class="pack-banner pack-con">🏗️ BIG O CONSTRUCTION — Construction &amp; Projects Pack</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Construction Dashboard</div><div class="ph-sub">Big O Construction · CIDB PE 6GB · NHBRC Registered · Midrand</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export report')">⬇ Export</button><button class="btn btn-gold btn-sm" onclick="showPanel('co-projects')">+ New Project</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Active Projects</div><div class="sv">4</div><div class="ss">R 8.4M contracted</div><div class="si">🏗️</div></div>
+  <div class="stat s-green"><div class="sl">Completed YTD</div><div class="sv">12</div><div class="si">✅</div></div>
+  <div class="stat s-gold"><div class="sl">Invoiced YTD</div><div class="sv">R 5.2M</div><div class="ss">Incl. VAT</div><div class="si">🧾</div></div>
+  <div class="stat s-teal"><div class="sl">Subcontractors</div><div class="sv">6</div><div class="ss">Active on projects</div><div class="si">🤝</div></div>
+  <div class="stat s-red"><div class="sl">Retention Held</div><div class="sv">R 420,000</div><div class="ss">Awaiting release</div><div class="si">🔒</div></div>
+  <div class="stat s-amber"><div class="sl">CIDB Rating</div><div class="sv">PE 6GB</div><div class="ss">NHBRC Registered</div><div class="si">⭐</div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Active Projects</div><button class="btn btn-ghost btn-sm" onclick="showPanel('co-projects')">View All →</button></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Project</th><th>Client</th><th>Value</th><th>Progress</th><th>Status</th></tr></thead><tbody>
+      <tr><td class="td-bold">Kyalami Office Complex</td><td>Standard Bank HOC</td><td class="mono">R 2,800,000</td><td><div class="pb"><div class="pb-fill" style="width:75%;background:var(--teal)"></div></div><span style="font-size:10px;color:var(--muted)"> 75%</span></td><td><span class="badge b-progress">In Progress</span></td></tr>
+      <tr><td class="td-bold">Midrand CAT Hail Repairs</td><td>Standard Bank HOC</td><td class="mono">R 1,164,559</td><td><div class="pb"><div class="pb-fill" style="width:98%;background:var(--green)"></div></div><span style="font-size:10px;color:var(--muted)"> 98%</span></td><td><span class="badge b-done">Near Complete</span></td></tr>
+      <tr><td class="td-bold">Sandton Flood Restoration</td><td>Hollard Insurance</td><td class="mono">R 3,200,000</td><td><div class="pb"><div class="pb-fill" style="width:40%;background:var(--amber)"></div></div><span style="font-size:10px;color:var(--muted)"> 40%</span></td><td><span class="badge b-progress">In Progress</span></td></tr>
+      <tr><td class="td-bold">Fourways Estate Hail</td><td>Discovery Insure</td><td class="mono">R 1,235,000</td><td><div class="pb"><div class="pb-fill" style="width:15%;background:var(--blue)"></div></div><span style="font-size:10px;color:var(--muted)"> 15%</span></td><td><span class="badge b-new">Commenced</span></td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="card"><div class="card-hdr"><div class="card-title">SARS &amp; Compliance Deadlines</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+    <div style="background:var(--amber-p);border:1px solid rgba(217,119,6,.25);border-radius:8px;padding:12px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--amber);margin-bottom:4px">VAT201 Due</div><div style="font-weight:700;font-size:14px">30 April 2026</div><div style="font-size:11px;color:var(--muted)">Bi-monthly · Jan–Feb 2026 · ⚡ 34 days</div></div>
+    <div style="background:var(--green-p);border:1px solid rgba(26,122,74,.2);border-radius:8px;padding:12px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--green);margin-bottom:4px">EMP201 Due</div><div style="font-weight:700;font-size:14px">7 April 2026</div><div style="font-size:11px;color:var(--muted)">Monthly PAYE · March 2026</div></div>
+    <div style="background:var(--blue-p);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:12px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:4px">CIDB Registration</div><div style="font-weight:700;font-size:14px">Expires Dec 2026</div><div style="font-size:11px;color:var(--muted)">PE 6GB · Renew 3 months before</div></div>
+  </div></div>
+</div>
+</div>
+
+<!-- ══════════════════ CONSTRUCTION PROJECTS ══════════════════ -->
+<div class="panel" id="panel-co-projects">
+<div class="pack-banner pack-con">🏗️ BIG O CONSTRUCTION — Project Register</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Project Register</div><div class="ph-sub">Active &amp; completed projects · All insurers</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export')">⬇ Export</button><button class="btn btn-gold btn-sm" onclick="mockAction('New project')">+ New Project</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Active</div><div class="sv">4</div></div>
+  <div class="stat s-green"><div class="sl">Completed YTD</div><div class="sv">12</div></div>
+  <div class="stat s-gold"><div class="sl">Total Value</div><div class="sv">R 8.4M</div></div>
+  <div class="stat s-red"><div class="sl">Retention</div><div class="sv">R 420K</div></div>
+</div>
+<div class="card">
+  <div class="filter-bar">
+    <input class="fi-search" placeholder="🔍 Search project, client...">
+    <select class="fi-sel"><option>All Status</option><option>In Progress</option><option>Near Complete</option><option>Commenced</option><option>Completed</option></select>
+    <select class="fi-sel"><option>All Insurers</option><option>Standard Bank HOC</option><option>Hollard</option><option>Discovery Insure</option></select>
+  </div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Project No.</th><th>Project Name</th><th>Client / Insurer</th><th>Contract Value</th><th>Invoiced</th><th>Retention</th><th>Start</th><th>Progress</th><th>Status</th><th>Action</th></tr></thead><tbody>
+    <tr><td class="mono td-muted" style="font-size:11px">PROJ-2026-001</td><td class="td-bold">Kyalami Office Complex</td><td>Standard Bank HOC</td><td class="mono">R 2,800,000</td><td class="mono" style="color:var(--green)">R 2,100,000</td><td class="mono" style="color:var(--amber)">R 140,000</td><td>01 Jan</td><td><div class="pb"><div class="pb-fill" style="width:75%;background:var(--teal)"></div></div><span style="font-size:10px;color:var(--muted)"> 75%</span></td><td><span class="badge b-progress">In Progress</span></td><td><button class="btn btn-ghost btn-xs" onclick="showPanel('co-siteprog')">Progress</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">PROJ-2026-002</td><td class="td-bold">Midrand CAT Hail Repairs</td><td>Standard Bank HOC</td><td class="mono">R 1,164,559</td><td class="mono" style="color:var(--green)">R 1,158,295</td><td class="mono td-muted">R 0</td><td>15 Jan</td><td><div class="pb"><div class="pb-fill" style="width:98%;background:var(--green)"></div></div><span style="font-size:10px;color:var(--muted)"> 98%</span></td><td><span class="badge b-done">Near Complete</span></td><td><button class="btn btn-ghost btn-xs" onclick="showPanel('claims')">Claims</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">PROJ-2026-003</td><td class="td-bold">Sandton Flood Restoration</td><td>Hollard Insurance</td><td class="mono">R 3,200,000</td><td class="mono" style="color:var(--green)">R 1,280,000</td><td class="mono" style="color:var(--amber)">R 160,000</td><td>01 Feb</td><td><div class="pb"><div class="pb-fill" style="width:40%;background:var(--amber)"></div></div><span style="font-size:10px;color:var(--muted)"> 40%</span></td><td><span class="badge b-progress">In Progress</span></td><td><button class="btn btn-ghost btn-xs" onclick="showPanel('co-siteprog')">Progress</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">PROJ-2026-004</td><td class="td-bold">Fourways Estate Hail</td><td>Discovery Insure</td><td class="mono">R 1,235,000</td><td class="mono td-muted">R 185,250</td><td class="mono" style="color:var(--amber)">R 120,000</td><td>15 Mar</td><td><div class="pb"><div class="pb-fill" style="width:15%;background:var(--blue)"></div></div><span style="font-size:10px;color:var(--muted)"> 15%</span></td><td><span class="badge b-new">Commenced</span></td><td><button class="btn btn-ghost btn-xs" onclick="showPanel('co-boq')">BoQ</button></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ CONSTRUCTION BOQ ══════════════════ -->
+<div class="panel" id="panel-co-boq">
+<div class="pack-banner pack-con">🏗️ BIG O CONSTRUCTION — Bill of Quantities</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Bill of Quantities</div><div class="ph-sub">Itemised cost breakdown per project · Materials · Labour · Subcontractors</div></div>
+  <div class="ph-actions">
+    <select class="fi-sel" style="height:34px"><option>PROJ-2026-001 — Kyalami</option><option>PROJ-2026-002 — Midrand CAT</option><option>PROJ-2026-003 — Sandton</option><option>PROJ-2026-004 — Fourways</option></select>
+    <button class="btn btn-ghost btn-sm" onclick="mockAction('Export BoQ Excel')">⬇ Excel</button>
+    <button class="btn btn-gold btn-sm" onclick="mockAction('Add BoQ line')">+ Add Line</button>
+  </div>
+</div>
+<div class="card">
+  <div class="card-hdr"><div class="card-title">BoQ — Kyalami Office Complex (PROJ-2026-001)</div><div class="card-sub">Contract Value: R 2,800,000 · As at 27 Mar 2026</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Description</th><th>Unit</th><th>Qty</th><th>Rate (Excl)</th><th>VAT%</th><th>VAT Amt</th><th>Total Incl.</th><th>Certified %</th><th>Certified Amt</th></tr></thead><tbody>
+    <tr><td class="mono td-muted">001</td><td>Roof sheet replacement — IBR 0.47mm</td><td>m²</td><td>850</td><td class="mono">R 285.00</td><td>15%</td><td class="mono">R 36,244</td><td class="mono td-bold">R 278,588</td><td><div class="pb" style="width:60px;display:inline-block"><div class="pb-fill" style="width:100%;background:var(--green)"></div></div></td><td class="mono" style="color:var(--green)">R 278,588</td></tr>
+    <tr><td class="mono td-muted">002</td><td>Ceiling board replacement — 9mm</td><td>m²</td><td>420</td><td class="mono">R 185.00</td><td>15%</td><td class="mono">R 11,978</td><td class="mono td-bold">R 91,998</td><td><div class="pb" style="width:60px;display:inline-block"><div class="pb-fill" style="width:75%;background:var(--teal)"></div></div></td><td class="mono" style="color:var(--teal)">R 68,999</td></tr>
+    <tr><td class="mono td-muted">003</td><td>Gutter replacement — 125mm UPVC</td><td>m</td><td>180</td><td class="mono">R 340.00</td><td>15%</td><td class="mono">R 9,384</td><td class="mono td-bold">R 72,084</td><td><div class="pb" style="width:60px;display:inline-block"><div class="pb-fill" style="width:60%;background:var(--amber)"></div></div></td><td class="mono" style="color:var(--amber)">R 43,250</td></tr>
+    <tr><td class="mono td-muted">004</td><td>Paintwork — interior walls 2 coats</td><td>m²</td><td>1200</td><td class="mono">R 95.00</td><td>15%</td><td class="mono">R 16,560</td><td class="mono td-bold">R 127,260</td><td><div class="pb" style="width:60px;display:inline-block"><div class="pb-fill" style="width:30%;background:var(--blue)"></div></div></td><td class="mono" style="color:var(--blue)">R 38,178</td></tr>
+    <tr><td class="mono td-muted">005</td><td>Phahamo Subcontract — Electrical</td><td>LS</td><td>1</td><td class="mono">R 180,000</td><td>15%</td><td class="mono">R 27,000</td><td class="mono td-bold">R 207,000</td><td><div class="pb" style="width:60px;display:inline-block"><div class="pb-fill" style="width:50%;background:var(--purple)"></div></div></td><td class="mono" style="color:var(--purple)">R 103,500</td></tr>
+    <tr style="background:#F8F9FC;font-weight:700"><td colspan="6" style="text-align:right;font-size:12px">TOTALS:</td><td class="mono">R 101,166</td><td class="mono">R 776,930</td><td></td><td class="mono" style="color:var(--green)">R 532,515</td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ CONSTRUCTION SITE PROGRESS ══════════════════ -->
+<div class="panel" id="panel-co-siteprog">
+<div class="pack-banner pack-con">🏗️ BIG O CONSTRUCTION — Site Progress</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Site Progress</div><div class="ph-sub">Real-time progress per project · Milestone tracking · Photo uploads</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="showPanel('field')">📷 Upload Photos</button></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px">
+  <div class="card" style="overflow:hidden"><div style="background:var(--teal);color:white;padding:14px 16px"><div style="font-size:9px;opacity:.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">PROJ-2026-001</div><div style="font-weight:700;font-size:15px">Kyalami Office Complex</div><div style="font-size:11px;opacity:.7;margin-top:2px">Standard Bank HOC · R 2.8M</div></div>
+    <div class="card-body">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;color:var(--muted)">Overall</span><span style="font-weight:700;color:var(--teal)">75%</span></div>
+      <div class="pb" style="height:10px;margin-bottom:14px"><div class="pb-fill" style="width:75%;background:var(--teal)"></div></div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span>Roof Works</span><span class="badge b-done">✓ Complete</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Ceiling &amp; Plasterwork</span><span class="badge b-progress">75%</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Gutter Replacement</span><span class="badge b-medium">60%</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Paintwork</span><span class="badge b-new">30%</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Electrical (Sub)</span><span class="badge b-medium">50%</span></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="mockAction('Update progress')">📝 Update</button><button class="btn btn-navy btn-sm" onclick="showPanel('field')">📷 Photos</button></div>
+    </div>
+  </div>
+  <div class="card" style="overflow:hidden"><div style="background:var(--green);color:white;padding:14px 16px"><div style="font-size:9px;opacity:.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">PROJ-2026-002</div><div style="font-weight:700;font-size:15px">Midrand CAT Hail Repairs</div><div style="font-size:11px;opacity:.7;margin-top:2px">Standard Bank HOC · R 1.16M</div></div>
+    <div class="card-body">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;color:var(--muted)">Overall</span><span style="font-weight:700;color:var(--green)">98%</span></div>
+      <div class="pb" style="height:10px;margin-bottom:14px"><div class="pb-fill" style="width:98%;background:var(--green)"></div></div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span>83 CAT Claims — Repairs</span><span class="badge b-done">✓ 82/83</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Invoicing</span><span class="badge b-done">✓ 82 Paid</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Outstanding</span><span class="badge b-outstanding">1 · Wonci</span></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="showPanel('claims')">📋 Claims</button><button class="btn btn-ghost btn-sm" onclick="showPanel('payments')">💳 Payments</button></div>
+    </div>
+  </div>
+  <div class="card" style="overflow:hidden"><div style="background:var(--amber);color:white;padding:14px 16px"><div style="font-size:9px;opacity:.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">PROJ-2026-003</div><div style="font-weight:700;font-size:15px">Sandton Flood Restoration</div><div style="font-size:11px;opacity:.7;margin-top:2px">Hollard Insurance · R 3.2M</div></div>
+    <div class="card-body">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;color:var(--muted)">Overall</span><span style="font-weight:700;color:var(--amber)">40%</span></div>
+      <div class="pb" style="height:10px;margin-bottom:14px"><div class="pb-fill" style="width:40%;background:var(--amber)"></div></div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span>Waterproofing</span><span class="badge b-done">✓ Complete</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Structural Drying</span><span class="badge b-done">✓ Complete</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Floor Restoration</span><span class="badge b-progress">In Progress</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Wall Repairs &amp; Paint</span><span class="badge b-new">Not Started</span></div>
+      </div>
+      <div style="margin-top:12px"><button class="btn btn-ghost btn-sm btn-full" onclick="mockAction('Update Sandton')">📝 Update Progress</button></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ REAL ESTATE DASHBOARD ══════════════════ -->
+<div class="panel" id="panel-re-dashboard">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Rental &amp; Lease Management Pack</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Real Estate Dashboard</div><div class="ph-sub">N.T.O Real Estate · 8 properties · R 14.8M portfolio</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export rent roll')">⬇ Rent Roll</button><button class="btn btn-gold btn-sm" onclick="showPanel('re-properties')">+ Add Property</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Properties</div><div class="sv">8</div><div class="ss">Total portfolio</div><div class="si">🏘️</div></div>
+  <div class="stat s-green"><div class="sl">Monthly Income</div><div class="sv">R 148,500</div><div class="ss">7 tenants paying</div><div class="si">💰</div></div>
+  <div class="stat s-teal"><div class="sl">Occupancy</div><div class="sv">87.5%</div><div class="ss">7 of 8 let</div><div class="si">📊</div></div>
+  <div class="stat s-gold"><div class="sl">Annual Gross</div><div class="sv">R 1.78M</div><div class="si">📈</div></div>
+  <div class="stat s-red"><div class="sl">Maintenance Open</div><div class="sv">3</div><div class="ss">Work orders pending</div><div class="si">🔧</div></div>
+  <div class="stat s-amber"><div class="sl">Lease Renewals</div><div class="sv">2</div><div class="ss">Due next 60 days</div><div class="si">📋</div></div>
+</div>
+<div class="alert warn"><div class="alert-icon">📋</div><div style="flex:1">
+  <div class="alert-title">Lease Renewals Due Soon</div>
+  <div class="alert-body">Unit 4 — Mrs D Khumalo: Expires 30 April 2026 · 34 days remaining<br>Office 2B — XYZ Consulting: Expires 15 May 2026 · 49 days remaining</div>
+  <div class="alert-actions"><button class="btn btn-navy btn-xs" onclick="showPanel('re-leases')">📋 View Leases</button><button class="btn btn-ghost btn-xs" onclick="openCommunicate('Mrs D Khumalo','Lease Renewal — Unit 4')">💬 Contact</button></div>
+</div></div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Rent Collection — April 2026</div><div class="card-sub">Due 1st of each month</div></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Unit</th><th>Tenant</th><th>Rent</th><th>Status</th><th>Action</th></tr></thead><tbody>
+      <tr><td>Unit 1 — Sandton</td><td>Ahmed Patel</td><td class="mono">R 18,500</td><td><span class="badge b-paid">Paid</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View receipt')">Receipt</button></td></tr>
+      <tr><td>Unit 2 — Sandton</td><td>Sarah Johnson</td><td class="mono">R 22,000</td><td><span class="badge b-paid">Paid</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View receipt')">Receipt</button></td></tr>
+      <tr><td>Unit 3 — Midrand</td><td>Tebogo Mokoena</td><td class="mono">R 14,500</td><td><span class="badge b-paid">Paid</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View receipt')">Receipt</button></td></tr>
+      <tr style="background:rgba(217,119,6,.04)"><td>Unit 4 — Sandton</td><td>Mrs D Khumalo</td><td class="mono">R 28,000</td><td><span class="badge b-sent">Pending</span></td><td><button class="btn btn-navy btn-xs" onclick="openCommunicate('Mrs D Khumalo','Rent Reminder Apr 2026')">💬 Remind</button></td></tr>
+      <tr><td>Unit 5 — Kyalami</td><td>Priya Naidoo</td><td class="mono">R 19,500</td><td><span class="badge b-paid">Paid</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View receipt')">Receipt</button></td></tr>
+      <tr><td>Office 2B — Midrand</td><td>XYZ Consulting</td><td class="mono">R 32,000</td><td><span class="badge b-paid">Paid</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View receipt')">Receipt</button></td></tr>
+      <tr><td>Office 3 — Sandton</td><td>Law Firm Associates</td><td class="mono">R 14,000</td><td><span class="badge b-paid">Paid</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View receipt')">Receipt</button></td></tr>
+      <tr><td>Retail — Kyalami</td><td style="color:var(--muted)">— VACANT —</td><td class="mono td-muted">—</td><td><span class="badge b-void">Vacant</span></td><td><button class="btn btn-ghost btn-xs" onclick="showPanel('re-listings')">📌 List</button></td></tr>
+    </tbody></table></div>
+    <div style="padding:10px 16px;background:#F8F9FC;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;font-weight:700"><span>Collected</span><span class="mono" style="color:var(--green)">R 120,500 / R 148,500</span></div>
+  </div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Open Maintenance Orders</div><button class="btn btn-ghost btn-sm" onclick="showPanel('re-maintenance')">View All →</button></div>
+    <div style="display:flex;flex-direction:column;gap:10px;padding:16px">
+      <div style="border:1px solid var(--border-md);border-radius:8px;padding:12px;border-left:3px solid var(--red)"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-weight:700;font-size:12.5px">Unit 4 — Geyser Burst</span><span class="badge b-high">Urgent</span></div><div style="font-size:11.5px;color:var(--muted)">Mrs D Khumalo · Sandton · Logged 25 Mar</div><div style="margin-top:8px;display:flex;gap:6px"><button class="btn btn-ghost btn-xs" onclick="mockAction('Assign contractor')">Assign</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Mrs D Khumalo','WO Update — Geyser')">💬</button></div></div>
+      <div style="border:1px solid var(--border-md);border-radius:8px;padding:12px;border-left:3px solid var(--amber)"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-weight:700;font-size:12.5px">Unit 3 — Roof Leak</span><span class="badge b-medium">Medium</span></div><div style="font-size:11.5px;color:var(--muted)">Tebogo Mokoena · Midrand · Logged 26 Mar</div><div style="margin-top:8px"><button class="btn btn-ghost btn-xs" onclick="mockAction('Assign roofer')">Assign Contractor</button></div></div>
+      <div style="border:1px solid var(--border-md);border-radius:8px;padding:12px;border-left:3px solid var(--blue)"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-weight:700;font-size:12.5px">Office 2B — AC Service</span><span class="badge b-low">Routine</span></div><div style="font-size:11.5px;color:var(--muted)">XYZ Consulting · Annual service due</div><div style="margin-top:8px"><button class="btn btn-ghost btn-xs" onclick="mockAction('Schedule service')">Schedule</button></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ RE PROPERTIES ══════════════════ -->
+<div class="panel" id="panel-re-properties">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Property Portfolio</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Property Portfolio</div><div class="ph-sub">8 properties · 7 let · 1 vacant · Est. value R 14.8M</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('Add property')">+ Add Property</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Portfolio Value</div><div class="sv">R 14.8M</div></div>
+  <div class="stat s-green"><div class="sl">Gross Yield</div><div class="sv">12.1%</div></div>
+  <div class="stat s-teal"><div class="sl">Occupancy</div><div class="sv">7 / 8</div><div class="ss">87.5%</div></div>
+  <div class="stat s-gold"><div class="sl">Monthly Income</div><div class="sv">R 148,500</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px">
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#1e3a5f,#0f5f5a)">🏠</div><div class="prop-body"><div class="prop-addr">Unit 1 · 14 Sandton Drive, Sandton</div><div class="prop-meta">3 Bed · 2 Bath · 145m² · Sectional Title</div><div class="prop-rent">R 18,500/mo</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-active">Occupied</span><button class="btn btn-ghost btn-xs" onclick="showPanel('re-leases')">Lease</button><button class="btn btn-ghost btn-xs" onclick="showPanel('re-maintenance')">Maint.</button></div></div></div>
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#2d1b69,#4B2887)">🏠</div><div class="prop-body"><div class="prop-addr">Unit 2 · 14 Sandton Drive, Sandton</div><div class="prop-meta">4 Bed · 3 Bath · 210m² · Sectional Title</div><div class="prop-rent">R 22,000/mo</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-active">Occupied</span><button class="btn btn-ghost btn-xs" onclick="showPanel('re-leases')">Lease</button></div></div></div>
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#0f5f5a,#1a7a4a)">🏢</div><div class="prop-body"><div class="prop-addr">Office 2B · Midrand Office Park, Midrand</div><div class="prop-meta">Commercial · 180m² · Full floor · 3 phase power</div><div class="prop-rent">R 32,000/mo</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-active">Occupied</span><button class="btn btn-ghost btn-xs" onclick="showPanel('re-leases')">Lease</button></div></div></div>
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#78350F,#D97706)">🏪</div><div class="prop-body"><div class="prop-addr">Retail Unit · Kyalami Business Park, Midrand</div><div class="prop-meta">Retail · 95m² · Ground floor · High foot traffic</div><div class="prop-rent" style="color:var(--amber)">VACANT — R 15,000 est.</div><div style="margin-top:8px;display:flex;gap:6px"><span class="badge b-void">Vacant</span><button class="btn btn-gold btn-xs" onclick="showPanel('re-listings')">📌 List Now</button></div></div></div>
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#1e3a5f,#1D4ED8)">🏘️</div><div class="prop-body"><div class="prop-addr">Unit 3 · Midrand Estate, Midrand</div><div class="prop-meta">3 Bed · 2 Bath · 135m² · Freehold</div><div class="prop-rent">R 14,500/mo</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-active">Occupied</span><button class="btn btn-ghost btn-xs" onclick="showPanel('re-maintenance')">Maint.</button></div></div></div>
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#4B2887,#1D4ED8)">🏘️</div><div class="prop-body"><div class="prop-addr">Unit 4 · Sandton Apartments, Sandton</div><div class="prop-meta">4 Bed · 3 Bath · 220m² · Sectional Title</div><div class="prop-rent">R 28,000/mo</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-amber">Renewal Due</span><button class="btn btn-ghost btn-xs" onclick="showPanel('re-leases')">Renew</button></div></div></div>
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#065F46,#1A7A4A)">🏘️</div><div class="prop-body"><div class="prop-addr">Unit 5 · Kyalami Villas, Kyalami</div><div class="prop-meta">3 Bed · 2 Bath · 150m² · Sectional Title</div><div class="prop-rent">R 19,500/mo</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-active">Occupied</span><button class="btn btn-ghost btn-xs" onclick="showPanel('re-leases')">Lease</button></div></div></div>
+  <div class="prop-card"><div class="prop-img" style="background:linear-gradient(135deg,#111827,#374151)">🏛️</div><div class="prop-body"><div class="prop-addr">Office 3 · Sandton CBD, Sandton</div><div class="prop-meta">Commercial · 120m² · Legal suite · Parking included</div><div class="prop-rent">R 14,000/mo</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge b-active">Occupied</span><button class="btn btn-ghost btn-xs" onclick="showPanel('re-leases')">Lease</button></div></div></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE TENANTS ══════════════════ -->
+<div class="panel" id="panel-re-tenants">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Tenant Registry</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Tenant Registry</div><div class="ph-sub">All tenants · FICA compliant · Full history</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('Add tenant')">+ Add Tenant</button></div>
+</div>
+<div class="card">
+  <div class="filter-bar"><input class="fi-search" placeholder="🔍 Search tenant, property..." oninput="filterTable('tbl-tenants',this.value)"><select class="fi-sel"><option>All Status</option><option>Active</option><option>Renewal Due</option><option>Previous</option></select></div>
+  <div class="tbl-wrap"><table class="tbl" id="tbl-tenants"><thead><tr><th>#</th><th>Tenant Name</th><th>ID / Reg No.</th><th>Property</th><th>Unit</th><th>Monthly</th><th>Lease End</th><th>Deposit Held</th><th>FICA</th><th>Status</th><th>Action</th></tr></thead><tbody>
+    <tr><td>1</td><td class="td-bold">Ahmed Patel</td><td class="mono td-muted" style="font-size:11px">8501015012087</td><td>Sandton Apartments</td><td>Unit 1</td><td class="mono">R 18,500</td><td>31 Mar 2027</td><td class="mono" style="color:var(--gold)">R 37,000</td><td><span class="badge b-done">✓ FICA</span></td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View Ahmed')">View</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Ahmed Patel','Unit 1 — Sandton')">💬</button></div></td></tr>
+    <tr><td>2</td><td class="td-bold">Sarah Johnson</td><td class="mono td-muted" style="font-size:11px">9203025098083</td><td>Sandton Apartments</td><td>Unit 2</td><td class="mono">R 22,000</td><td>28 Feb 2027</td><td class="mono" style="color:var(--gold)">R 44,000</td><td><span class="badge b-done">✓ FICA</span></td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View Sarah')">View</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Sarah Johnson','Unit 2 — Sandton')">💬</button></div></td></tr>
+    <tr><td>3</td><td class="td-bold">Tebogo Mokoena</td><td class="mono td-muted" style="font-size:11px">8812124567089</td><td>Midrand Estate</td><td>Unit 3</td><td class="mono">R 14,500</td><td>30 Jun 2026</td><td class="mono" style="color:var(--gold)">R 29,000</td><td><span class="badge b-done">✓ FICA</span></td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View Tebogo')">View</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Tebogo Mokoena','Unit 3 — Midrand')">💬</button></div></td></tr>
+    <tr style="background:rgba(217,119,6,.04)"><td>4</td><td class="td-bold">Mrs D Khumalo</td><td class="mono td-muted" style="font-size:11px">7905015234082</td><td>Sandton Apartments</td><td>Unit 4</td><td class="mono">R 28,000</td><td>30 Apr 2026</td><td class="mono" style="color:var(--gold)">R 56,000</td><td><span class="badge b-done">✓ FICA</span></td><td><span class="badge b-amber">Renewal Due</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-gold btn-xs" onclick="showPanel('re-leases')">Renew</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Mrs D Khumalo','Lease Renewal')">💬</button></div></td></tr>
+    <tr><td>5</td><td class="td-bold">Priya Naidoo</td><td class="mono td-muted" style="font-size:11px">9108012345089</td><td>Kyalami Villas</td><td>Unit 5</td><td class="mono">R 19,500</td><td>31 Jan 2027</td><td class="mono" style="color:var(--gold)">R 39,000</td><td><span class="badge b-done">✓ FICA</span></td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View Priya')">View</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Priya Naidoo','Unit 5')">💬</button></div></td></tr>
+    <tr style="background:rgba(217,119,6,.04)"><td>6</td><td class="td-bold">XYZ Consulting (Pty) Ltd</td><td class="mono td-muted" style="font-size:11px">2019/345678/07</td><td>Midrand Office Park</td><td>Office 2B</td><td class="mono">R 32,000</td><td>15 May 2026</td><td class="mono" style="color:var(--gold)">R 64,000</td><td><span class="badge b-done">✓ FICA</span></td><td><span class="badge b-amber">Renewal Due</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-gold btn-xs" onclick="showPanel('re-leases')">Renew</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('XYZ Consulting','Office 2B')">💬</button></div></td></tr>
+    <tr><td>7</td><td class="td-bold">Law Firm Associates Inc</td><td class="mono td-muted" style="font-size:11px">2018/456789/21</td><td>Sandton Office</td><td>Office 3</td><td class="mono">R 14,000</td><td>30 Nov 2026</td><td class="mono" style="color:var(--gold)">R 28,000</td><td><span class="badge b-done">✓ FICA</span></td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('View LFA')">View</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Law Firm Associates','Office 3')">💬</button></div></td></tr>
+  </tbody></table></div>
+  <div style="padding:10px 16px;background:#F8F9FC;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;font-weight:700"><span>Total Deposits Held</span><span class="mono" style="color:var(--gold)">R 297,000</span></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE LEASES ══════════════════ -->
+<div class="panel" id="panel-re-leases">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Lease Management</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Lease Management</div><div class="ph-sub">All leases · Renewals · Escalations · CPI-linked</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export leases')">⬇ Export</button><button class="btn btn-gold btn-sm" onclick="mockAction('New lease')">+ New Lease</button></div>
+</div>
+<div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+  <div class="stat s-navy"><div class="sl">Active Leases</div><div class="sv">7</div></div>
+  <div class="stat s-amber"><div class="sl">Renewals Due (60d)</div><div class="sv">2</div></div>
+  <div class="stat s-green"><div class="sl">Avg Lease Term</div><div class="sv">24mo</div></div>
+  <div class="stat s-teal"><div class="sl">Escalation</div><div class="sv">8% p.a.</div><div class="ss">CPI-linked</div></div>
+</div>
+<div class="card"><div class="card-hdr"><div class="card-title">Lease Register</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Lease No.</th><th>Tenant</th><th>Property / Unit</th><th>Start</th><th>End</th><th>Monthly</th><th>Escalation</th><th>Deposit</th><th>Days Left</th><th>Status</th><th>Action</th></tr></thead><tbody>
+    <tr><td class="mono td-muted" style="font-size:11px">LS-2025-001</td><td class="td-bold">Ahmed Patel</td><td>Unit 1 — Sandton</td><td>01 Apr 2025</td><td>31 Mar 2027</td><td class="mono">R 18,500</td><td>8% p.a.</td><td class="mono" style="color:var(--gold)">R 37,000</td><td style="color:var(--green);font-weight:700">369d</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View LS-001')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">LS-2025-002</td><td class="td-bold">Sarah Johnson</td><td>Unit 2 — Sandton</td><td>01 Mar 2025</td><td>28 Feb 2027</td><td class="mono">R 22,000</td><td>8% p.a.</td><td class="mono" style="color:var(--gold)">R 44,000</td><td style="color:var(--green);font-weight:700">337d</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View LS-002')">View</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">LS-2024-003</td><td class="td-bold">Tebogo Mokoena</td><td>Unit 3 — Midrand</td><td>01 Jul 2024</td><td>30 Jun 2026</td><td class="mono">R 14,500</td><td>8% p.a.</td><td class="mono" style="color:var(--gold)">R 29,000</td><td style="color:var(--green);font-weight:700">95d</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-gold btn-xs" onclick="showToast('✅ Renewal offer sent to Tebogo Mokoena','ok')">Offer Renewal</button></td></tr>
+    <tr style="background:rgba(217,119,6,.05)"><td class="mono td-muted" style="font-size:11px">LS-2024-004</td><td class="td-bold">Mrs D Khumalo</td><td>Unit 4 — Sandton</td><td>01 May 2024</td><td>30 Apr 2026</td><td class="mono">R 28,000</td><td>8% p.a.</td><td class="mono" style="color:var(--gold)">R 56,000</td><td style="color:var(--amber);font-weight:700">⚡ 34d</td><td><span class="badge b-medium">Renewal Due</span></td><td><button class="btn btn-gold btn-xs" onclick="showToast('✅ Renewal offer sent to Mrs Khumalo','ok')">🔔 Renew</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">LS-2025-005</td><td class="td-bold">Priya Naidoo</td><td>Unit 5 — Kyalami</td><td>01 Feb 2025</td><td>31 Jan 2027</td><td class="mono">R 19,500</td><td>8% p.a.</td><td class="mono" style="color:var(--gold)">R 39,000</td><td style="color:var(--green);font-weight:700">307d</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View LS-005')">View</button></td></tr>
+    <tr style="background:rgba(217,119,6,.05)"><td class="mono td-muted" style="font-size:11px">LS-2024-006</td><td class="td-bold">XYZ Consulting</td><td>Office 2B — Midrand</td><td>16 May 2024</td><td>15 May 2026</td><td class="mono">R 32,000</td><td>8% p.a.</td><td class="mono" style="color:var(--gold)">R 64,000</td><td style="color:var(--amber);font-weight:700">⚡ 49d</td><td><span class="badge b-medium">Renewal Due</span></td><td><button class="btn btn-gold btn-xs" onclick="showToast('✅ Renewal offer sent to XYZ Consulting','ok')">🔔 Renew</button></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">LS-2025-007</td><td class="td-bold">Law Firm Associates</td><td>Office 3 — Sandton</td><td>01 Dec 2024</td><td>30 Nov 2026</td><td class="mono">R 14,000</td><td>8% p.a.</td><td class="mono" style="color:var(--gold)">R 28,000</td><td style="color:var(--green);font-weight:700">248d</td><td><span class="badge b-active">Active</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View LS-007')">View</button></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE RENT ROLL ══════════════════ -->
+<div class="panel" id="panel-re-rentroll">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Rent Roll</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Rent Roll — April 2026</div><div class="ph-sub">Monthly income summary · All properties · VAT breakdown</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export Excel')">⬇ Excel</button><button class="btn btn-ghost btn-sm" onclick="showToast('⚡ Invoices generated for all 7 tenants','ok')">⚡ Generate Invoices</button></div>
+</div>
+<div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+  <div class="stat s-navy"><div class="sl">Gross Monthly</div><div class="sv">R 148,500</div></div>
+  <div class="stat s-green"><div class="sl">VAT on Commercial</div><div class="sv">R 6,000</div><div class="ss">Office 2B &amp; Office 3</div></div>
+  <div class="stat s-teal"><div class="sl">Total Incl. VAT</div><div class="sv">R 154,500</div></div>
+  <div class="stat s-gold"><div class="sl">Annual Gross</div><div class="sv">R 1,782,000</div></div>
+</div>
+<div class="card"><div class="card-hdr"><div class="card-title">Monthly Rent Roll — April 2026</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Unit</th><th>Tenant</th><th>Type</th><th>Rent Excl VAT</th><th>VAT 15%</th><th>Total Incl.</th><th>Escalation Date</th><th>New Rent @ 8%</th><th>Status</th></tr></thead><tbody>
+    <tr><td>Unit 1 — Sandton</td><td>Ahmed Patel</td><td>Residential</td><td class="mono">R 18,500</td><td class="mono td-muted">N/A</td><td class="mono td-bold">R 18,500</td><td>01 Apr 2026</td><td class="mono" style="color:var(--teal)">R 19,980</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>Unit 2 — Sandton</td><td>Sarah Johnson</td><td>Residential</td><td class="mono">R 22,000</td><td class="mono td-muted">N/A</td><td class="mono td-bold">R 22,000</td><td>01 Mar 2026</td><td class="mono" style="color:var(--teal)">R 23,760</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>Unit 3 — Midrand</td><td>Tebogo Mokoena</td><td>Residential</td><td class="mono">R 14,500</td><td class="mono td-muted">N/A</td><td class="mono td-bold">R 14,500</td><td>01 Jul 2026</td><td class="mono td-muted">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>Unit 4 — Sandton</td><td>Mrs D Khumalo</td><td>Residential</td><td class="mono">R 28,000</td><td class="mono td-muted">N/A</td><td class="mono td-bold">R 28,000</td><td>01 May 2026</td><td class="mono" style="color:var(--teal)">R 30,240</td><td><span class="badge b-sent">Pending</span></td></tr>
+    <tr><td>Unit 5 — Kyalami</td><td>Priya Naidoo</td><td>Residential</td><td class="mono">R 19,500</td><td class="mono td-muted">N/A</td><td class="mono td-bold">R 19,500</td><td>01 Feb 2026</td><td class="mono" style="color:var(--teal)">R 21,060</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>Office 2B — Midrand</td><td>XYZ Consulting</td><td>Commercial</td><td class="mono">R 27,826</td><td class="mono" style="color:var(--teal)">R 4,174</td><td class="mono td-bold">R 32,000</td><td>16 May 2026</td><td class="mono" style="color:var(--teal)">R 34,560</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>Office 3 — Sandton</td><td>Law Firm Assoc.</td><td>Commercial</td><td class="mono">R 12,174</td><td class="mono" style="color:var(--teal)">R 1,826</td><td class="mono td-bold">R 14,000</td><td>01 Dec 2026</td><td class="mono td-muted">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>Retail — Kyalami</td><td style="color:var(--muted)">VACANT</td><td style="color:var(--muted)">Commercial</td><td class="mono td-muted">—</td><td class="mono td-muted">—</td><td class="mono td-muted">—</td><td>—</td><td>—</td><td><span class="badge b-void">Vacant</span></td></tr>
+    <tr style="background:#F4F5F9;font-weight:700"><td colspan="3" style="text-align:right;font-size:12px">TOTALS:</td><td class="mono">R 142,500</td><td class="mono" style="color:var(--teal)">R 6,000</td><td class="mono" style="color:var(--navy)">R 148,500</td><td colspan="3"></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE RENT PAYMENTS ══════════════════ -->
+<div class="panel" id="panel-re-payments">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Rent Payment Tracking</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Rent Payments</div><div class="ph-sub">Payment history · Outstanding · Late fees · Debit orders</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('Record payment')">+ Record Payment</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-green"><div class="sl">Collected Apr 2026</div><div class="sv">R 120,500</div><div class="ss">6 of 7 tenants</div></div>
+  <div class="stat s-amber"><div class="sl">Outstanding</div><div class="sv">R 28,000</div><div class="ss">Unit 4 — Khumalo</div></div>
+  <div class="stat s-navy"><div class="sl">Collection Rate</div><div class="sv">81.1%</div></div>
+  <div class="stat s-teal"><div class="sl">YTD Collected</div><div class="sv">R 445,500</div><div class="ss">Jan–Mar 2026</div></div>
+</div>
+<div class="alert warn"><div class="alert-icon">⚠️</div><div style="flex:1">
+  <div class="alert-title">Overdue — Mrs D Khumalo · Unit 4 · R 28,000 · Due 1 April 2026</div>
+  <div class="alert-body">3 days overdue. Lease also expiring 30 April 2026 — renewal discussion pending. Late payment fee: R 280 (1%).</div>
+  <div class="alert-actions"><button class="btn btn-navy btn-xs" onclick="openCommunicate('Mrs D Khumalo','Overdue Rent Notice — April 2026')">💬 Send Notice</button><button class="btn btn-green btn-xs" onclick="showToast('✅ Khumalo payment marked as received.','ok')">✅ Mark Paid</button></div>
+</div></div>
+<div class="card"><div class="card-hdr"><div class="card-title">Payment History — April 2026</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Tenant</th><th>Unit</th><th>Amount</th><th>Method</th><th>Reference</th><th>Late Fee</th><th>Status</th></tr></thead><tbody>
+    <tr><td>03 Apr</td><td>Ahmed Patel</td><td>Unit 1</td><td class="mono">R 18,500</td><td>EFT</td><td class="mono td-muted">RENT-U1-APR26</td><td class="mono">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>01 Apr</td><td>Sarah Johnson</td><td>Unit 2</td><td class="mono">R 22,000</td><td>Debit Order</td><td class="mono td-muted">DO-U2-APR26</td><td class="mono">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>01 Apr</td><td>Tebogo Mokoena</td><td>Unit 3</td><td class="mono">R 14,500</td><td>EFT</td><td class="mono td-muted">RENT-U3-APR26</td><td class="mono">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>02 Apr</td><td>Priya Naidoo</td><td>Unit 5</td><td class="mono">R 19,500</td><td>Debit Order</td><td class="mono td-muted">DO-U5-APR26</td><td class="mono">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>01 Apr</td><td>XYZ Consulting</td><td>Office 2B</td><td class="mono">R 32,000</td><td>EFT</td><td class="mono td-muted">XYZ-APR26</td><td class="mono">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr><td>02 Apr</td><td>Law Firm Associates</td><td>Office 3</td><td class="mono">R 14,000</td><td>EFT</td><td class="mono td-muted">LFA-APR26</td><td class="mono">—</td><td><span class="badge b-paid">Paid</span></td></tr>
+    <tr style="background:rgba(217,119,6,.06)"><td style="color:var(--amber);font-weight:700">Overdue</td><td>Mrs D Khumalo</td><td>Unit 4</td><td class="mono">R 28,000</td><td>—</td><td class="mono td-muted">—</td><td class="mono" style="color:var(--red)">R 280</td><td><span class="badge b-outstanding">Overdue</span></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE MAINTENANCE ══════════════════ -->
+<div class="panel" id="panel-re-maintenance">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Maintenance Management</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Maintenance Work Orders</div><div class="ph-sub">All maintenance requests · Contractors · Cost tracking</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('New work order')">+ New Work Order</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-red"><div class="sl">Open — Urgent</div><div class="sv">1</div><div class="ss">Geyser burst</div></div>
+  <div class="stat s-amber"><div class="sl">Open — Medium</div><div class="sv">2</div></div>
+  <div class="stat s-green"><div class="sl">Completed (Mar)</div><div class="sv">4</div><div class="ss">R 12,400 spent</div></div>
+  <div class="stat s-navy"><div class="sl">Monthly Budget</div><div class="sv">R 25,000</div></div>
+</div>
+<div class="card">
+  <div class="filter-bar"><select class="fi-sel"><option>All Status</option><option>Open</option><option>In Progress</option><option>Completed</option></select><select class="fi-sel"><option>All Priority</option><option>Urgent</option><option>Medium</option><option>Routine</option></select></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>WO#</th><th>Property</th><th>Unit</th><th>Tenant</th><th>Issue</th><th>Priority</th><th>Contractor</th><th>Est. Cost</th><th>Logged</th><th>Status</th><th>Action</th></tr></thead><tbody>
+    <tr><td class="mono td-muted" style="font-size:11px">WO-018</td><td>Sandton Apts</td><td>Unit 4</td><td>Mrs D Khumalo</td><td>Geyser burst — bathroom damage</td><td><span class="badge b-high">Urgent</span></td><td style="color:var(--muted)">TBA</td><td class="mono">R 8,500</td><td>25 Mar</td><td><span class="badge b-new">Open</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-navy btn-xs" onclick="showToast('✅ Contractor assigned — Plumb Perfect','ok')">Assign</button><button class="btn btn-navy btn-xs" onclick="openCommunicate('Mrs D Khumalo','WO-018 — Geyser')">💬</button></div></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">WO-017</td><td>Midrand Estate</td><td>Unit 3</td><td>Tebogo Mokoena</td><td>Roof leak — living room ceiling</td><td><span class="badge b-medium">Medium</span></td><td>Mike's Roofing</td><td class="mono">R 3,200</td><td>26 Mar</td><td><span class="badge b-progress">In Progress</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="mockAction('Update WO-017')">Update</button><button class="btn btn-green btn-xs" onclick="showToast('✅ WO-017 completed','ok')">✅ Done</button></div></td></tr>
+    <tr><td class="mono td-muted" style="font-size:11px">WO-016</td><td>Midrand Office</td><td>Office 2B</td><td>XYZ Consulting</td><td>Annual AC service</td><td><span class="badge b-low">Routine</span></td><td>CoolAir</td><td class="mono">R 2,800</td><td>27 Mar</td><td><span class="badge b-progress">Scheduled</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View WO-016')">View</button></td></tr>
+    <tr style="opacity:.7"><td class="mono td-muted" style="font-size:11px">WO-015</td><td>Sandton Apts</td><td>Unit 1</td><td>Ahmed Patel</td><td>Intercom system replacement</td><td><span class="badge b-low">Routine</span></td><td>SA Electrics</td><td class="mono">R 4,500</td><td>15 Mar</td><td><span class="badge b-done">Completed</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View receipt WO-015')">Receipt</button></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE INSPECTIONS ══════════════════ -->
+<div class="panel" id="panel-re-inspections">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Property Inspections</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Inspections</div><div class="ph-sub">Incoming · Outgoing · Routine · Photo records</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('Schedule inspection')">+ Schedule</button></div>
+</div>
+<div class="card"><div class="card-hdr"><div class="card-title">Inspection Schedule — Q2 2026</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Property</th><th>Unit</th><th>Tenant</th><th>Type</th><th>Inspector</th><th>Photos</th><th>Status</th><th>Report</th></tr></thead><tbody>
+    <tr><td>10 Apr 2026</td><td>Sandton Apartments</td><td>Unit 4</td><td>Mrs D Khumalo</td><td><span class="badge b-amber">Lease Renewal</span></td><td>Norman Ogana</td><td>—</td><td><span class="badge b-new">Scheduled</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Open inspection form')">Form</button></td></tr>
+    <tr><td>12 Apr 2026</td><td>Midrand Office Park</td><td>Office 2B</td><td>XYZ Consulting</td><td><span class="badge b-amber">Lease Renewal</span></td><td>Norman Ogana</td><td>—</td><td><span class="badge b-new">Scheduled</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Open inspection form')">Form</button></td></tr>
+    <tr><td>28 Mar 2026</td><td>Midrand Estate</td><td>Unit 3</td><td>Tebogo Mokoena</td><td><span class="badge b-medium">Maintenance</span></td><td>Norman Ogana</td><td>8</td><td><span class="badge b-done">Completed</span></td><td><button class="btn btn-navy btn-xs" onclick="showToast('📄 Inspection report downloaded','ok')">Report</button></td></tr>
+    <tr><td>15 Jan 2026</td><td>Kyalami Villas</td><td>Unit 5</td><td>Priya Naidoo</td><td><span class="badge b-low">Routine</span></td><td>Norman Ogana</td><td>24</td><td><span class="badge b-done">Completed</span></td><td><button class="btn btn-navy btn-xs" onclick="showToast('📄 Inspection report downloaded','ok')">Report</button></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE LISTINGS ══════════════════ -->
+<div class="panel" id="panel-re-listings">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Property Listings</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Listings &amp; Vacancies</div><div class="ph-sub">Properties available to let · Applications · Viewings</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="mockAction('Create listing')">+ Create Listing</button></div>
+</div>
+<div class="alert amber"><div class="alert-icon">📌</div><div style="flex:1">
+  <div class="alert-title">1 Property Available to Let — Kyalami Retail Unit</div>
+  <div class="alert-body">95m² Retail · Kyalami Business Park · Asking: R 15,000/mo + VAT · Available immediately · 2 applications received</div>
+  <div class="alert-actions"><button class="btn btn-navy btn-xs" onclick="showToast('📢 Listing posted to Property24, Private Property &amp; Gumtree','ok')">📢 Post to Portals</button><button class="btn btn-ghost btn-xs" onclick="showToast('📂 2 applications loaded','inf')">View Applications (2)</button></div>
+</div></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+  <div class="prop-card" style="border:2px solid var(--gold)"><div class="prop-img" style="background:linear-gradient(135deg,#78350F,#D97706)">🏪</div>
+    <div class="prop-body">
+      <span class="badge" style="background:var(--gold-p);color:var(--gold);margin-bottom:8px;display:inline-block">📌 AVAILABLE NOW</span>
+      <div class="prop-addr">Retail Unit · 11 Monza Close, Kyalami Business Park, Midrand</div>
+      <div class="prop-meta">95m² · Ground floor · High foot traffic · Ample parking · 1-phase power · Fibre-ready</div>
+      <div class="prop-rent">R 15,000/mo + VAT</div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-navy btn-sm" onclick="showToast('📂 2 applications opened','inf')">Applications (2)</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('📅 Viewing scheduled for 8 April 2026','ok')">📅 Schedule Viewing</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ RE TENANT PORTAL ══════════════════ -->
+<div class="panel" id="panel-re-portal">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Tenant Self-Service Portal</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Tenant Portal</div><div class="ph-sub">Self-service · Statements · Maintenance requests · Documents</div></div>
+  <div class="ph-actions"><select class="fi-sel" style="height:34px"><option>Ahmed Patel — Unit 1</option><option>Sarah Johnson — Unit 2</option><option>Tebogo Mokoena — Unit 3</option><option>Mrs D Khumalo — Unit 4</option><option>Priya Naidoo — Unit 5</option><option>XYZ Consulting — Office 2B</option><option>Law Firm Associates — Office 3</option></select></div>
+</div>
+<div style="background:var(--navy);border-radius:var(--radius);padding:20px 24px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+  <div><div style="font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">🌐 TENANT SELF-SERVICE PORTAL</div><div style="font-size:20px;font-weight:700;color:white">Welcome, Ahmed Patel</div><div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:4px">Unit 1 · 14 Sandton Drive · Lease ends: 31 Mar 2027</div></div>
+  <div style="text-align:right"><div style="font-size:26px;font-weight:700;color:var(--gold-l);font-family:var(--mono)">R 18,500</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Monthly Rent · Residential</div><span class="badge b-active" style="display:inline-block;margin-top:6px">✓ April 2026 — Paid</span></div>
+</div>
+<div class="three-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">📄 My Statements</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#F8F9FC;border-radius:6px;font-size:12.5px;cursor:pointer" onclick="showToast('📄 Downloading April 2026 statement...','inf')"><span>April 2026</span><span class="badge b-paid">Paid</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#F8F9FC;border-radius:6px;font-size:12.5px;cursor:pointer" onclick="showToast('📄 Downloading March 2026 statement...','inf')"><span>March 2026</span><span class="badge b-paid">Paid</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#F8F9FC;border-radius:6px;font-size:12.5px;cursor:pointer" onclick="showToast('📄 Downloading February 2026 statement...','inf')"><span>February 2026</span><span class="badge b-paid">Paid</span></div>
+    <button class="btn btn-navy btn-sm btn-full" onclick="showToast('📦 All statements downloaded','ok')">⬇ Download All</button>
+  </div></div>
+  <div class="card"><div class="card-hdr"><div class="card-title">🔧 Log Maintenance</div></div><div class="card-body">
+    <div class="fg" style="margin-bottom:10px"><label class="fl">Issue Type</label><select class="fi"><option>Plumbing</option><option>Electrical</option><option>Roof / Ceiling</option><option>Security</option><option>Appliances</option><option>Other</option></select></div>
+    <div class="fg" style="margin-bottom:10px"><label class="fl">Description</label><textarea class="fi" rows="3" placeholder="Describe the issue in detail..."></textarea></div>
+    <button class="btn btn-navy btn-sm btn-full" onclick="showToast('✅ Maintenance request submitted. You will be contacted within 24 hours.','ok')">Submit Request</button>
+  </div></div>
+  <div class="card"><div class="card-hdr"><div class="card-title">📋 My Documents</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+    <div class="doc-item" onclick="showToast('📄 Lease agreement downloaded','ok')"><div class="doc-icon">📄</div><div><div class="doc-name">Lease Agreement</div><div class="doc-meta">Signed · 01 Apr 2025 · 24 months</div></div><div class="doc-expiry expiry-ok">Valid</div></div>
+    <div class="doc-item" onclick="showToast('📄 Deposit receipt downloaded','ok')"><div class="doc-icon">💰</div><div><div class="doc-name">Deposit Receipt</div><div class="doc-meta">R 37,000 · FNB Trust Account</div></div><div class="doc-expiry expiry-ok">Held</div></div>
+    <div class="doc-item" onclick="showToast('📄 House rules downloaded','ok')"><div class="doc-icon">📋</div><div><div class="doc-name">House Rules</div><div class="doc-meta">Body Corporate · Version 2 · 2025</div></div></div>
+    <div class="doc-item" onclick="openCommunicate('Ahmed Patel','General Enquiry')"><div class="doc-icon">💬</div><div><div class="doc-name">Contact Landlord</div><div class="doc-meta">Message N.T.O Property Management</div></div></div>
+  </div></div>
+</div>
+</div>
+
+<!-- ══════════════════ RE REPORTS ══════════════════ -->
+<div class="panel" id="panel-re-reports">
+<div class="pack-banner pack-re">🏘️ NORMAN OGANA REAL ESTATE — Property Reports</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Real Estate Reports</div><div class="ph-sub">Portfolio performance · Yield analysis · Occupancy · Income vs Expenses</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export all RE reports')">⬇ Export All</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Portfolio Value</div><div class="sv">R 14.8M</div></div>
+  <div class="stat s-green"><div class="sl">Gross Yield</div><div class="sv">12.1%</div></div>
+  <div class="stat s-teal"><div class="sl">Net Yield</div><div class="sv">9.4%</div><div class="ss">After all costs</div></div>
+  <div class="stat s-gold"><div class="sl">Annual Net Income</div><div class="sv">R 1,391,520</div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Yield Analysis by Property</div></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Property</th><th>Est. Value</th><th>Annual Rent</th><th>Gross Yield</th><th>Net Yield</th></tr></thead><tbody>
+      <tr><td>Unit 1 — Sandton</td><td class="mono">R 2,200,000</td><td class="mono">R 222,000</td><td class="mono" style="color:var(--green)">10.1%</td><td class="mono" style="color:var(--teal)">8.2%</td></tr>
+      <tr><td>Unit 2 — Sandton</td><td class="mono">R 2,800,000</td><td class="mono">R 264,000</td><td class="mono" style="color:var(--green)">9.4%</td><td class="mono" style="color:var(--teal)">7.6%</td></tr>
+      <tr><td>Unit 3 — Midrand</td><td class="mono">R 1,650,000</td><td class="mono">R 174,000</td><td class="mono" style="color:var(--green)">10.5%</td><td class="mono" style="color:var(--teal)">8.7%</td></tr>
+      <tr><td>Unit 4 — Sandton</td><td class="mono">R 3,500,000</td><td class="mono">R 336,000</td><td class="mono" style="color:var(--green)">9.6%</td><td class="mono" style="color:var(--teal)">7.9%</td></tr>
+      <tr><td>Office 2B — Midrand</td><td class="mono">R 3,200,000</td><td class="mono">R 384,000</td><td class="mono" style="color:var(--green)">12.0%</td><td class="mono" style="color:var(--teal)">10.1%</td></tr>
+      <tr><td>Retail — Kyalami (VACANT)</td><td class="mono">R 1,800,000</td><td class="mono" style="color:var(--muted)">R 0</td><td class="mono" style="color:var(--red)">0.0%</td><td class="mono" style="color:var(--red)">-1.2%</td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Income vs Expenses — Q1 2026</div></div><div class="card-body">
+    <div style="border:1px solid var(--border-md);border-radius:8px;overflow:hidden">
+      <div class="vat-row"><span>Gross Rental Income</span><span class="mono">R 445,500</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Maintenance (Q1)</span><span class="mono" style="color:var(--red)">- R 37,200</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Rates &amp; Taxes</span><span class="mono" style="color:var(--red)">- R 22,400</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Property Insurance</span><span class="mono" style="color:var(--red)">- R 18,600</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Body Corp Levies</span><span class="mono" style="color:var(--red)">- R 14,800</span></div>
+      <div class="vat-row total"><span>Net Rental Income Q1</span><span class="mono" style="color:var(--green)">R 352,500</span></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('vatsars')">🏛️ VAT &amp; SARS</button>
+      <button class="btn btn-ghost btn-sm" onclick="showPanel('accounting')">📒 Accounting</button>
+    </div>
+  </div></div>
+</div>
+</div>
+
+
+<!-- ══════════════════ PLATFORM SUPPORT OVERVIEW ══════════════════ -->
+<div class="panel" id="panel-support">
+<div class="pack-banner pack-sup">⊞ IMAGESYNC PLATFORM — Platform Overview &amp; Support Panel</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Platform Overview</div><div class="ph-sub">ImageSync Platform · 3 companies · 3 industry packs · All modules active</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="showPanel('groupreport')">📊 Group Report</button><button class="btn btn-gold btn-sm" onclick="showPanel('admincompanies')">🏢 Manage</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Companies</div><div class="sv">3</div><div class="ss">All active</div><div class="si">🏢</div></div>
+  <div class="stat s-green"><div class="sl">Industry Packs</div><div class="sv">3</div><div class="ss">Ins · IT · RE</div><div class="si">🧩</div></div>
+  <div class="stat s-gold"><div class="sl">Group MRC</div><div class="sv">R 506K</div><div class="ss">Monthly combined</div><div class="si">💰</div></div>
+  <div class="stat s-teal"><div class="sl">Total Users</div><div class="sv">7</div><div class="ss">Across all entities</div><div class="si">👥</div></div>
+  <div class="stat s-navy"><div class="sl">Platform Plan</div><div class="sv">Enterprise</div><div class="ss">All modules unlocked</div><div class="si">⭐</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">
+  <div class="co-card" onclick="switchPack('insurance')" onmouseover="this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.boxShadow='none'">
+    <div style="background:var(--navy);padding:14px 18px;display:flex;align-items:center;gap:12px"><span style="font-size:28px">🛡️</span><div><div style="font-weight:700;font-size:14px;color:white">Big O Projects (Pty) Ltd</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Insurance · Claims Management</div></div></div>
+    <div style="padding:14px 18px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Revenue</div><div style="font-weight:700;font-size:13px;font-family:var(--mono)">R1.16M</div></div>
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Claims</div><div style="font-weight:700;font-size:13px">83</div></div>
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Users</div><div style="font-weight:700;font-size:13px">4</div></div>
+      </div>
+      <div style="margin-bottom:10px;display:flex;gap:4px;flex-wrap:wrap"><span class="mod-tag mod-on">Claims</span><span class="mod-tag mod-on">Invoices</span><span class="mod-tag mod-on">VAT &amp; SARS</span><span class="mod-tag mod-on">Accounting</span><span class="mod-tag mod-on">Field</span></div>
+      <button class="btn btn-navy btn-sm btn-full" onclick="event.stopPropagation();switchPack('insurance')">→ Open Insurance Workspace</button>
+    </div>
+  </div>
+  <div class="co-card" onclick="switchPack('it')" onmouseover="this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.boxShadow='none'">
+    <div style="background:var(--teal);padding:14px 18px;display:flex;align-items:center;gap:12px"><span style="font-size:28px">💻</span><div><div style="font-weight:700;font-size:14px;color:white">ImageLink Technologies (Pty) Ltd</div><div style="font-size:11px;color:rgba(255,255,255,.5)">IT &amp; Contract Management</div></div></div>
+    <div style="padding:14px 18px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">MRC</div><div style="font-weight:700;font-size:13px;font-family:var(--mono)">R209K</div></div>
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Pipeline</div><div style="font-weight:700;font-size:13px">2,144</div></div>
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Users</div><div style="font-weight:700;font-size:13px">3</div></div>
+      </div>
+      <div style="margin-bottom:10px;display:flex;gap:4px;flex-wrap:wrap"><span class="mod-tag mod-on">Pipeline</span><span class="mod-tag mod-on">Contracts</span><span class="mod-tag mod-on">Technicians</span><span class="mod-tag mod-on">Sales Team</span><span class="mod-tag mod-on">VAT</span></div>
+      <button class="btn btn-sm btn-full" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:8px;font-weight:700;cursor:pointer;font-family:var(--font)" onclick="event.stopPropagation();switchPack('it')">→ Open IT Workspace</button>
+    </div>
+  </div>
+  <div class="co-card" onclick="switchPack('realestate')" onmouseover="this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.boxShadow='none'">
+    <div style="background:var(--purple);padding:14px 18px;display:flex;align-items:center;gap:12px"><span style="font-size:28px">🏘️</span><div><div style="font-weight:700;font-size:14px;color:white">N.T.O Real Estate (Pty) Ltd</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Rental &amp; Lease Management</div></div></div>
+    <div style="padding:14px 18px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Properties</div><div style="font-weight:700;font-size:13px">8</div></div>
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Income/mo</div><div style="font-weight:700;font-size:13px;font-family:var(--mono)">R148K</div></div>
+        <div style="text-align:center;background:#F4F5F9;border-radius:6px;padding:8px"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Users</div><div style="font-weight:700;font-size:13px">1</div></div>
+      </div>
+      <div style="margin-bottom:10px;display:flex;gap:4px;flex-wrap:wrap"><span class="mod-tag mod-on">Properties</span><span class="mod-tag mod-on">Leases</span><span class="mod-tag mod-on">Tenants</span><span class="mod-tag mod-on">Rent Roll</span><span class="mod-tag mod-on">Maintenance</span></div>
+      <button class="btn btn-sm btn-full" style="background:var(--purple);color:white;border:none;border-radius:8px;padding:8px;font-weight:700;cursor:pointer;font-family:var(--font)" onclick="event.stopPropagation();switchPack('realestate')">→ Open Real Estate Workspace</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ GROUP CONSOLIDATED REPORTING ══════════════════ -->
+<div class="panel" id="panel-groupreport">
+<div class="pack-banner pack-sup">⊞ IMAGESYNC PLATFORM — Group Consolidated Reporting</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Group Consolidated Financials</div><div class="ph-sub">ImageSync Group · All 3 entities · Q1 2026 · Investor / Bank ready</div></div>
+  <div class="ph-actions">
+    <button class="btn btn-ghost btn-sm" onclick="mockAction('Export Group P&amp;L')">⬇ Group P&amp;L</button>
+    <button class="btn btn-ghost btn-sm" onclick="mockAction('Export Balance Sheet')">⬇ Balance Sheet</button>
+    <button class="btn btn-gold btn-sm" onclick="showToast('📊 Board pack generated — 24 pages','ok')">📊 Board Pack</button>
+  </div>
+</div>
+<div style="background:linear-gradient(135deg,var(--navy),#111827);border-radius:var(--radius);padding:20px 24px;margin-bottom:18px">
+  <div style="font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px">★ GROUP SUMMARY — Q1 2026 (January–March)</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px;text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Group Revenue</div><div style="font-size:22px;font-weight:700;color:white;font-family:var(--mono)">R 7.06M</div></div>
+    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px;text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Group Expenses</div><div style="font-size:22px;font-weight:700;color:white;font-family:var(--mono)">R 2.63M</div></div>
+    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px;text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Net Profit</div><div style="font-size:22px;font-weight:700;color:var(--gold-l);font-family:var(--mono)">R 4.43M</div></div>
+    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px;text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">EBITDA Margin</div><div style="font-size:22px;font-weight:700;color:var(--gold-l);font-family:var(--mono)">62.7%</div></div>
+    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px;text-align:center"><div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">VAT Payable (Consol.)</div><div style="font-size:22px;font-weight:700;color:#F87171;font-family:var(--mono)">R 398K</div></div>
+  </div>
+</div>
+<div class="card"><div class="card-hdr"><div class="card-title">Entity Contribution — Q1 2026</div><button class="btn btn-ghost btn-sm" onclick="mockAction('Export entity breakdown')">⬇ Export</button></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Entity</th><th>Pack</th><th>Revenue</th><th>Expenses</th><th>Net Profit</th><th>Margin</th><th>VAT Payable</th><th>Share</th></tr></thead><tbody>
+    <tr><td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">🛡️</span><div><div class="td-bold">Big O Projects</div><div style="font-size:10px;color:var(--muted)">Insurance</div></div></div></td><td><span class="badge b-navy">Insurance</span></td><td class="mono" style="color:var(--green)">R 1,164,559</td><td class="mono" style="color:var(--red)">R 357,000</td><td class="mono td-bold">R 807,559</td><td class="mono" style="color:var(--teal)">69.3%</td><td class="mono" style="color:var(--red)">R 138,799</td><td><div class="grp-bar" style="width:100px;display:inline-block"><div class="grp-fill" style="width:16%;background:var(--navy)"></div></div><span style="font-size:10px;color:var(--muted);margin-left:4px">16%</span></td></tr>
+    <tr><td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">💻</span><div><div class="td-bold">ImageLink Technologies</div><div style="font-size:10px;color:var(--muted)">IT</div></div></div></td><td><span class="badge b-teal">IT</span></td><td class="mono" style="color:var(--green)">R 3,108,000</td><td class="mono" style="color:var(--red)">R 1,244,000</td><td class="mono td-bold">R 1,864,000</td><td class="mono" style="color:var(--teal)">60.0%</td><td class="mono" style="color:var(--red)">R 186,480</td><td><div class="grp-bar" style="width:100px;display:inline-block"><div class="grp-fill" style="width:58%;background:var(--teal)"></div></div><span style="font-size:10px;color:var(--muted);margin-left:4px">58%</span></td></tr>
+    <tr><td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">🏘️</span><div><div class="td-bold">N.T.O Real Estate</div><div style="font-size:10px;color:var(--muted)">Real Estate</div></div></div></td><td><span class="badge b-purple">RE</span></td><td class="mono" style="color:var(--green)">R 445,500</td><td class="mono" style="color:var(--red)">R 93,000</td><td class="mono td-bold">R 352,500</td><td class="mono" style="color:var(--teal)">79.1%</td><td class="mono" style="color:var(--red)">R 22,275</td><td><div class="grp-bar" style="width:100px;display:inline-block"><div class="grp-fill" style="width:25%;background:var(--purple)"></div></div><span style="font-size:10px;color:var(--muted);margin-left:4px">25%</span></td></tr>
+    <tr style="background:#F4F5F9;font-weight:700"><td colspan="2" style="text-align:right;font-size:12px">GROUP TOTALS</td><td class="mono" style="color:var(--green)">R 4,718,059</td><td class="mono" style="color:var(--red)">R 1,694,000</td><td class="mono td-bold">R 3,024,059</td><td class="mono" style="color:var(--green)">64.1%</td><td class="mono" style="color:var(--red)">R 347,554</td><td></td></tr>
+  </tbody></table></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Group P&amp;L Statement — Q1 2026</div></div><div class="card-body">
+    <div style="border:1px solid var(--border-md);border-radius:8px;overflow:hidden">
+      <div class="vat-row"><span>Insurance Revenue</span><span class="mono">R 1,164,559</span></div>
+      <div class="vat-row"><span>IT &amp; Contract MRC</span><span class="mono">R 3,108,000</span></div>
+      <div class="vat-row"><span>Property Rental Income</span><span class="mono">R 445,500</span></div>
+      <div class="vat-row" style="background:#EAF0FB;font-weight:700"><span>GROSS REVENUE</span><span class="mono">R 4,718,059</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Direct Costs</span><span class="mono" style="color:var(--red)">- R 1,694,000</span></div>
+      <div class="vat-row" style="font-weight:700"><span>GROSS PROFIT</span><span class="mono" style="color:var(--green)">R 3,024,059</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Group Overheads</span><span class="mono" style="color:var(--red)">- R 240,000</span></div>
+      <div class="vat-row" style="background:#EAF0FB;font-weight:700"><span>EBITDA</span><span class="mono" style="color:var(--teal)">R 2,784,059</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Income Tax (28%)</span><span class="mono" style="color:var(--red)">- R 779,536</span></div>
+      <div class="vat-row total"><span>NET PROFIT (Q1 2026)</span><span class="mono" style="color:var(--green)">R 2,004,523</span></div>
+    </div>
+  </div></div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Consolidated VAT Position</div></div><div class="card-body">
+    <div style="border:1px solid var(--border-md);border-radius:8px;overflow:hidden;margin-bottom:12px">
+      <div class="vat-row"><span>Big O Projects — Output VAT</span><span class="mono">R 151,899</span></div>
+      <div class="vat-row"><span>ImageLink Technologies — Output VAT</span><span class="mono">R 186,480</span></div>
+      <div class="vat-row"><span>N.T.O Real Estate — Output VAT</span><span class="mono">R 22,275</span></div>
+      <div class="vat-row" style="background:#EAF0FB;font-weight:700"><span>Total Output VAT</span><span class="mono">R 360,654</span></div>
+      <div class="vat-row"><span style="color:var(--muted)">Less: Input VAT (Consolidated)</span><span class="mono" style="color:var(--green)">- R 13,100</span></div>
+      <div class="vat-row total"><span>NET VAT PAYABLE — GROUP</span><span class="mono" style="color:var(--red)">R 347,554</span></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-navy btn-sm" onclick="showPanel('vatsars')">🏛️ VAT Portal</button><button class="btn btn-ghost btn-sm" onclick="showToast('📄 VAT201 export generated for all 3 entities','ok')">⬇ VAT201 Export</button></div>
+  </div></div>
+</div>
+</div>
+
+<!-- ══════════════════ ADMIN — COMPANY MANAGER ══════════════════ -->
+<div class="panel" id="panel-admincompanies">
+<div class="pack-banner pack-sup">⊞ IMAGESYNC PLATFORM — Company Manager</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Company Manager</div><div class="ph-sub">All registered companies · Industry pack assignment · Status</div></div>
+  <div class="ph-actions"><button class="btn btn-gold btn-sm" onclick="showToast('📝 New company registration form opened','inf')">+ Register Company</button></div>
+</div>
+<div class="card"><div class="card-hdr"><div class="card-title">Registered Companies</div><div class="card-sub">3 active companies · 3 industry packs</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Company</th><th>Industry Pack</th><th>Reg No.</th><th>Plan</th><th>Users</th><th>Modules Active</th><th>Status</th><th>Action</th></tr></thead><tbody>
+    <tr><td>1</td><td><div style="display:flex;align-items:center;gap:8px"><span>🛡️</span><div><div class="td-bold">Big O Projects (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">admin@bigoprojects.co.za</div></div></div></td><td><span class="badge b-navy">Insurance</span></td><td class="mono td-muted" style="font-size:11px">2021/123456/07</td><td>Professional</td><td>4</td><td>12 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('insurance')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
+    <tr><td>2</td><td><div style="display:flex;align-items:center;gap:8px"><span>💻</span><div><div class="td-bold">ImageLink Technologies (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">info@imagelink.co.za</div></div></div></td><td><span class="badge b-teal">IT</span></td><td class="mono td-muted" style="font-size:11px">2021/763847/07</td><td>Professional</td><td>3</td><td>8 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('it')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
+    <tr><td>3</td><td><div style="display:flex;align-items:center;gap:8px"><span>🏘️</span><div><div class="td-bold">N.T.O Real Estate (Pty) Ltd</div><div style="font-size:10px;color:var(--muted)">admin@nto.co.za</div></div></div></td><td><span class="badge b-purple">Real Estate</span></td><td class="mono td-muted" style="font-size:11px">2020/987654/07</td><td>Starter</td><td>1</td><td>10 / 12</td><td><span class="badge b-active">Active</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="switchPack('realestate')">Open</button><button class="btn btn-ghost btn-xs" onclick="showPanel('adminmodules')">Modules</button></div></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ ADMIN — MODULE ASSIGNMENT ══════════════════ -->
+<div class="panel" id="panel-adminmodules">
+<div class="pack-banner pack-sup">⊞ IMAGESYNC PLATFORM — Module Assignment</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Module Assignment</div><div class="ph-sub">Enable or disable modules per company · Billed per active module</div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">🛡️ Big O Projects — Insurance Pack</div><div style="background:var(--green-p);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">All Active</div></div>
+    <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Claims Management</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Field Operations &amp; Photos</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Invoicing &amp; Billing</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>VAT &amp; SARS Portal</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Accounting (Full)</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Management Accounts</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Annual Fin. Statements</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Financial Modelling</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Funding &amp; Credit</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Document Vault</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Communication Panel</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>AI Analysis Engine</span><span class="badge b-coming">Coming Soon</span></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-hdr"><div class="card-title">🏘️ Real Estate — Manage Modules</div><button class="btn btn-gold btn-sm" onclick="showToast('✅ Module changes saved for N.T.O Real Estate','ok')">💾 Save</button></div>
+    <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Properties &amp; Portfolio</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Lease Management</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Tenant Registry</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Rent Roll &amp; Payments</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Maintenance Tracking</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Inspections</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Listings &amp; Vacancies</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Tenant Portal</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>VAT &amp; SARS</span><span class="badge b-active">● Active</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>Full Accounting Suite</span><button class="btn btn-gold btn-xs" onclick="showToast('✅ Accounting added — R 299/mo','ok')">+ Add (R 299/mo)</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px"><span>AI Valuation Engine</span><button class="btn btn-ghost btn-xs" onclick="showToast('⏳ AI Valuation on roadmap — Q3 2026','inf')">Waitlist</button></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ ADMIN — SUBSCRIPTION BILLING ══════════════════ -->
+<div class="panel" id="panel-adminbilling">
+<div class="pack-banner pack-sup">⊞ IMAGESYNC PLATFORM — Subscription Billing</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Subscription Billing</div><div class="ph-sub">Platform subscriptions · Module fees · Payment history · All 3 companies</div></div>
+  <div class="ph-actions"><button class="btn btn-ghost btn-sm" onclick="mockAction('Export billing history')">⬇ Export</button></div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Monthly Platform Total</div><div class="sv">R 4,694</div><div class="ss">All 3 companies</div></div>
+  <div class="stat s-green"><div class="sl">Next Billing</div><div class="sv">01 May</div><div class="ss">Auto-debit · FNB</div></div>
+  <div class="stat s-teal"><div class="sl">Annual Savings</div><div class="sv">15%</div><div class="ss">vs monthly billing</div></div>
+  <div class="stat s-gold"><div class="sl">Annual Total</div><div class="sv">R 56,328</div><div class="ss">All companies</div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Subscription Breakdown</div></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Company</th><th>Plan</th><th>Base</th><th>Add-ons</th><th>Total/mo</th></tr></thead><tbody>
+      <tr><td><div style="display:flex;align-items:center;gap:6px"><span>🛡️</span><div class="td-bold">Big O Projects</div></div></td><td>Professional</td><td class="mono">R 1,499</td><td class="mono">R 299</td><td class="mono td-bold">R 1,798</td></tr>
+      <tr><td><div style="display:flex;align-items:center;gap:6px"><span>💻</span><div class="td-bold">ImageLink Technologies</div></div></td><td>Professional</td><td class="mono">R 1,499</td><td class="mono">R 299</td><td class="mono td-bold">R 1,798</td></tr>
+      <tr><td><div style="display:flex;align-items:center;gap:6px"><span>🏘️</span><div class="td-bold">N.T.O Real Estate</div></div></td><td>Starter</td><td class="mono">R 799</td><td class="mono">R 299</td><td class="mono td-bold">R 1,098</td></tr>
+      <tr style="background:#F4F5F9;font-weight:700"><td colspan="4" style="text-align:right">Total Monthly</td><td class="mono" style="color:var(--navy)">R 4,694</td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Payment History</div></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+      <tr><td>01 Apr 2026</td><td>Platform Subscription — April 2026</td><td class="mono">R 5,493</td><td><span class="badge b-paid">Paid</span></td></tr>
+      <tr><td>01 Mar 2026</td><td>Platform Subscription — March 2026</td><td class="mono">R 5,194</td><td><span class="badge b-paid">Paid</span></td></tr>
+      <tr><td>01 Feb 2026</td><td>Platform Subscription — February 2026</td><td class="mono">R 4,895</td><td><span class="badge b-paid">Paid</span></td></tr>
+      <tr><td>01 Jan 2026</td><td>Platform Subscription — January 2026</td><td class="mono">R 3,298</td><td><span class="badge b-paid">Paid</span></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ SUPPORT: DIAGNOSTICS ══════════════════ -->
+<div class="panel" id="panel-support-diagnostics">
+<div class="pack-banner pack-sup">🔬 IMAGESYNC PLATFORM — Diagnostics</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Diagnostics</div><div class="ph-sub">Per-user fault detection · System health · Error resolution</div></div>
+  <div class="ph-actions">
+    <button class="btn btn-ghost btn-sm" onclick="mockAction('Run full diagnostic scan')">🔄 Run Full Scan</button>
+    <button class="btn btn-gold btn-sm" onclick="mockAction('Export diagnostic report')">⬇ Export Report</button>
+  </div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-green"><div class="sl">System Status</div><div class="sv">Online</div><div class="ss">All services running</div><div class="si">✅</div></div>
+  <div class="stat s-navy"><div class="sl">Active Users</div><div class="sv">7</div><div class="ss">Across 3 companies</div><div class="si">👥</div></div>
+  <div class="stat s-amber"><div class="sl">Warnings</div><div class="sv">2</div><div class="ss">Non-critical alerts</div><div class="si">⚠️</div></div>
+  <div class="stat s-red"><div class="sl">Errors</div><div class="sv">0</div><div class="ss">No critical faults</div><div class="si">🔴</div></div>
+</div>
+<div class="card">
+  <div class="card-hdr"><div class="card-title">User Fault Detection</div><div class="card-sub">Per-user diagnostics across all companies</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>User</th><th>Company</th><th>Last Login</th><th>Status</th><th>Issue</th><th>Action</th></tr></thead><tbody>
+    <tr><td><div class="td-bold">Norman</div></td><td>Big O Projects</td><td>Today 14:22</td><td><span class="badge b-active">Online</span></td><td>None</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View user log')">View Log</button></td></tr>
+    <tr><td><div class="td-bold">Julie</div></td><td>ImageLink Tech</td><td>Today 11:05</td><td><span class="badge b-active">Online</span></td><td>None</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View user log')">View Log</button></td></tr>
+    <tr><td><div class="td-bold">Brett</div></td><td>ImageLink Tech</td><td>Today 09:47</td><td><span class="badge b-sent">Idle</span></td><td>None</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View user log')">View Log</button></td></tr>
+    <tr><td><div class="td-bold">Wayne</div></td><td>ImageLink Tech</td><td>Yesterday</td><td><span class="badge b-draft">Offline</span></td><td><span style="color:var(--amber);font-size:11px">⚠️ Session timeout</span></td><td><button class="btn btn-amber btn-xs" onclick="showToast('Session cleared for Wayne','ok')">Clear Session</button></td></tr>
+    <tr><td><div class="td-bold">NTO Admin</div></td><td>N.T.O Real Estate</td><td>Today 08:31</td><td><span class="badge b-active">Online</span></td><td>None</td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('View user log')">View Log</button></td></tr>
+    <tr><td><div class="td-bold">Field User</div></td><td>Big O Projects</td><td>2 days ago</td><td><span class="badge b-draft">Offline</span></td><td><span style="color:var(--amber);font-size:11px">⚠️ App not updated</span></td><td><button class="btn btn-amber btn-xs" onclick="showToast('Update push sent to Field User','ok')">Push Update</button></td></tr>
+  </tbody></table></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Service Health</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12.5px">Core Platform API</span><span class="badge b-active">✅ Operational</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12.5px">Database Sync</span><span class="badge b-active">✅ Operational</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12.5px">PDF Generator</span><span class="badge b-active">✅ Operational</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12.5px">Email / WhatsApp Gateway</span><span class="badge b-medium">⚠️ Degraded</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:12.5px">SARS VAT Connect</span><span class="badge b-active">✅ Operational</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0"><span style="font-size:12.5px">Backup &amp; Recovery</span><span class="badge b-active">✅ Operational</span></div>
+  </div></div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Recent Error Log</div></div><div class="card-body" style="font-size:12px;display:flex;flex-direction:column;gap:8px">
+    <div style="padding:8px 12px;background:var(--amber-p);border-radius:6px;border-left:3px solid var(--amber)"><div style="font-weight:700;margin-bottom:2px">⚠️ Email Gateway Latency</div><div style="color:var(--muted)">04 Apr 2026 · 22:14 · Delays in email delivery (~90s). Auto-resolved.</div></div>
+    <div style="padding:8px 12px;background:var(--amber-p);border-radius:6px;border-left:3px solid var(--amber)"><div style="font-weight:700;margin-bottom:2px">⚠️ Wayne — Session Timeout</div><div style="color:var(--muted)">04 Apr 2026 · 18:30 · User session expired without logout. Cleared.</div></div>
+    <div style="padding:8px 12px;background:var(--green-p);border-radius:6px;border-left:3px solid var(--green)"><div style="font-weight:700;margin-bottom:2px">✅ Auto-backup Completed</div><div style="color:var(--muted)">05 Apr 2026 · 02:00 · Full system backup. All 3 companies. 847 MB.</div></div>
+  </div></div>
+</div>
+</div>
+
+<!-- ══════════════════ SUPPORT: REGISTRATION ══════════════════ -->
+<div class="panel" id="panel-support-registration">
+<div class="pack-banner pack-sup">📝 IMAGESYNC PLATFORM — User Registration</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Registration</div><div class="ph-sub">User registration · Pending approvals · Accept or reject new accounts</div></div>
+  <div class="ph-actions">
+    <button class="btn btn-ghost btn-sm" onclick="mockAction('Export user list')">⬇ Export</button>
+    <button class="btn btn-gold btn-sm" onclick="showToast('Manual registration form opened','ok')">+ Add User Manually</button>
+  </div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-navy"><div class="sl">Total Users</div><div class="sv">7</div><div class="ss">Across 3 companies</div></div>
+  <div class="stat s-amber"><div class="sl">Pending Approval</div><div class="sv">2</div><div class="ss">Awaiting review</div></div>
+  <div class="stat s-green"><div class="sl">Active Licences</div><div class="sv">5</div><div class="ss">Billable seats</div></div>
+  <div class="stat s-red"><div class="sl">Deactivated</div><div class="sv">1</div><div class="ss">Former user</div></div>
+</div>
+<div class="card">
+  <div class="card-hdr"><div class="card-title">Pending Registrations</div><div class="card-sub">New users awaiting admin acceptance</div></div>
+  <div style="display:flex;flex-direction:column;gap:0">
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap">
+      <div style="width:38px;height:38px;border-radius:50%;background:var(--amber-p);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--amber);flex-shrink:0">SM</div>
+      <div style="flex:1;min-width:150px"><div style="font-weight:700;font-size:13px">Sipho Mokoena</div><div style="font-size:11px;color:var(--muted)">sipho@imagelink.co.za · ImageLink Technologies · Sales Rep</div><div style="font-size:11px;color:var(--muted)">Registered: 04 Apr 2026 · Device: iPhone 15</div></div>
+      <div style="display:flex;gap:6px"><button class="btn btn-green btn-sm" onclick="showToast('✅ Sipho Mokoena approved','ok')">✅ Accept</button><button class="btn btn-red btn-sm" onclick="showToast('❌ Sipho Mokoena rejected','warn')">✕ Reject</button></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;flex-wrap:wrap">
+      <div style="width:38px;height:38px;border-radius:50%;background:var(--amber-p);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--amber);flex-shrink:0">LN</div>
+      <div style="flex:1;min-width:150px"><div style="font-weight:700;font-size:13px">Lerato Nkosi</div><div style="font-size:11px;color:var(--muted)">lerato@nto.co.za · N.T.O Real Estate · Property Manager</div><div style="font-size:11px;color:var(--muted)">Registered: 05 Apr 2026 · Device: Samsung Galaxy S25</div></div>
+      <div style="display:flex;gap:6px"><button class="btn btn-green btn-sm" onclick="showToast('✅ Lerato Nkosi approved','ok')">✅ Accept</button><button class="btn btn-red btn-sm" onclick="showToast('❌ Lerato Nkosi rejected','warn')">✕ Reject</button></div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-hdr"><div class="card-title">All Registered Users</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Company</th><th>Role</th><th>Status</th><th>Licence</th><th>Actions</th></tr></thead><tbody>
+    <tr><td class="td-bold">Norman</td><td>admin@bigoprojects.co.za</td><td>Big O Projects</td><td>Administrator</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Norman')">Edit</button></td></tr>
+    <tr><td class="td-bold">Field User</td><td>field@bigoprojects.co.za</td><td>Big O Projects</td><td>Assessor</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Field User')">Edit</button></td></tr>
+    <tr><td class="td-bold">Julie</td><td>julie@imagelink.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Julie')">Edit</button></td></tr>
+    <tr><td class="td-bold">Brett</td><td>brett@imagelink.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Brett')">Edit</button></td></tr>
+    <tr><td class="td-bold">Wayne</td><td>wayne@imagelink.co.za</td><td>ImageLink Tech</td><td>Sales Rep</td><td><span class="badge b-sent">Idle</span></td><td><span class="badge b-navy">Pro</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit Wayne')">Edit</button></td></tr>
+    <tr><td class="td-bold">NTO Admin</td><td>admin@ntorealestate.co.za</td><td>N.T.O Real Estate</td><td>Administrator</td><td><span class="badge b-active">Active</span></td><td><span class="badge b-teal">Starter</span></td><td><button class="btn btn-ghost btn-xs" onclick="mockAction('Edit NTO Admin')">Edit</button></td></tr>
+    <tr style="opacity:.5"><td class="td-bold">Old User</td><td>olduser@bigoprojects.co.za</td><td>Big O Projects</td><td>—</td><td><span class="badge b-void">Deactivated</span></td><td>—</td><td><button class="btn btn-ghost btn-xs" onclick="showToast('User reactivated','ok')">Reactivate</button></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ SUPPORT: OVERRIDES ══════════════════ -->
+<div class="panel" id="panel-support-overrides">
+<div class="pack-banner pack-sup">⚡ IMAGESYNC PLATFORM — Admin Overrides</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Overrides</div><div class="ph-sub">Push changes · Module overrides · Force updates across all users</div></div>
+  <div class="ph-actions">
+    <button class="btn btn-red btn-sm" onclick="showToast('⚡ Override broadcast sent to all users','ok')">⚡ Broadcast to All</button>
+  </div>
+</div>
+<div class="alert warn" style="margin-bottom:4px"><div class="alert-icon">⚠️</div><div><div class="alert-title">Admin Override Zone</div><div class="alert-body">Actions here push changes instantly to all users system-wide. Changes are logged and auditable. Use with caution.</div></div></div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Module Overrides</div><div class="card-sub">Toggle modules per company instantly</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:4px">Big O Projects 🛡️</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Claims Management</span><button class="btn btn-green btn-xs" onclick="showToast('Claims Management: Active','ok')">✅ Active</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Field / Photos Module</span><button class="btn btn-green btn-xs" onclick="showToast('Field Module: Active','ok')">✅ Active</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Contract Management</span><button class="btn btn-ghost btn-xs" onclick="showToast('Contract Management enabled for Big O Projects','ok')">⬜ Enable</button></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-top:8px;margin-bottom:4px">ImageLink Technologies 💻</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Pipeline Module</span><button class="btn btn-green btn-xs" onclick="showToast('Pipeline: Active','ok')">✅ Active</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Technician Job Cards</span><button class="btn btn-green btn-xs" onclick="showToast('Job Cards: Active','ok')">✅ Active</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Commission Tracking</span><button class="btn btn-green btn-xs" onclick="showToast('Commission: Active','ok')">✅ Active</button></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-top:8px;margin-bottom:4px">N.T.O Real Estate 🏘️</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Tenant Portal</span><button class="btn btn-green btn-xs" onclick="showToast('Tenant Portal: Active','ok')">✅ Active</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Maintenance Module</span><button class="btn btn-green btn-xs" onclick="showToast('Maintenance: Active','ok')">✅ Active</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px">Inspection Module</span><button class="btn btn-green btn-xs" onclick="showToast('Inspections: Active','ok')">✅ Active</button></div>
+    </div>
+  </div></div>
+  <div class="card"><div class="card-hdr"><div class="card-title">System-Wide Overrides</div><div class="card-sub">Push to all users immediately</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+    <div style="border:1px solid var(--border-md);border-radius:8px;padding:14px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:6px">🔒 Force Password Reset</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Force all users or a specific company to reset passwords on next login.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-amber btn-sm" onclick="showToast('Password reset forced for all users','ok')">Force All</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Password reset forced for Big O Projects','ok')">Big O Projects Only</button>
+      </div>
+    </div>
+    <div style="border:1px solid var(--border-md);border-radius:8px;padding:14px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:6px">📢 System Announcement</div>
+      <div style="margin-bottom:8px"><textarea class="fi" rows="3" placeholder="Type a platform-wide announcement for all users to see on login..."></textarea></div>
+      <button class="btn btn-navy btn-sm" onclick="showToast('📢 Announcement broadcast to all users','ok')">📢 Broadcast Now</button>
+    </div>
+    <div style="border:1px solid var(--border-md);border-radius:8px;padding:14px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:6px">🚪 Emergency Lockout</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Lock down all access. Use in case of security breach.</div>
+      <button class="btn btn-red btn-sm" onclick="showToast('⛔ Emergency lockout enabled — all sessions terminated','warn')">⛔ Emergency Lockout</button>
+    </div>
+  </div></div>
+</div>
+<div class="card">
+  <div class="card-hdr"><div class="card-title">Override Audit Log</div><div class="card-sub">All admin override actions logged</div></div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date/Time</th><th>Admin</th><th>Action</th><th>Scope</th><th>Result</th></tr></thead><tbody>
+    <tr><td style="font-family:var(--mono);font-size:11px">05 Apr 2026 · 14:15</td><td>Norman</td><td>Module Enabled — Tenant Portal</td><td>N.T.O Real Estate</td><td><span class="badge b-active">Applied</span></td></tr>
+    <tr><td style="font-family:var(--mono);font-size:11px">03 Apr 2026 · 09:22</td><td>Norman</td><td>Commission Tracking Enabled</td><td>ImageLink Technologies</td><td><span class="badge b-active">Applied</span></td></tr>
+    <tr><td style="font-family:var(--mono);font-size:11px">01 Apr 2026 · 16:04</td><td>Norman</td><td>System Announcement Broadcast</td><td>All Companies</td><td><span class="badge b-active">Applied</span></td></tr>
+  </tbody></table></div>
+</div>
+</div>
+
+<!-- ══════════════════ SUPPORT: UPDATES ══════════════════ -->
+<div class="panel" id="panel-support-updates">
+<div class="pack-banner pack-sup">🔄 IMAGESYNC PLATFORM — System Updates</div>
+<div class="ph" style="margin-top:12px">
+  <div><div class="ph-title">Updates</div><div class="ph-sub">Add modules · Propagate system-wide · Version control · Release notes</div></div>
+  <div class="ph-actions">
+    <button class="btn btn-ghost btn-sm" onclick="mockAction('Check for updates')">🔄 Check for Updates</button>
+    <button class="btn btn-gold btn-sm" onclick="showToast('🚀 System update deployed to all users','ok')">🚀 Deploy Update</button>
+  </div>
+</div>
+<div class="stats-grid">
+  <div class="stat s-green"><div class="sl">Current Version</div><div class="sv">v1.0.4</div><div class="ss">Released 01 Apr 2026</div></div>
+  <div class="stat s-navy"><div class="sl">Next Release</div><div class="sv">v1.1.0</div><div class="ss">Scheduled 01 May 2026</div></div>
+  <div class="stat s-teal"><div class="sl">Companies Updated</div><div class="sv">3 / 3</div><div class="ss">All on latest version</div></div>
+  <div class="stat s-gold"><div class="sl">Modules Available</div><div class="sv">24</div><div class="ss">18 active · 6 add-ons</div></div>
+</div>
+<div class="two-col">
+  <div class="card"><div class="card-hdr"><div class="card-title">Available Module Add-ons</div><div class="card-sub">Enable for any company instantly</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border-md);border-radius:8px"><div><div style="font-weight:700;font-size:12.5px">📦 Inventory Management</div><div style="font-size:11px;color:var(--muted)">Stock tracking, part numbers, reorder alerts</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--green)">+R 299/mo</span><button class="btn btn-navy btn-xs" onclick="showToast('Inventory module added','ok')">+ Add</button></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border-md);border-radius:8px"><div><div style="font-weight:700;font-size:12.5px">📞 CRM & Lead Tracking</div><div style="font-size:11px;color:var(--muted)">Lead pipeline, follow-up scheduling, contact log</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--green)">+R 399/mo</span><button class="btn btn-navy btn-xs" onclick="showToast('CRM module added','ok')">+ Add</button></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border-md);border-radius:8px"><div><div style="font-weight:700;font-size:12.5px">📐 Project Management</div><div style="font-size:11px;color:var(--muted)">Gantt charts, milestones, BOQ, site progress</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--green)">+R 499/mo</span><button class="btn btn-navy btn-xs" onclick="showToast('Project Management module added','ok')">+ Add</button></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border-md);border-radius:8px"><div><div style="font-weight:700;font-size:12.5px">🤖 AI Advisory Suite</div><div style="font-size:11px;color:var(--muted)">AI financial commentary, risk scoring, forecasting</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--green)">+R 599/mo</span><button class="btn btn-navy btn-xs" onclick="showToast('AI Advisory Suite added','ok')">+ Add</button></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border-md);border-radius:8px"><div><div style="font-weight:700;font-size:12.5px">🌐 Client Portal</div><div style="font-size:11px;color:var(--muted)">Self-service access for end clients to view invoices</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--green)">+R 299/mo</span><button class="btn btn-navy btn-xs" onclick="showToast('Client Portal added','ok')">+ Add</button></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border-md);border-radius:8px"><div><div style="font-weight:700;font-size:12.5px">📊 Advanced Analytics</div><div style="font-size:11px;color:var(--muted)">Custom dashboards, KPI tracking, benchmark data</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--green)">+R 499/mo</span><button class="btn btn-navy btn-xs" onclick="showToast('Analytics module added','ok')">+ Add</button></div></div>
+  </div></div>
+  <div class="card"><div class="card-hdr"><div class="card-title">Release History</div></div><div class="card-body" style="display:flex;flex-direction:column;gap:12px;font-size:12.5px">
+    <div style="padding:12px;border:1px solid var(--border-md);border-radius:8px;border-left:4px solid var(--green)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="font-weight:700">v1.0.4 — Current</div><span style="font-size:11px;color:var(--muted)">01 Apr 2026</span></div>
+      <ul style="padding-left:16px;color:var(--muted);font-size:11.5px;line-height:1.8"><li>N.T.O Real Estate branding update</li><li>Standardized Finance modules across all packs</li><li>Support Portal: Diagnostics, Registration, Overrides, Updates</li><li>Construction pack removed from platform</li></ul>
+    </div>
+    <div style="padding:12px;border:1px solid var(--border-md);border-radius:8px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="font-weight:700">v1.0.3</div><span style="font-size:11px;color:var(--muted)">15 Mar 2026</span></div>
+      <ul style="padding-left:16px;color:var(--muted);font-size:11.5px;line-height:1.8"><li>IT Pack: Sales team commission tracking</li><li>Real Estate: Tenant portal self-service</li><li>VAT & SARS improvements</li></ul>
+    </div>
+    <div style="padding:12px;border:1px solid var(--border-md);border-radius:8px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="font-weight:700">v1.0.2</div><span style="font-size:11px;color:var(--muted)">01 Mar 2026</span></div>
+      <ul style="padding-left:16px;color:var(--muted);font-size:11.5px;line-height:1.8"><li>Group Consolidated Reporting launched</li><li>Multi-company switcher in topbar</li><li>Annual Financial Statements module</li></ul>
+    </div>
+    <div style="padding:12px;border:1px solid var(--border-md);border-radius:8px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="font-weight:700">v1.0.0 — Initial Release</div><span style="font-size:11px;color:var(--muted)">01 Feb 2026</span></div>
+      <ul style="padding-left:16px;color:var(--muted);font-size:11.5px;line-height:1.8"><li>ImageSync platform launched</li><li>Insurance, IT &amp; Real Estate packs live</li><li>Core Finance modules deployed</li></ul>
+    </div>
+  </div></div>
+</div>
+</div>
+<div id="set-support" style="display:none">
+  <div class="alert info"><div class="alert-icon">⊞</div><div style="flex:1">
+    <div class="alert-title">Platform Support Panel</div>
+    <div class="alert-body">Access the full company management, module assignment, group consolidated reporting and subscription billing from the Platform Support Panel. Use the company switcher in the top bar to navigate.</div>
+    <div class="alert-actions">
+      <button class="btn btn-navy btn-xs" onclick="showPanel('support')">⊞ Platform Overview</button>
+      <button class="btn btn-ghost btn-xs" onclick="showPanel('groupreport')">📊 Group Reporting</button>
+      <button class="btn btn-ghost btn-xs" onclick="showPanel('admincompanies')">🏢 Company Manager</button>
+      <button class="btn btn-ghost btn-xs" onclick="showPanel('adminbilling')">💳 Billing</button>
+    </div>
+  </div></div>
 </div>
 
     </div><!-- /content -->
@@ -2335,7 +3493,7 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
   <div class="modal modal-lg" style="max-height:85vh">
     <div class="modal-hdr" style="background:var(--navy);border-radius:16px 16px 0 0">
       <div>
-        <div class="modal-title" style="color:white;font-size:15px">⬡ ClaimSync — Software Licence Agreement</div>
+        <div class="modal-title" style="color:white;font-size:15px">⬡ ImageSync — Software Licence Agreement</div>
         <div style="font-size:10px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px">Imagelink Technologies (Pty) Ltd · Version 4.0 · 2026</div>
       </div>
       <button class="modal-close" onclick="closeModal('modal-tc')" style="color:rgba(255,255,255,.6)">×</button>
@@ -2343,12 +3501,12 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
     <div class="modal-body" style="font-size:12.5px;line-height:1.7">
       <div style="background:var(--navy-d);color:rgba(255,255,255,.85);border-radius:8px;padding:14px 16px;font-size:11px;line-height:1.7;margin-bottom:16px;font-family:var(--mono)">
         © 2026 Imagelink Technologies (Pty) Ltd. All rights reserved.<br>
-        Republic of South Africa · This software ("ClaimSync") is the sole and exclusive property of Imagelink Technologies (Pty) Ltd.
+        Republic of South Africa · This software ("ImageSync") is the sole and exclusive property of Imagelink Technologies (Pty) Ltd.
       </div>
       <div style="margin-bottom:14px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">1. Proprietary Software &amp; Copyright</div>
         <ul style="padding-left:18px;color:var(--text)">
-          <li style="margin-bottom:4px">ClaimSync is proprietary software developed, owned and copyrighted exclusively by <strong>Imagelink Technologies (Pty) Ltd</strong>.</li>
+          <li style="margin-bottom:4px">ImageSync is proprietary software developed, owned and copyrighted exclusively by <strong>Imagelink Technologies (Pty) Ltd</strong>.</li>
           <li style="margin-bottom:4px">No part of this software, its source code, design, architecture, database schema, or any related intellectual property may be copied, reproduced, distributed, modified, reverse-engineered, sublicensed, or transferred to any third party without the express prior written consent of Imagelink Technologies (Pty) Ltd.</li>
           <li>Unauthorised reproduction or distribution constitutes a violation of South African copyright law (Copyright Act 98 of 1978, as amended) and may result in civil and criminal prosecution.</li>
         </ul>
@@ -2356,7 +3514,7 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
       <div style="margin-bottom:14px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">2. Licence Grant</div>
         <ul style="padding-left:18px;color:var(--text)">
-          <li style="margin-bottom:4px">A non-exclusive, non-transferable, revocable licence is granted to the registered organisation to use ClaimSync solely for its internal business operations.</li>
+          <li style="margin-bottom:4px">A non-exclusive, non-transferable, revocable licence is granted to the registered organisation to use ImageSync solely for its internal business operations.</li>
           <li style="margin-bottom:4px">This licence may not be extended, sublicensed, or shared with any other person or entity.</li>
           <li>The licence terminates immediately upon breach of these terms or non-payment of fees.</li>
         </ul>
@@ -2364,8 +3522,8 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
       <div style="margin-bottom:14px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">3. Restrictions</div>
         <ul style="padding-left:18px;color:var(--text)">
-          <li style="margin-bottom:4px">You may not sell, resell, rent, lease, or commercially exploit ClaimSync.</li>
-          <li style="margin-bottom:4px">You may not create derivative works based on ClaimSync or use it to build a competing product.</li>
+          <li style="margin-bottom:4px">You may not sell, resell, rent, lease, or commercially exploit ImageSync.</li>
+          <li style="margin-bottom:4px">You may not create derivative works based on ImageSync or use it to build a competing product.</li>
           <li>You may not remove or alter any copyright, trademark, or proprietary notices.</li>
         </ul>
       </div>
@@ -2373,13 +3531,13 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">4. Data &amp; Privacy (POPIA Compliance)</div>
         <ul style="padding-left:18px;color:var(--text)">
           <li style="margin-bottom:4px">Personal information is processed in accordance with the Protection of Personal Information Act (POPIA), Act 4 of 2013.</li>
-          <li style="margin-bottom:4px">All data stored within ClaimSync remains the property of the registered organisation.</li>
+          <li style="margin-bottom:4px">All data stored within ImageSync remains the property of the registered organisation.</li>
           <li>Appropriate technical and organisational measures are implemented to protect data.</li>
         </ul>
       </div>
       <div style="margin-bottom:14px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">5. Limitation of Liability</div>
-        <p style="color:var(--text)">To the maximum extent permitted by applicable law, Imagelink Technologies (Pty) Ltd shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use or inability to use ClaimSync.</p>
+        <p style="color:var(--text)">To the maximum extent permitted by applicable law, Imagelink Technologies (Pty) Ltd shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from the use or inability to use ImageSync.</p>
       </div>
       <div style="margin-bottom:14px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">6. Governing Law</div>
@@ -2387,7 +3545,7 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
       </div>
       <div>
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--navy);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--navy)">7. Contact</div>
-        <p style="color:var(--text)">Imagelink Technologies (Pty) Ltd · South Africa · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0d61686a6c614d64606c6a6861646366236e6223776c">[email&#160;protected]</a></p>
+        <p style="color:var(--text)">Imagelink Technologies (Pty) Ltd · South Africa · support@imagelink.co.za</p>
       </div>
     </div>
     <div class="modal-foot" style="justify-content:space-between;align-items:center">
@@ -2398,7 +3556,7 @@ Kind regards, Norman · Big O Projects · 082 402 8027</textarea>
 </div>
 
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
+<script>
 /* ── FINANCIAL MODELLING ── */
 function updateModelSliders(input, valId) {
   const el = document.getElementById(valId);
@@ -2478,7 +3636,7 @@ function switchFinTab(el, show, prefix) {
   if (target) target.classList.add('active');
 }
 
-</script><script>
+
 /* ═══════════════════════════════════════════
    CLAIMSYNC v4.0 — COMPLETE MOCKUP ENGINE
    © 2026 Imagelink Technologies (Pty) Ltd
@@ -2487,7 +3645,7 @@ function switchFinTab(el, show, prefix) {
 
 /* ── USERS ── */
 const USERS = [
-  {email:'admin@bigoprojects.co.za', password:'BigO2026!', name:'Norman', role:'Administrator', initials:'N', type:'admin'},
+  {email:'admin@bigoprojects.co.za', password:'Admin12345', name:'Norman', role:'Administrator', initials:'N', type:'admin'},
   {email:'field@bigoprojects.co.za', password:'Field123!', name:'Field User', role:'Team Leader (Assessor)', initials:'F', type:'field'},
 ];
 let currentUser = null;
@@ -2510,12 +3668,6 @@ function detectDevice() {
 window.addEventListener('resize', detectDevice);
 
 /* ── AUTH ── */
-function quickLogin(type) {
-  const u = USERS.find(x => x.type === type);
-  document.getElementById('login-email').value = u.email;
-  document.getElementById('login-password').value = u.password;
-  doLogin();
-}
 
 function doLogin() {
   const email = document.getElementById('login-email').value.trim().toLowerCase();
@@ -2621,7 +3773,7 @@ function switchAccTab(el, show) {
 function switchSettingsTab(el, show) {
   el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  ['set-company','set-integrations','set-users','set-billing','set-templates'].forEach(id => {
+  ['set-company','set-integrations','set-users','set-billing','set-templates','set-support'].forEach(id => {
     const el2 = document.getElementById(id);
     if (el2) el2.style.display = id === show ? '' : 'none';
   });
@@ -2963,6 +4115,83 @@ document.addEventListener('DOMContentLoaded', function() {
   showPanel('dashboard');
 });
 
+/* ══════════════════════════════════════════════════
+   NEXUS MULTI-INDUSTRY PLATFORM — PACK SWITCHING JS
+   © 2026 Imagelink Technologies (Pty) Ltd
+══════════════════════════════════════════════════ */
+
+const PACK_CONFIG = {
+  insurance: {
+    label: 'Big O Projects',
+    icon: '🛡️',
+    badge: 'Big O Projects',
+    dashboard: 'dashboard',
+    nav: 'nav-pack-insurance'
+  },
+  it: {
+    label: 'ImageLink Tech',
+    icon: '💻',
+    badge: 'ImageLink Technologies',
+    dashboard: 'it-dashboard',
+    nav: 'nav-pack-it'
+  },
+  realestate: {
+    label: 'N.T.O Real Estate',
+    icon: '🏘️',
+    badge: 'N.T.O Real Estate',
+    dashboard: 're-dashboard',
+    nav: 'nav-pack-realestate'
+  },
+  support: {
+    label: 'Platform Admin',
+    icon: '⊞',
+    badge: 'ImageSync Platform',
+    dashboard: 'support',
+    nav: 'nav-pack-support'
+  }
+};
+
+let currentPack = 'insurance';
+
+function switchPack(packId) {
+  const cfg = PACK_CONFIG[packId];
+  if (!cfg) return;
+  currentPack = packId;
+
+
+  // Update topbar badge and switcher
+  const badge = document.getElementById('tb-co-badge');
+  if (badge) badge.textContent = cfg.badge;
+  const icon = document.getElementById('co-sw-icon');
+  if (icon) icon.textContent = cfg.icon;
+  const label = document.getElementById('co-sw-label');
+  if (label) label.textContent = cfg.label;
+
+  // Show/hide nav packs
+  document.querySelectorAll('[id^="nav-pack-"]').forEach(el => el.style.display = 'none');
+  const activeNav = document.getElementById(cfg.nav);
+  if (activeNav) activeNav.style.display = '';
+
+  // Navigate to pack dashboard
+  showPanel(cfg.dashboard);
+
+  // Close switcher dropdown
+  const dd = document.getElementById('co-sw-dd');
+  if (dd) dd.style.display = 'none';
+}
+
+function toggleCoSw() {
+  const dd = document.getElementById('co-sw-dd');
+  if (!dd) return;
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#co-sw-btn') && !e.target.closest('#co-sw-dd')) {
+    const dd = document.getElementById('co-sw-dd');
+    if (dd) dd.style.display = 'none';
+  }
+});
 </script>
 </body>
 </html>
